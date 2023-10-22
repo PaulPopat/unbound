@@ -9,14 +9,14 @@ import {
   SystemEntity,
   UsingEntity,
 } from "@ast";
-import { Token } from "../token";
+import { TokenGroup } from "../token";
 import { BuildWhile, ExpectNext, IfIs, NextBlock } from "../utils";
 import { ExtractFunctionParameter, ExtractProperty, ExtractType } from "./type";
 import { ParserError } from "../error";
-import { ExtractStatement } from "./statement";
+import { ExtractStatementBlock } from "./statement";
 import { ExtractExpression } from "./expression";
 
-function ExtractExternalFunction(tokens: Iterator<Token>) {
+function ExtractExternalFunction(tokens: TokenGroup) {
   const start = ExpectNext(tokens, "fn");
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "(");
@@ -35,7 +35,7 @@ function ExtractExternalFunction(tokens: Iterator<Token>) {
   );
 }
 
-function ExtractFunction(tokens: Iterator<Token>) {
+function ExtractFunction(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "(");
   const parameters = BuildWhile(tokens, ",", ")", () =>
@@ -44,12 +44,11 @@ function ExtractFunction(tokens: Iterator<Token>) {
   ExpectNext(tokens, ":");
   const returns = IfIs(tokens, ":", () => ExtractType(tokens));
   ExpectNext(tokens, "{");
-  const body = BuildWhile(tokens, ";", "}", () => ExtractStatement(tokens));
 
-  return { name, parameters, returns, body };
+  return { name, parameters, returns, body: ExtractStatementBlock(tokens) };
 }
 
-function ExtractLib(tokens: Iterator<Token>) {
+function ExtractLib(tokens: TokenGroup) {
   const path = ExtractExpression(tokens);
 
   ExpectNext(tokens, "{");
@@ -60,7 +59,7 @@ function ExtractLib(tokens: Iterator<Token>) {
   return { path: path, declarations };
 }
 
-function ExtractSystem(tokens: Iterator<Token>) {
+function ExtractSystem(tokens: TokenGroup) {
   ExpectNext(tokens, "{");
   const declarations = BuildWhile(tokens, ";", "}", () =>
     ExtractExternalFunction(tokens)
@@ -69,7 +68,7 @@ function ExtractSystem(tokens: Iterator<Token>) {
   return { declarations };
 }
 
-function ExtractSchemaOrStruct(tokens: Iterator<Token>) {
+function ExtractSchemaOrStruct(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
 
   ExpectNext(tokens, "{");
@@ -80,14 +79,11 @@ function ExtractSchemaOrStruct(tokens: Iterator<Token>) {
   return { name, properties };
 }
 
-function ExtractUsing(tokens: Iterator<Token>) {
+function ExtractUsing(tokens: TokenGroup) {
   return BuildWhile(tokens, ".", ";", () => NextBlock(tokens).Text).join(".");
 }
 
-export function ExtractEntity(
-  tokens: Iterator<Token>,
-  exported?: boolean
-): Entity {
+export function ExtractEntity(tokens: TokenGroup, exported?: boolean): Entity {
   const current = NextBlock(tokens);
 
   switch (current.Text) {
@@ -140,7 +136,7 @@ export function ExtractEntity(
         name,
         new ComponentGroup(...parameters),
         returns,
-        new ComponentGroup(...body)
+        body
       );
     }
     default:

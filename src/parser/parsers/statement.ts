@@ -1,38 +1,39 @@
 import {
   AssignStatement,
+  ComponentGroup,
   PanicStatement,
   ReturnStatement,
   Statement,
   StoreStatement,
 } from "@ast";
 import { ParserError } from "../error";
-import { Token } from "../token";
-import { ExpectNext, NextBlock } from "../utils";
+import { TokenGroup } from "../token";
+import { BuildWhile, ExpectNext, NextBlock } from "../utils";
 import { ExtractExpression } from "./expression";
 
-function ExtractStore(tokens: Iterator<Token>) {
+function ExtractStore(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "=");
 
   return { name, equals: ExtractExpression(tokens) };
 }
 
-function ExtractAssign(tokens: Iterator<Token>) {
+function ExtractAssign(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "=");
 
   return { name, equals: ExtractExpression(tokens) };
 }
 
-function ExtractReturn(tokens: Iterator<Token>) {
+function ExtractReturn(tokens: TokenGroup) {
   return ExtractExpression(tokens);
 }
 
-function ExtractPanic(tokens: Iterator<Token>) {
-  return ExtractExpression(tokens);
+function ExtractPanic(tokens: TokenGroup) {
+  return { error: ExtractExpression(tokens) };
 }
 
-export function ExtractStatement(tokens: Iterator<Token>): Statement {
+export function ExtractStatement(tokens: TokenGroup): Statement {
   const current = NextBlock(tokens);
 
   switch (current.Text) {
@@ -48,7 +49,8 @@ export function ExtractStatement(tokens: Iterator<Token>): Statement {
       return new AssignStatement(current.Location, name, equals);
     }
     case "panic": {
-      return new PanicStatement(current.Location, ExtractPanic(tokens));
+      const { error } = ExtractPanic(tokens);
+      return new PanicStatement(current.Location, error);
     }
     default:
       throw ParserError.UnexpectedSymbol(
@@ -59,4 +61,12 @@ export function ExtractStatement(tokens: Iterator<Token>): Statement {
         "panic"
       );
   }
+}
+
+export function ExtractStatementBlock(
+  tokens: TokenGroup
+): ComponentGroup<Statement> {
+  return new ComponentGroup(
+    ...BuildWhile(tokens, ";", "}", () => ExtractStatement(tokens))
+  );
 }

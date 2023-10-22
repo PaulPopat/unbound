@@ -18,7 +18,8 @@ export class LiteralExpression extends Expression {
   }
 }
 
-export type Operator = "+" | "-";
+export const Operators = ["+", "-"] as const;
+export type Operator = (typeof Operators)[number];
 
 export class OperatorExpression extends Expression {
   readonly #left: Expression;
@@ -160,7 +161,7 @@ export class InvokationExpression extends Expression {
   constructor(
     ctx: Location,
     expression: Expression,
-    parameters: ComponentGroup<FunctionParameter<Type>>
+    parameters: ComponentGroup<Expression>
   ) {
     super(ctx);
     this.#expression = expression;

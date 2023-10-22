@@ -1,17 +1,14 @@
 import { ParserError } from "./error";
-import { Token } from "./token";
+import { TokenGroup } from "./token";
 
-export function NextBlock(tokens: Iterator<Token>) {
+export function NextBlock(tokens: TokenGroup) {
   const first = tokens.next();
   if (first.done) throw ParserError.EndOfFile;
 
   return first.value;
 }
 
-export function ExpectNext(
-  tokens: Iterator<Token>,
-  ...expected: Array<string>
-) {
+export function ExpectNext(tokens: TokenGroup, ...expected: Array<string>) {
   const item = NextBlock(tokens);
   if (!expected.includes(item.Text))
     throw ParserError.UnexpectedSymbol(item, ...expected);
@@ -19,8 +16,21 @@ export function ExpectNext(
   return item;
 }
 
+export function BuildWhilePeek<T>(
+  tokens: TokenGroup,
+  to_next: (value: string) => boolean,
+  handler: () => T
+) {
+  const result = [handler()];
+  while (to_next(tokens.peek()?.Text ?? "")) {
+    result.push(handler());
+  }
+
+  return result;
+}
+
 export function BuildWhile<T>(
-  tokens: Iterator<Token>,
+  tokens: TokenGroup,
   to_next: string,
   end: string,
   handler: () => T
@@ -37,7 +47,7 @@ export function BuildWhile<T>(
 }
 
 export function IfIs<T>(
-  tokens: Iterator<Token>,
+  tokens: TokenGroup,
   expected: string,
   handler: () => T
 ) {

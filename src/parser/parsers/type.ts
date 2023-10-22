@@ -13,7 +13,7 @@ import { Token } from "../token";
 import { BuildWhile, ExpectNext, NextBlock } from "../utils";
 
 export function ExtractFunctionParameter(
-  tokens: Iterator<Token>
+  tokens: TokenGroup
 ): FunctionParameter<Type> {
   const name = NextBlock(tokens);
   ExpectNext(tokens, ":");
@@ -22,7 +22,7 @@ export function ExtractFunctionParameter(
   return new FunctionParameter(name.Location, name.Text, type);
 }
 
-export function ExtractProperty(tokens: Iterator<Token>): Property<Type> {
+export function ExtractProperty(tokens: TokenGroup): Property<Type> {
   const name = NextBlock(tokens);
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
@@ -30,7 +30,7 @@ export function ExtractProperty(tokens: Iterator<Token>): Property<Type> {
   return new Property(name.Location, name.Text, type);
 }
 
-function ExtractFunction(tokens: Iterator<Token>) {
+function ExtractFunction(tokens: TokenGroup) {
   const parameters = BuildWhile(tokens, ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
@@ -44,7 +44,7 @@ function ExtractFunction(tokens: Iterator<Token>) {
   };
 }
 
-function ExtractSchema(tokens: Iterator<Token>) {
+function ExtractSchema(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "{");
   const properties = BuildWhile(tokens, ";", "}", () =>
@@ -54,14 +54,14 @@ function ExtractSchema(tokens: Iterator<Token>) {
   return { name, properties };
 }
 
-function ExtractIterable(tokens: Iterator<Token>) {
+function ExtractIterable(tokens: TokenGroup) {
   const result = ExtractType(tokens);
   ExpectNext(tokens, "]");
 
   return result;
 }
 
-function ExtractUse(tokens: Iterator<Token>) {
+function ExtractUse(tokens: TokenGroup) {
   const constraints = BuildWhile(tokens, "|", "=", () => ExtractType(tokens));
 
   return {
@@ -70,7 +70,7 @@ function ExtractUse(tokens: Iterator<Token>) {
   };
 }
 
-export function ExtractType(tokens: Iterator<Token>): Type {
+export function ExtractType(tokens: TokenGroup): Type {
   const current = NextBlock(tokens);
 
   switch (current.Text) {

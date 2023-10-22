@@ -60,7 +60,7 @@ fn test(input: (input: int) -> int): int {
 
 // Returns 20
 fn user(): int {
-  return test((input: int) -> input + 10)
+  return test(fn (input: int) -> input + 10)
 }
 ```
 
@@ -73,7 +73,7 @@ fn test(input: (input: int) -> int): int {
 
 // Returns 20
 fn user(): int {
-  return test((input) -> input + 10)
+  return test(fn (input) -> input + 10)
 }
 ```
 

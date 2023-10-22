@@ -38,8 +38,4 @@ export class Location {
       last: { line: this.EndLine, column: this.EndColumn },
     };
   }
-
-  toString() {
-    return JSON.stringify(this.json, undefined, 2);
-  }
 }
