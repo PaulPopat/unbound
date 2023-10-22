@@ -2,8 +2,8 @@ import { Location } from "@location";
 import { ParserError } from "./error";
 import { Token } from "./token";
 
-const is_word_character = /[a-zA-Z0-9_]/gm;
-const is_quote_mark = /['"`]/gm;
+const is_word_character = /^[a-zA-Z0-9_]+$/gm;
+const is_quote_mark = /^['"`]$/gm;
 
 export function* SplitTokens(code: string): Generator<Token> {
   let start_line = 0;
@@ -30,7 +30,7 @@ export function* SplitTokens(code: string): Generator<Token> {
         current = "";
       }
     } else {
-      if (!char.match(is_word_character)) {
+      if (!char.match(is_word_character) || !current.match(is_word_character)) {
         if (current.trim())
           yield new Token(
             new Location(start_line, start_column, line, column),

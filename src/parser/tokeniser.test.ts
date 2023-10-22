@@ -28,6 +28,21 @@ describe("SplitTokens", () => {
     );
   });
 
+  it("parses brackets", () => {
+    expect(
+      [...SplitTokens("this (is a) test")].map((t) => t.json)
+    ).toStrictEqual(
+      [
+        new Token(new Location(0, 0, 0, 4), "this"),
+        new Token(new Location(0, 5, 0, 6), "("),
+        new Token(new Location(0, 6, 0, 8), "is"),
+        new Token(new Location(0, 9, 0, 10), "a"),
+        new Token(new Location(0, 10, 0, 11), ")"),
+        new Token(new Location(0, 12, 0, 16), "test"),
+      ].map((t) => t.json)
+    );
+  });
+
   it("preserves other single quote strings", () => {
     expect(
       [...SplitTokens("this'is a' test")].map((t) => t.json)

@@ -45,7 +45,6 @@ function ExtractFunction(tokens: TokenGroup) {
   const parameters = BuildWhile(tokens, "(", ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
-  ExpectNext(tokens, ":");
   const returns = IfIs(tokens, ":", () => ExtractType(tokens));
 
   return { name, parameters, returns, body: ExtractStatementBlock(tokens) };

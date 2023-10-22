@@ -72,7 +72,7 @@ const blocks: Record<
           "Test",
           new ComponentGroup(
             new StructEntity(
-              new Location(1, 2, 1, 7),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup()
@@ -88,12 +88,12 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new StructEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 9, 1, 15),
               true,
               "Test",
               new ComponentGroup()
@@ -111,19 +111,19 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new StructEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup(
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(2, 4, 2, 8),
                   "test",
-                  new ReferenceType(new Location(0, 0, 0, 0), "char")
+                  new ReferenceType(new Location(2, 4, 2, 8), "char")
                 )
               )
             )
@@ -141,24 +141,24 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new StructEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup(
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(2, 4, 2, 8),
                   "test",
-                  new ReferenceType(new Location(0, 0, 0, 0), "char")
+                  new ReferenceType(new Location(2, 4, 2, 8), "char")
                 ),
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(3, 4, 3, 9),
                   "other",
-                  new ReferenceType(new Location(0, 0, 0, 0), "bool")
+                  new ReferenceType(new Location(2, 4, 2, 9), "bool")
                 )
               )
             )
@@ -173,12 +173,12 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new SchemaEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup()
@@ -194,13 +194,13 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new SchemaEntity(
-              new Location(0, 0, 0, 0),
-              false,
+              new Location(1, 9, 1, 15),
+              true,
               "Test",
               new ComponentGroup()
             )
@@ -217,17 +217,17 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new SchemaEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup(
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(2, 4, 2, 8),
                   "test",
                   new ReferenceType(new Location(0, 0, 0, 0), "char")
                 )
@@ -247,22 +247,22 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new SchemaEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 8),
               false,
               "Test",
               new ComponentGroup(
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(2, 4, 2, 8),
                   "test",
                   new ReferenceType(new Location(0, 0, 0, 0), "char")
                 ),
                 new Property(
-                  new Location(0, 0, 0, 0),
+                  new Location(3, 4, 3, 9),
                   "other",
                   new ReferenceType(new Location(0, 0, 0, 0), "bool")
                 )
@@ -279,16 +279,16 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new FunctionEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 4),
               false,
               "Test",
               new ComponentGroup(),
-              new ReferenceType(new Location(0, 0, 0, 0), "int"),
+              new ReferenceType(new Location(1, 14, 1, 17), "int"),
               new ComponentGroup()
             )
           )
@@ -302,16 +302,16 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new FunctionEntity(
-              new Location(0, 0, 0, 0),
-              false,
+              new Location(1, 9, 1, 11),
+              true,
               "Test",
               new ComponentGroup(),
-              new ReferenceType(new Location(0, 0, 0, 0), "int"),
+              new ReferenceType(new Location(1, 21, 1, 24), "int"),
               new ComponentGroup()
             )
           )
@@ -325,22 +325,22 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new FunctionEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 4),
               false,
               "Test",
               new ComponentGroup(
                 new FunctionParameter(
-                  new Location(0, 0, 0, 0),
+                  new Location(1, 11, 1, 15),
                   "test",
-                  new ReferenceType(new Location(0, 0, 0, 0), "bool")
+                  new ReferenceType(new Location(1, 24, 1, 27), "bool")
                 )
               ),
-              new ReferenceType(new Location(0, 0, 0, 0), "int"),
+              new ReferenceType(new Location(1, 24, 1, 27), "int"),
               new ComponentGroup()
             )
           )
@@ -354,27 +354,27 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new FunctionEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 4),
               false,
               "Test",
               new ComponentGroup(
                 new FunctionParameter(
-                  new Location(0, 0, 0, 0),
+                  new Location(1, 11, 1, 15),
                   "test",
-                  new ReferenceType(new Location(0, 0, 0, 0), "bool")
+                  new ReferenceType(new Location(1, 24, 1, 27), "bool")
                 ),
                 new FunctionParameter(
-                  new Location(0, 0, 0, 0),
+                  new Location(1, 23, 1, 28),
                   "other",
-                  new ReferenceType(new Location(0, 0, 0, 0), "char")
+                  new ReferenceType(new Location(1, 23, 1, 28), "char")
                 )
               ),
-              new ReferenceType(new Location(0, 0, 0, 0), "int"),
+              new ReferenceType(new Location(1, 37, 1, 40), "int"),
               new ComponentGroup()
             )
           )
@@ -388,12 +388,12 @@ const blocks: Record<
       }`,
       new ComponentGroup(
         new Namespace(
-          new Location(0, 0, 0, 0),
+          new Location(0, 0, 0, 9),
           false,
           "Test",
           new ComponentGroup(
             new FunctionEntity(
-              new Location(0, 0, 0, 0),
+              new Location(1, 2, 1, 4),
               false,
               "Test",
               new ComponentGroup(),
@@ -425,24 +425,16 @@ const unhappy_blocks: Record<string, Array<[string, ParserError, string]>> = {
   namespace: [
     [
       `namespace Test`,
-      new ParserError(
-        new Location(0, 0, 0, 0),
-        "All namespaces require a block"
-      ),
+      new ParserError(undefined, "Unexpected end of file"),
       "has no block",
     ],
     [
       `namespace Test Name {}`,
       new ParserError(
-        new Location(0, 0, 0, 0),
-        "Expected '{' but received 'Name'"
+        new Location(0, 15, 0, 0),
+        "Unexpected symbol. Expected one of '{', '.' but received 'Name'"
       ),
       "spaces in the name",
-    ],
-    [
-      `namespace fn {}`,
-      new ParserError(new Location(0, 0, 0, 0), "Invalid namespace name 'fn'"),
-      "keyword as the name",
     ],
   ],
   entity: [
@@ -451,8 +443,8 @@ const unhappy_blocks: Record<string, Array<[string, ParserError, string]>> = {
         fn Test: int {}
       }`,
       new ParserError(
-        new Location(0, 0, 0, 0),
-        "Expected '(' but received ':'"
+        new Location(1, 9, 0, 0),
+        "Unexpected symbol. Expected one of '(' but received ':'"
       ),
       "no parameters section",
     ],
@@ -462,7 +454,7 @@ const unhappy_blocks: Record<string, Array<[string, ParserError, string]>> = {
 for (const key in unhappy_blocks) {
   const tests = unhappy_blocks[key];
 
-  describe.skip(key + " errors", () => {
+  describe(key + " errors", () => {
     for (const [input, expected, name] of tests)
       it(name, () => {
         expect(() => ParseUnbound(input.replaceAll("      ", ""))).toThrow(

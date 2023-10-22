@@ -41,6 +41,11 @@ export function BuildWhile<T>(
     ? ExpectNext(tokens, expect_start)
     : NextBlock(tokens);
   while (next.Text === to_next || next.Text === expect_start) {
+    if (tokens.peek()?.Text === end) {
+      next = NextBlock(tokens);
+      break;
+    }
+
     result.push(handler());
     next = NextBlock(tokens);
   }
@@ -71,7 +76,9 @@ export function IfIs<T>(
   expected: string,
   handler: () => T
 ) {
-  const next = NextBlock(tokens);
-  if (next.Text === expected) return handler();
+  if (tokens.peek()?.Text === expected) {
+    NextBlock(tokens);
+    return handler();
+  }
   return undefined;
 }
