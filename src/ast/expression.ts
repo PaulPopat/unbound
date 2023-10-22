@@ -4,6 +4,19 @@ import { Type } from "./type";
 
 export class Expression extends Component {}
 
+export type LiteralType = "string" | "raw_int";
+
+export class LiteralExpression extends Expression {
+  readonly #type: LiteralType;
+  readonly #value: string;
+
+  constructor(ctx: ComponentContext, type: LiteralType, value: string) {
+    super(ctx);
+    this.#type = type;
+    this.#value = value;
+  }
+}
+
 export type Operator = "+" | "-";
 
 export class OperatorExpression extends Expression {

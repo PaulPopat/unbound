@@ -25,3 +25,13 @@ namespace OtherNamespace {
   }
 }
 ```
+
+When exposing an entity of a namespace to be used outside the namespace, the `export` keyword may be used.
+
+```
+namespace OtherNamespace {
+  export fn some_function(): int {
+    return 123;
+  }
+}
+```

@@ -3,11 +3,9 @@
   "version": "0.0.1",
   "description": "A new programming language",
   "main": "dist/index.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -18,5 +16,19 @@
   "bugs": {
     "url": "https://github.com/PaulPopat/unbound/issues"
   },
-  "homepage": "https://github.com/PaulPopat/unbound#readme"
+  "homepage": "https://github.com/PaulPopat/unbound#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "moduleNameMapper": {
+      "^@ast$": "<rootDir>/src/ast",
+      "^@parser$": "<rootDir>/src/parser",
+      "^@test$": "<rootDir>/src/testing"
+    }
+  }
 }
