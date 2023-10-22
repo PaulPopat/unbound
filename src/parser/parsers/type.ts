@@ -19,14 +19,7 @@ export function ExtractFunctionParameter(
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 
-  return new FunctionParameter(
-    {
-      line: name.LineNumber,
-      column: name.ColumnNumber,
-    },
-    name.Text,
-    type
-  );
+  return new FunctionParameter(name.Location, name.Text, type);
 }
 
 export function ExtractProperty(tokens: Iterator<Token>): Property<Type> {
@@ -34,14 +27,7 @@ export function ExtractProperty(tokens: Iterator<Token>): Property<Type> {
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 
-  return new Property(
-    {
-      line: name.LineNumber,
-      column: name.ColumnNumber,
-    },
-    name.Text,
-    type
-  );
+  return new Property(name.Location, name.Text, type);
 }
 
 function ExtractFunction(tokens: Iterator<Token>) {
@@ -86,28 +72,36 @@ function ExtractUse(tokens: Iterator<Token>) {
 
 export function ExtractType(tokens: Iterator<Token>): Type {
   const current = NextBlock(tokens);
-  const ctx = {
-    line: current.LineNumber,
-    column: current.ColumnNumber,
-  };
 
   switch (current.Text) {
     case "use": {
       const { name, constraints } = ExtractUse(tokens);
-      return new UseType(ctx, name, new ComponentGroup(...constraints));
+      return new UseType(
+        current.Location,
+        name,
+        new ComponentGroup(...constraints)
+      );
     }
     case "[": {
-      return new IterableType(ctx, ExtractIterable(tokens));
+      return new IterableType(current.Location, ExtractIterable(tokens));
     }
     case "(": {
       const { parameters, returns } = ExtractFunction(tokens);
-      return new FunctionType(ctx, new ComponentGroup(...parameters), returns);
+      return new FunctionType(
+        current.Location,
+        new ComponentGroup(...parameters),
+        returns
+      );
     }
     case "schema": {
       const { properties, name } = ExtractSchema(tokens);
-      return new SchemaType(ctx, name, new ComponentGroup(...properties));
+      return new SchemaType(
+        current.Location,
+        name,
+        new ComponentGroup(...properties)
+      );
     }
     default:
-      return new ReferenceType(ctx, current.Text);
+      return new ReferenceType(current.Location, current.Text);
   }
 }

@@ -15,6 +15,8 @@ export function ExpectNext(
   const item = NextBlock(tokens);
   if (!expected.includes(item.Text))
     throw ParserError.UnexpectedSymbol(item, ...expected);
+
+  return item;
 }
 
 export function BuildWhile<T>(
@@ -32,4 +34,14 @@ export function BuildWhile<T>(
 
   if (next.Text !== end) throw ParserError.UnexpectedSymbol(next, end, to_next);
   return result;
+}
+
+export function IfIs<T>(
+  tokens: Iterator<Token>,
+  expected: string,
+  handler: () => T
+) {
+  const next = NextBlock(tokens);
+  if (next.Text === expected) return handler();
+  return undefined;
 }

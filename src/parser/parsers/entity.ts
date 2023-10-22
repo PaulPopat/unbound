@@ -2,19 +2,22 @@ import {
   ComponentGroup,
   Entity,
   ExternalFunctionEntity,
-  FunctionParameter,
-  Property,
+  FunctionEntity,
+  LibEntity,
   SchemaEntity,
   StructEntity,
-  Type,
+  SystemEntity,
   UsingEntity,
 } from "@ast";
 import { Token } from "../token";
-import { BuildWhile, ExpectNext, NextBlock } from "../utils";
+import { BuildWhile, ExpectNext, IfIs, NextBlock } from "../utils";
 import { ExtractFunctionParameter, ExtractProperty, ExtractType } from "./type";
 import { ParserError } from "../error";
+import { ExtractStatement } from "./statement";
+import { ExtractExpression } from "./expression";
 
 function ExtractExternalFunction(tokens: Iterator<Token>) {
+  const start = ExpectNext(tokens, "fn");
   const name = NextBlock(tokens).Text;
   ExpectNext(tokens, "(");
   const parameters = BuildWhile(tokens, ",", ")", () =>
@@ -24,70 +27,121 @@ function ExtractExternalFunction(tokens: Iterator<Token>) {
   const returns = ExtractType(tokens);
   ExpectNext(tokens, ";");
 
-  return { name, parameters, returns };
+  return new ExternalFunctionEntity(
+    start.Location,
+    name,
+    new ComponentGroup(...parameters),
+    returns
+  );
+}
+
+function ExtractFunction(tokens: Iterator<Token>) {
+  const name = NextBlock(tokens).Text;
+  ExpectNext(tokens, "(");
+  const parameters = BuildWhile(tokens, ",", ")", () =>
+    ExtractFunctionParameter(tokens)
+  );
+  ExpectNext(tokens, ":");
+  const returns = IfIs(tokens, ":", () => ExtractType(tokens));
+  ExpectNext(tokens, "{");
+  const body = BuildWhile(tokens, ";", "}", () => ExtractStatement(tokens));
+
+  return { name, parameters, returns, body };
 }
 
 function ExtractLib(tokens: Iterator<Token>) {
-  const path = NextBlock(tokens);
-  if (!path.Text.startsWith('"') || !path.Text.endsWith('"'))
-    throw new ParserError(
-      path,
-      `lib blocks must have a file path presented as a static string.`
-    );
+  const path = ExtractExpression(tokens);
+
+  ExpectNext(tokens, "{");
+  const declarations = BuildWhile(tokens, ";", "}", () =>
+    ExtractExternalFunction(tokens)
+  );
+
+  return { path: path, declarations };
+}
+
+function ExtractSystem(tokens: Iterator<Token>) {
+  ExpectNext(tokens, "{");
+  const declarations = BuildWhile(tokens, ";", "}", () =>
+    ExtractExternalFunction(tokens)
+  );
+
+  return { declarations };
 }
 
 function ExtractSchemaOrStruct(tokens: Iterator<Token>) {
-  let exported = false;
-  let name = NextBlock(tokens).Text;
-  if (name === "export") {
-    exported = true;
-    name = NextBlock(tokens).Text;
-  }
+  const name = NextBlock(tokens).Text;
 
   ExpectNext(tokens, "{");
   const properties = BuildWhile(tokens, ";", "}", () =>
     ExtractProperty(tokens)
   );
 
-  return { name, properties, exported };
+  return { name, properties };
 }
 
 function ExtractUsing(tokens: Iterator<Token>) {
   return BuildWhile(tokens, ".", ";", () => NextBlock(tokens).Text).join(".");
 }
 
-export function ExtractEntity(tokens: Iterator<Token>): Entity {
+export function ExtractEntity(
+  tokens: Iterator<Token>,
+  exported?: boolean
+): Entity {
   const current = NextBlock(tokens);
-  const ctx = {
-    line: current.LineNumber,
-    column: current.ColumnNumber,
-  };
 
   switch (current.Text) {
     case "schema": {
-      const { name, properties, exported } = ExtractSchemaOrStruct(tokens);
+      const { name, properties } = ExtractSchemaOrStruct(tokens);
       return new SchemaEntity(
-        {
-          ...ctx,
-          exported,
-        },
+        current.Location,
+        exported ?? false,
         name,
         new ComponentGroup(...properties)
       );
     }
     case "struct": {
-      const { name, properties, exported } = ExtractSchemaOrStruct(tokens);
+      const { name, properties } = ExtractSchemaOrStruct(tokens);
       return new StructEntity(
-        {
-          ...ctx,
-          exported,
-        },
+        current.Location,
+        exported ?? false,
         name,
         new ComponentGroup(...properties)
       );
     }
     case "using": {
-      return new UsingEntity({ ...ctx, exported: false }, ExtractUsing(tokens));
+      return new UsingEntity(current.Location, false, ExtractUsing(tokens));
+    }
+    case "export": {
+      return ExtractEntity(tokens, true);
+    }
+    case "lib": {
+      const { path, declarations } = ExtractLib(tokens);
+      return new LibEntity(
+        current.Location,
+        exported ?? false,
+        path,
+        new ComponentGroup(...declarations)
+      );
+    }
+    case "system": {
+      const { declarations } = ExtractSystem(tokens);
+      return new SystemEntity(
+        current.Location,
+        exported ?? false,
+        new ComponentGroup(...declarations)
+      );
+    }
+    case "fn": {
+      const { name, parameters, returns, body } = ExtractFunction(tokens);
+      return new FunctionEntity(
+        current.Location,
+        exported ?? false,
+        name,
+        new ComponentGroup(...parameters),
+        returns,
+        new ComponentGroup(...body)
+      );
     }
     default:
       throw ParserError.UnexpectedSymbol(
@@ -97,7 +151,8 @@ export function ExtractEntity(tokens: Iterator<Token>): Entity {
         "fn",
         "using",
         "lib",
-        "system"
+        "system",
+        "export"
       );
   }
 }

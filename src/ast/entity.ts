@@ -3,6 +3,7 @@ import { FunctionParameter, Property } from "./property";
 import { Type } from "./type";
 import { Statement } from "./statement";
 import { Location } from "@location";
+import { Expression } from "./expression";
 
 export abstract class Entity extends Component {
   readonly #exported: boolean;
@@ -92,19 +93,18 @@ export class UsingEntity extends Entity {
   }
 }
 
-export class ExternalFunctionEntity extends Entity {
+export class ExternalFunctionEntity extends Component {
   readonly #name: string;
   readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
   readonly #returns: Type;
 
   constructor(
     ctx: Location,
-    exported: boolean,
     name: string,
     parameters: ComponentGroup<FunctionParameter<Type>>,
     returns: Type
   ) {
-    super(ctx, exported);
+    super(ctx);
     this.#name = name;
     this.#parameters = parameters;
     this.#returns = returns;
@@ -116,13 +116,13 @@ export class ExternalFunctionEntity extends Entity {
 }
 
 export class LibEntity extends Entity {
-  readonly #name: string;
+  readonly #name: Expression;
   readonly #content: ComponentGroup<ExternalFunctionEntity>;
 
   constructor(
     ctx: Location,
     exported: boolean,
-    name: string,
+    name: Expression,
     content: ComponentGroup<ExternalFunctionEntity>
   ) {
     super(ctx, exported);
