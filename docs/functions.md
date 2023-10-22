@@ -91,7 +91,7 @@ fn test(part: (int, bool) -> int): int {
 }
 ```
 
-Any function or bound function can then be passed to the function. All functions may be used as function pointers.
+Any function, lambda, or bound function can then be passed to the function. All functions may be used as function pointers.
 
 ## Inference
 
@@ -137,11 +137,11 @@ fn other() {
 Finally
 
 ```
-fn select(self: use T[], selector: (input: T) -> use R) {
+fn select(self: [use any = T], selector: (input: T) -> use any = R) {
   return iterate (self as item) return item.selector();
 }
 
-fn test(): int[] {
+fn test(): [int] {
   store indexer = 0;
   store result = while (indexer < 10) {
     indexer += 1;
@@ -157,13 +157,13 @@ The use keyword may also be used within a inline schema of a function.
 
 ```
 struct User {
-  username: char[];
+  username: [char];
   last_activity: int;
 }
 
 fn get_activity(
   target: schema {
-    last_activity: use T;
+    last_activity: use any = T;
   }
 ): bool {
   return target.last_activity;
@@ -187,7 +187,7 @@ fn main(): int {
 If a use type should only be of a smaller group of types. It may be declared like so.
 
 ```
-fn test(input: use T = int | bool) {
+fn test(input: use int | bool = T) {
   return input;
 }
 
@@ -195,7 +195,7 @@ fn other() {
   // var has type int
   store var = test(123);
 
-  /* Will not compile "Error: type of 'char[]' is not compatible with type 'int | bool'" */
+  /* Will not compile "type of '[char]' is not compatible with type 'int | bool'" */
   store test = test("123");
 
   return var;

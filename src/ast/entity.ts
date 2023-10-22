@@ -1,18 +1,15 @@
-import { Component, ComponentGroup, ComponentContext } from "./base";
+import { Component, ComponentGroup } from "./base";
 import { FunctionParameter, Property } from "./property";
 import { Type } from "./type";
 import { Statement } from "./statement";
-
-type EntityContext = ComponentContext & {
-  exported: boolean;
-};
+import { Location } from "@location";
 
 export abstract class Entity extends Component {
   readonly #exported: boolean;
 
-  constructor(ctx: EntityContext) {
+  constructor(ctx: Location, exported: boolean) {
     super(ctx);
-    this.#exported = ctx.exported;
+    this.#exported = exported;
   }
 }
 
@@ -23,13 +20,14 @@ export class FunctionEntity extends Entity {
   readonly #content: ComponentGroup<Statement>;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     parameters: ComponentGroup<FunctionParameter<Type>>,
     returns: Type | undefined,
     content: ComponentGroup<Statement>
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#name = name;
     this.#parameters = parameters;
     this.#returns = returns;
@@ -46,11 +44,12 @@ export class StructEntity extends Entity {
   readonly #properties: ComponentGroup<Property<Type>>;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     properties: ComponentGroup<Property<Type>>
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#name = name;
     this.#properties = properties;
   }
@@ -65,11 +64,12 @@ export class SchemaEntity extends Entity {
   readonly #properties: ComponentGroup<Property<Type>>;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     properties: ComponentGroup<Property<Type>>
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#name = name;
     this.#properties = properties;
   }
@@ -82,8 +82,8 @@ export class SchemaEntity extends Entity {
 export class UsingEntity extends Entity {
   readonly #name: string;
 
-  constructor(ctx: EntityContext, name: string) {
-    super(ctx);
+  constructor(ctx: Location, exported: boolean, name: string) {
+    super(ctx, exported);
     this.#name = name;
   }
 
@@ -95,15 +95,16 @@ export class UsingEntity extends Entity {
 export class ExternalFunctionEntity extends Entity {
   readonly #name: string;
   readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
-  readonly #returns: Type | undefined;
+  readonly #returns: Type;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     parameters: ComponentGroup<FunctionParameter<Type>>,
-    returns: Type | undefined
+    returns: Type
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#name = name;
     this.#parameters = parameters;
     this.#returns = returns;
@@ -119,11 +120,12 @@ export class LibEntity extends Entity {
   readonly #content: ComponentGroup<ExternalFunctionEntity>;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     content: ComponentGroup<ExternalFunctionEntity>
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#name = name;
     this.#content = content;
   }
@@ -137,10 +139,11 @@ export class SystemEntity extends Entity {
   readonly #content: ComponentGroup<ExternalFunctionEntity>;
 
   constructor(
-    ctx: EntityContext,
+    ctx: Location,
+    exported: boolean,
     content: ComponentGroup<ExternalFunctionEntity>
   ) {
-    super(ctx);
+    super(ctx, exported);
     this.#content = content;
   }
 }

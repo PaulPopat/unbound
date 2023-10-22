@@ -1,9 +1,6 @@
-import { Component, ComponentGroup, ComponentContext } from "./base";
+import { Location } from "@location";
+import { Component, ComponentGroup } from "./base";
 import { Entity } from "./entity";
-
-type NamespaceContext = ComponentContext & {
-  exported: boolean;
-};
 
 export class Namespace extends Component {
   readonly #name: string;
@@ -11,13 +8,14 @@ export class Namespace extends Component {
   readonly #contents: ComponentGroup<Entity>;
 
   constructor(
-    ctx: NamespaceContext,
+    ctx: Location,
+    exported: boolean,
     name: string,
     contents: ComponentGroup<Entity>
   ) {
     super(ctx);
     this.#name = name;
-    this.#exported = ctx.exported;
+    this.#exported = exported;
     this.#contents = contents;
   }
 

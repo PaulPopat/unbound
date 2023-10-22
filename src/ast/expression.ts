@@ -1,6 +1,7 @@
-import { Component, ComponentContext, ComponentGroup } from "./base";
+import { Component, ComponentGroup } from "./base";
 import { FunctionParameter } from "./property";
 import { Type } from "./type";
+import { Location } from "@location";
 
 export class Expression extends Component {}
 
@@ -10,7 +11,7 @@ export class LiteralExpression extends Expression {
   readonly #type: LiteralType;
   readonly #value: string;
 
-  constructor(ctx: ComponentContext, type: LiteralType, value: string) {
+  constructor(ctx: Location, type: LiteralType, value: string) {
     super(ctx);
     this.#type = type;
     this.#value = value;
@@ -25,7 +26,7 @@ export class OperatorExpression extends Expression {
   readonly #right: Expression;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     left: Expression,
     operator: Operator,
     right: Expression
@@ -43,7 +44,7 @@ export class IfExpression<TStatement extends Component> extends Expression {
   readonly #else: ComponentGroup<TStatement>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     check: Expression,
     on_if: ComponentGroup<TStatement>,
     on_else: ComponentGroup<TStatement>
@@ -61,7 +62,7 @@ export class CountExpression<TStatement extends Component> extends Expression {
   readonly #using: ComponentGroup<TStatement>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     to: Expression,
     as: string,
     using: ComponentGroup<TStatement>
@@ -81,7 +82,7 @@ export class IterateExpression<
   readonly #using: ComponentGroup<TStatement>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     over: Expression,
     as: string,
     using: ComponentGroup<TStatement>
@@ -98,7 +99,7 @@ export class MakeExpression<TStatement extends Component> extends Expression {
   readonly #using: ComponentGroup<TStatement>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     struct: string,
     using: ComponentGroup<TStatement>
   ) {
@@ -112,7 +113,7 @@ export class IsExpression extends Expression {
   readonly #left: Expression;
   readonly #right: Type;
 
-  constructor(ctx: ComponentContext, left: Expression, right: Type) {
+  constructor(ctx: Location, left: Expression, right: Type) {
     super(ctx);
     this.#left = left;
     this.#right = right;
@@ -122,7 +123,7 @@ export class IsExpression extends Expression {
 export class ReferenceExpression extends Expression {
   readonly #name: string;
 
-  constructor(ctx: ComponentContext, name: string) {
+  constructor(ctx: Location, name: string) {
     super(ctx);
     this.#name = name;
   }
@@ -131,7 +132,7 @@ export class ReferenceExpression extends Expression {
 export class BracketsExpression extends Expression {
   readonly #expression: Expression;
 
-  constructor(ctx: ComponentContext, expression: Expression) {
+  constructor(ctx: Location, expression: Expression) {
     super(ctx);
     this.#expression = expression;
   }
@@ -142,7 +143,7 @@ export class LambdaExpression extends Expression {
   readonly #expression: Expression;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     parameters: ComponentGroup<FunctionParameter<Type>>,
     expression: Expression
   ) {
@@ -157,7 +158,7 @@ export class InvokationExpression extends Expression {
   readonly #parameters: ComponentGroup<Expression>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     expression: Expression,
     parameters: ComponentGroup<FunctionParameter<Type>>
   ) {

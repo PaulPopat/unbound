@@ -1,23 +1,14 @@
-export type ComponentContext = {
-  line: number;
-  column: number;
-};
+import { Location } from "@location";
 
 export abstract class Component {
-  readonly #line_number: number;
-  readonly #column_number: number;
+  readonly #location: Location;
 
-  constructor(ctx: ComponentContext) {
-    this.#line_number = ctx.line;
-    this.#column_number = ctx.column;
+  constructor(location: Location) {
+    this.#location = location;
   }
 
-  get LineNumber() {
-    return this.#line_number;
-  }
-
-  get ColumnNumber() {
-    return this.#column_number;
+  get Location() {
+    return this.#location;
   }
 }
 

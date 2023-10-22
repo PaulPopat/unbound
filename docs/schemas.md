@@ -4,7 +4,7 @@ Schema are similar to structs but they may have no concrete implementation. They
 
 ```
 struct User {
-  username: char[];
+  username: [char];
   last_activity: int;
 }
 
@@ -32,7 +32,7 @@ Schemas may also be declared inline as a function parameter.
 
 ```
 struct User {
-  username: char[];
+  username: [char];
   last_activity: int;
 }
 

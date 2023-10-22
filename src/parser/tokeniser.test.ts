@@ -1,74 +1,76 @@
 import { expect, describe, it } from "@test";
-import { SplitTokens, Token } from "./tokeniser";
+import { SplitTokens } from "./tokeniser";
 import { ParserError } from "./error";
+import { Token } from "./token";
+import { Location } from "@location";
 
 describe("SplitTokens", () => {
   it("splits into basic tokens", () => {
     expect([...SplitTokens("this is a test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, "is"),
-      new Token(0, 8, "a"),
-      new Token(0, 10, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 0, 7), "is"),
+      new Token(new Location(0, 8, 0, 9), "a"),
+      new Token(new Location(0, 10, 0, 14), "test"),
     ]);
   });
 
   it("preserves single quote strings", () => {
     expect([...SplitTokens("this 'is a' test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, "'is a'"),
-      new Token(0, 12, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 0, 11), "'is a'"),
+      new Token(new Location(0, 12, 0, 16), "test"),
     ]);
   });
 
   it("preserves other single quote strings", () => {
     expect([...SplitTokens("this'is a' test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 4, "'is a'"),
-      new Token(0, 11, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 4, 0, 10), "'is a'"),
+      new Token(new Location(0, 11, 0, 15), "test"),
     ]);
   });
 
-  it("preserves single quote strings with doube quotes", () => {
+  it("preserves single quote strings with double quotes", () => {
     expect([...SplitTokens("this 'is \"a' test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, "'is \"a'"),
-      new Token(0, 13, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 0, 12), "'is \"a'"),
+      new Token(new Location(0, 13, 0, 17), "test"),
     ]);
   });
 
   it("throws on a new line from a double quote string", () => {
     expect(() => [...SplitTokens("this 'is\na' test")]).toThrow(
-      new ParserError(0, 8, "Error: Unexpected new line")
+      new ParserError(new Location(0, 0, 0, 4), "Unexpected new line")
     );
   });
 
   it("preserves double quote strings", () => {
     expect([...SplitTokens('this "is a" test')]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, '"is a"'),
-      new Token(0, 12, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 0, 11), '"is a"'),
+      new Token(new Location(0, 12, 0, 16), "test"),
     ]);
   });
 
   it("throws on a new line from a double quote string", () => {
     expect(() => [...SplitTokens('th s "is\na" test')]).toThrow(
-      new ParserError(0, 8, "Error: Unexpected new line")
+      new ParserError(new Location(0, 0, 0, 4), "Unexpected new line")
     );
   });
 
   it("preserves back tick quote strings", () => {
     expect([...SplitTokens("this `is a` test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, "`is a`"),
-      new Token(0, 12, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 0, 11), "`is a`"),
+      new Token(new Location(0, 12, 0, 16), "test"),
     ]);
   });
 
   it("preserves back tick quote strings with new lines", () => {
     expect([...SplitTokens("this `is\na` test")]).toProperEquals([
-      new Token(0, 0, "this"),
-      new Token(0, 5, "`is\na`"),
-      new Token(1, 3, "test"),
+      new Token(new Location(0, 0, 0, 4), "this"),
+      new Token(new Location(0, 5, 1, 2), "`is\na`"),
+      new Token(new Location(1, 3, 1, 7), "test"),
     ]);
-  })
+  });
 });

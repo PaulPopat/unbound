@@ -28,7 +28,8 @@
     "moduleNameMapper": {
       "^@ast$": "<rootDir>/src/ast",
       "^@parser$": "<rootDir>/src/parser",
-      "^@test$": "<rootDir>/src/testing"
+      "^@test$": "<rootDir>/src/testing",
+      "^@location$": "<rootDir>/src/location"
     }
   }
 }

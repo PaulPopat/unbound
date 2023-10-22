@@ -18,7 +18,7 @@ A namespace may also be used within another namespace. This may be done with:
 
 ```
 namespace OtherNamespace {
-  using TestNamespace
+  using TestNamespace;
 
   fn some_function(): int {
     return test(123, false);

@@ -1,10 +1,11 @@
-import { Component, ComponentContext } from "./base";
+import { Location } from "@location";
+import { Component } from "./base";
 
 export class Property<TType extends Component> extends Component {
   readonly #name: string;
   readonly #type: TType;
 
-  constructor(ctx: ComponentContext, name: string, type: TType) {
+  constructor(ctx: Location, name: string, type: TType) {
     super(ctx);
     this.#name = name;
     this.#type = type;
@@ -21,9 +22,9 @@ export class Property<TType extends Component> extends Component {
 
 export class FunctionParameter<TType extends Component> extends Component {
   readonly #name: string;
-  readonly #type: TType | undefined;
+  readonly #type: TType;
 
-  constructor(ctx: ComponentContext, name: string, type: TType | undefined) {
+  constructor(ctx: Location, name: string, type: TType) {
     super(ctx);
     this.#name = name;
     this.#type = type;

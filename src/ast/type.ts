@@ -1,4 +1,5 @@
-import { Component, ComponentContext, ComponentGroup } from "./base";
+import { Location } from "@location";
+import { Component, ComponentGroup } from "./base";
 import { FunctionParameter, Property } from "./property";
 
 export abstract class Type extends Component {}
@@ -8,7 +9,7 @@ export class SchemaType extends Type {
   readonly #properties: ComponentGroup<Property<Type>>;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     name: string,
     properties: ComponentGroup<Property<Type>>
   ) {
@@ -25,7 +26,7 @@ export class SchemaType extends Type {
 export class ReferenceType extends Type {
   readonly #name: string;
 
-  constructor(ctx: ComponentContext, name: string) {
+  constructor(ctx: Location, name: string) {
     super(ctx);
     this.#name = name;
   }
@@ -38,7 +39,7 @@ export class ReferenceType extends Type {
 export class IterableType extends Type {
   readonly #type: Type;
 
-  constructor(ctx: ComponentContext, type: Type) {
+  constructor(ctx: Location, type: Type) {
     super(ctx);
     this.#type = type;
   }
@@ -49,7 +50,7 @@ export class FunctionType extends Type {
   readonly #returns: Type;
 
   constructor(
-    ctx: ComponentContext,
+    ctx: Location,
     parameters: ComponentGroup<FunctionParameter<Type>>,
     returns: Type
   ) {
@@ -63,11 +64,7 @@ export class UseType extends Type {
   readonly #name: string;
   readonly #constraints: ComponentGroup<Type>;
 
-  constructor(
-    ctx: ComponentContext,
-    name: string,
-    constraints: ComponentGroup<Type>
-  ) {
+  constructor(ctx: Location, name: string, constraints: ComponentGroup<Type>) {
     super(ctx);
     this.#name = name;
     this.#constraints = constraints;

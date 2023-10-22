@@ -1,40 +1,6 @@
+import { Location } from "@location";
 import { ParserError } from "./error";
-
-export class Token {
-  readonly #line_number: number;
-  readonly #column_number: number;
-  readonly #text: string;
-
-  constructor(line: number, column: number, text: string) {
-    this.#line_number = line;
-    this.#column_number = column;
-    this.#text = text;
-  }
-
-  get LineNumber() {
-    return this.#line_number;
-  }
-
-  get ColumnNumber() {
-    return this.#column_number;
-  }
-
-  get Text() {
-    return this.#text;
-  }
-
-  toString() {
-    return JSON.stringify(
-      {
-        line: this.#line_number,
-        column: this.#column_number,
-        text: this.#text,
-      },
-      undefined,
-      2
-    );
-  }
-}
+import { Token } from "./token";
 
 const is_word_character = /[a-zA-Z0-9_]/gm;
 const is_quote_mark = /['"`]/gm;
@@ -51,16 +17,25 @@ export function* SplitTokens(code: string): Generator<Token> {
       current += char;
 
       if (char === "\n" && current[0] !== "`")
-        throw new ParserError(line, column, "Error: Unexpected new line");
+        throw new ParserError(
+          new Location(start_line, start_column, line, column),
+          "Unexpected new line"
+        );
 
       if (char === current[0]) {
-        yield new Token(start_line, start_column, current.trim());
+        yield new Token(
+          new Location(start_line, start_column, line, column + 1),
+          current.trim()
+        );
         current = "";
       }
     } else {
       if (!char.match(is_word_character)) {
         if (current.trim())
-          yield new Token(start_line, start_column, current.trim());
+          yield new Token(
+            new Location(start_line, start_column, line, column),
+            current.trim()
+          );
         current = "";
       }
 
@@ -82,5 +57,9 @@ export function* SplitTokens(code: string): Generator<Token> {
     }
   }
 
-  if (current.trim()) yield new Token(start_line, start_column, current.trim());
+  if (current.trim())
+    yield new Token(
+      new Location(start_line, start_column, line, column),
+      current.trim()
+    );
 }
