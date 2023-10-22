@@ -11,12 +11,15 @@ export class Property<TType extends Component> extends Component {
     this.#type = type;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "property";
   }
 
-  get Type() {
-    return this.#type;
+  get extra_json() {
+    return {
+      name: this.#name,
+      type: this.#type.json,
+    };
   }
 }
 
@@ -30,11 +33,14 @@ export class FunctionParameter<TType extends Component> extends Component {
     this.#type = type;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "function_parameter";
   }
 
-  get Type() {
-    return this.#type;
+  get extra_json() {
+    return {
+      name: this.#name,
+      type: this.#type.json,
+    };
   }
 }

@@ -67,6 +67,6 @@ export function ExtractStatementBlock(
   tokens: TokenGroup
 ): ComponentGroup<Statement> {
   return new ComponentGroup(
-    ...BuildWhile(tokens, ";", "}", () => ExtractStatement(tokens))
+    ...BuildWhile(tokens, "{", ";", "}", () => ExtractStatement(tokens))
   );
 }

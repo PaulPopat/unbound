@@ -12,6 +12,15 @@ export abstract class Entity extends Component {
     super(ctx);
     this.#exported = exported;
   }
+
+  abstract get more_json(): Record<never, never>;
+
+  get extra_json() {
+    return {
+      ...this.more_json,
+      exported: this.#exported,
+    };
+  }
 }
 
 export class FunctionEntity extends Entity {
@@ -35,8 +44,17 @@ export class FunctionEntity extends Entity {
     this.#content = content;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "function_entity";
+  }
+
+  get more_json() {
+    return {
+      name: this.#name,
+      parameters: this.#parameters.json,
+      returns: this.#returns?.json ?? null,
+      content: this.#content.json,
+    };
   }
 }
 
@@ -55,8 +73,15 @@ export class StructEntity extends Entity {
     this.#properties = properties;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "struct_entity";
+  }
+
+  get more_json() {
+    return {
+      name: this.#name,
+      properties: this.#properties.json,
+    };
   }
 }
 
@@ -75,8 +100,15 @@ export class SchemaEntity extends Entity {
     this.#properties = properties;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "schema_entity";
+  }
+
+  get more_json() {
+    return {
+      name: this.#name,
+      properties: this.#properties.json,
+    };
   }
 }
 
@@ -88,12 +120,18 @@ export class UsingEntity extends Entity {
     this.#name = name;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "using_entity";
+  }
+
+  get more_json() {
+    return {
+      name: this.#name,
+    };
   }
 }
 
-export class ExternalFunctionEntity extends Component {
+export class ExternalFunctionDeclaration extends Component {
   readonly #name: string;
   readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
   readonly #returns: Type;
@@ -110,20 +148,28 @@ export class ExternalFunctionEntity extends Component {
     this.#returns = returns;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "external_function_declaration";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+      parameters: this.#parameters.json,
+      returns: this.#returns.json,
+    };
   }
 }
 
 export class LibEntity extends Entity {
   readonly #name: Expression;
-  readonly #content: ComponentGroup<ExternalFunctionEntity>;
+  readonly #content: ComponentGroup<ExternalFunctionDeclaration>;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: Expression,
-    content: ComponentGroup<ExternalFunctionEntity>
+    content: ComponentGroup<ExternalFunctionDeclaration>
   ) {
     super(ctx, exported);
     this.#name = name;
@@ -133,17 +179,38 @@ export class LibEntity extends Entity {
   get Name() {
     return this.#name;
   }
+
+  get type_name() {
+    return "lib_entity";
+  }
+
+  get more_json() {
+    return {
+      name: this.#name,
+      content: this.#content.json,
+    };
+  }
 }
 
 export class SystemEntity extends Entity {
-  readonly #content: ComponentGroup<ExternalFunctionEntity>;
+  readonly #content: ComponentGroup<ExternalFunctionDeclaration>;
 
   constructor(
     ctx: Location,
     exported: boolean,
-    content: ComponentGroup<ExternalFunctionEntity>
+    content: ComponentGroup<ExternalFunctionDeclaration>
   ) {
     super(ctx, exported);
     this.#content = content;
+  }
+
+  get type_name() {
+    return "system_entity";
+  }
+
+  get more_json() {
+    return {
+      content: this.#content.json,
+    };
   }
 }

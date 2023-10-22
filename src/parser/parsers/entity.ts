@@ -1,7 +1,7 @@
 import {
   ComponentGroup,
   Entity,
-  ExternalFunctionEntity,
+  ExternalFunctionDeclaration,
   FunctionEntity,
   LibEntity,
   SchemaEntity,
@@ -10,7 +10,13 @@ import {
   UsingEntity,
 } from "@ast";
 import { TokenGroup } from "../token";
-import { BuildWhile, ExpectNext, IfIs, NextBlock } from "../utils";
+import {
+  BuildWhile,
+  BuildWhileOnStart,
+  ExpectNext,
+  IfIs,
+  NextBlock,
+} from "../utils";
 import { ExtractFunctionParameter, ExtractProperty, ExtractType } from "./type";
 import { ParserError } from "../error";
 import { ExtractStatementBlock } from "./statement";
@@ -19,15 +25,14 @@ import { ExtractExpression } from "./expression";
 function ExtractExternalFunction(tokens: TokenGroup) {
   const start = ExpectNext(tokens, "fn");
   const name = NextBlock(tokens).Text;
-  ExpectNext(tokens, "(");
-  const parameters = BuildWhile(tokens, ",", ")", () =>
+  const parameters = BuildWhile(tokens, "(", ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
   ExpectNext(tokens, ":");
   const returns = ExtractType(tokens);
   ExpectNext(tokens, ";");
 
-  return new ExternalFunctionEntity(
+  return new ExternalFunctionDeclaration(
     start.Location,
     name,
     new ComponentGroup(...parameters),
@@ -37,13 +42,11 @@ function ExtractExternalFunction(tokens: TokenGroup) {
 
 function ExtractFunction(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
-  ExpectNext(tokens, "(");
-  const parameters = BuildWhile(tokens, ",", ")", () =>
+  const parameters = BuildWhile(tokens, "(", ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
   ExpectNext(tokens, ":");
   const returns = IfIs(tokens, ":", () => ExtractType(tokens));
-  ExpectNext(tokens, "{");
 
   return { name, parameters, returns, body: ExtractStatementBlock(tokens) };
 }
@@ -51,8 +54,7 @@ function ExtractFunction(tokens: TokenGroup) {
 function ExtractLib(tokens: TokenGroup) {
   const path = ExtractExpression(tokens);
 
-  ExpectNext(tokens, "{");
-  const declarations = BuildWhile(tokens, ";", "}", () =>
+  const declarations = BuildWhile(tokens, "{", ";", "}", () =>
     ExtractExternalFunction(tokens)
   );
 
@@ -60,8 +62,7 @@ function ExtractLib(tokens: TokenGroup) {
 }
 
 function ExtractSystem(tokens: TokenGroup) {
-  ExpectNext(tokens, "{");
-  const declarations = BuildWhile(tokens, ";", "}", () =>
+  const declarations = BuildWhile(tokens, "{", ";", "}", () =>
     ExtractExternalFunction(tokens)
   );
 
@@ -71,8 +72,7 @@ function ExtractSystem(tokens: TokenGroup) {
 function ExtractSchemaOrStruct(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
 
-  ExpectNext(tokens, "{");
-  const properties = BuildWhile(tokens, ";", "}", () =>
+  const properties = BuildWhile(tokens, "{", ";", "}", () =>
     ExtractProperty(tokens)
   );
 
@@ -80,7 +80,9 @@ function ExtractSchemaOrStruct(tokens: TokenGroup) {
 }
 
 function ExtractUsing(tokens: TokenGroup) {
-  return BuildWhile(tokens, ".", ";", () => NextBlock(tokens).Text).join(".");
+  return BuildWhileOnStart(tokens, ".", ";", () => NextBlock(tokens).Text).join(
+    "."
+  );
 }
 
 export function ExtractEntity(tokens: TokenGroup, exported?: boolean): Entity {

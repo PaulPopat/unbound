@@ -10,6 +10,18 @@ export abstract class Component {
   get Location() {
     return this.#location;
   }
+
+  abstract get type_name(): string;
+
+  abstract get extra_json(): Record<never, never>;
+
+  get json(): unknown {
+    return {
+      ...this.extra_json,
+      type: this.type_name,
+      location: this.#location.json,
+    };
+  }
 }
 
 export class ComponentGroup<TComponent extends Component> {
@@ -38,5 +50,9 @@ export class ComponentGroup<TComponent extends Component> {
       this.Last.Location.EndLine,
       this.Last.Location.EndColumn
     );
+  }
+
+  get json() {
+    return this.#components.map((c) => c.json);
   }
 }

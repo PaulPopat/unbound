@@ -16,7 +16,7 @@ import {
 } from "@ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
-import { BuildWhile, ExpectNext, NextBlock } from "../utils";
+import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";
 import { ExtractStatement, ExtractStatementBlock } from "./statement";
 import { ExtractFunctionParameter, ExtractType } from "./type";
 
@@ -30,12 +30,12 @@ function ExtractIf(tokens: TokenGroup) {
   ExpectNext(tokens, ")");
   const if_block =
     tokens.peek()?.Text === "{"
-      ? tokens.next() && ExtractStatementBlock(tokens)
+      ? ExtractStatementBlock(tokens)
       : new ComponentGroup(ExtractStatement(tokens));
   ExpectNext(tokens, "else");
   const else_block =
     tokens.peek()?.Text === "{"
-      ? tokens.next() && ExtractStatementBlock(tokens)
+      ? ExtractStatementBlock(tokens)
       : new ComponentGroup(ExtractStatement(tokens));
 
   return { check, if_block, else_block };
@@ -50,7 +50,7 @@ function ExtractCountOrIterate(tokens: TokenGroup) {
 
   const block =
     tokens.peek()?.Text === "{"
-      ? tokens.next() && ExtractStatementBlock(tokens)
+      ? ExtractStatementBlock(tokens)
       : new ComponentGroup(ExtractStatement(tokens));
 
   return { to, as, block };
@@ -59,15 +59,13 @@ function ExtractCountOrIterate(tokens: TokenGroup) {
 function ExtractMake(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
 
-  ExpectNext(tokens, "{");
   const block = ExtractStatementBlock(tokens);
 
   return { name, block };
 }
 
 function ExtractLambda(tokens: TokenGroup, look_for: Array<string>) {
-  ExpectNext(tokens, "(");
-  const parameters = BuildWhile(tokens, ",", ")", () =>
+  const parameters = BuildWhile(tokens, "(", ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
 
@@ -137,7 +135,7 @@ export function ExtractExpression(
           "Attempting an invokation without a referenced function"
         );
 
-      const parameters = BuildWhile(tokens, ",", ")", () =>
+      const parameters = BuildWhileOnStart(tokens, ",", ")", () =>
         ExtractExpression(tokens, [",", ")"])
       );
 

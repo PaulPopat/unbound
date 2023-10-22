@@ -41,7 +41,7 @@ export class TokenGroup {
   }
 
   peek(): Token | undefined {
-    if (!this.#current.done) return undefined;
+    if (this.#current.done) return undefined;
     return this.#current.value;
   }
 }

@@ -9,8 +9,8 @@ import {
   Type,
   UseType,
 } from "@ast";
-import { Token } from "../token";
-import { BuildWhile, ExpectNext, NextBlock } from "../utils";
+import { TokenGroup } from "../token";
+import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";
 
 export function ExtractFunctionParameter(
   tokens: TokenGroup
@@ -31,7 +31,7 @@ export function ExtractProperty(tokens: TokenGroup): Property<Type> {
 }
 
 function ExtractFunction(tokens: TokenGroup) {
-  const parameters = BuildWhile(tokens, ",", ")", () =>
+  const parameters = BuildWhileOnStart(tokens, ",", ")", () =>
     ExtractFunctionParameter(tokens)
   );
 
@@ -46,8 +46,7 @@ function ExtractFunction(tokens: TokenGroup) {
 
 function ExtractSchema(tokens: TokenGroup) {
   const name = NextBlock(tokens).Text;
-  ExpectNext(tokens, "{");
-  const properties = BuildWhile(tokens, ";", "}", () =>
+  const properties = BuildWhile(tokens, "{", ";", "}", () =>
     ExtractProperty(tokens)
   );
 
@@ -62,7 +61,9 @@ function ExtractIterable(tokens: TokenGroup) {
 }
 
 function ExtractUse(tokens: TokenGroup) {
-  const constraints = BuildWhile(tokens, "|", "=", () => ExtractType(tokens));
+  const constraints = BuildWhileOnStart(tokens, "|", "=", () =>
+    ExtractType(tokens)
+  );
 
   return {
     name: NextBlock(tokens).Text,

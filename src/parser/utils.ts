@@ -21,7 +21,7 @@ export function BuildWhilePeek<T>(
   to_next: (value: string) => boolean,
   handler: () => T
 ) {
-  const result = [handler()];
+  const result = [];
   while (to_next(tokens.peek()?.Text ?? "")) {
     result.push(handler());
   }
@@ -30,6 +30,26 @@ export function BuildWhilePeek<T>(
 }
 
 export function BuildWhile<T>(
+  tokens: TokenGroup,
+  expect_start: string | undefined,
+  to_next: string,
+  end: string,
+  handler: () => T
+) {
+  const result = [];
+  let next = expect_start
+    ? ExpectNext(tokens, expect_start)
+    : NextBlock(tokens);
+  while (next.Text === to_next || next.Text === expect_start) {
+    result.push(handler());
+    next = NextBlock(tokens);
+  }
+
+  if (next.Text !== end) throw ParserError.UnexpectedSymbol(next, end, to_next);
+  return result;
+}
+
+export function BuildWhileOnStart<T>(
   tokens: TokenGroup,
   to_next: string,
   end: string,

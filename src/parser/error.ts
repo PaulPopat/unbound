@@ -6,7 +6,9 @@ export class ParserError extends Error {
   readonly #message: string;
 
   constructor(location: Location | undefined, message: string) {
-    super(message);
+    super(
+      `Parsing Error:\n${message}\nLine: ${location?.StartLine}\nColumn: ${location?.StartColumn}`
+    );
 
     this.#location = location ?? new Location(-1, -1, -1, -1);
     this.#message = message;

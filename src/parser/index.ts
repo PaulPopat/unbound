@@ -6,14 +6,20 @@ import { BuildWhile, BuildWhilePeek, ExpectNext, NextBlock } from "./utils";
 import { ExtractEntity } from "./parsers/entity";
 
 function ExtractNamespace(tokens: TokenGroup, exported = false): Namespace {
-  const start = NextBlock(tokens);
-  if (start.Text === "export") return ExtractNamespace(tokens, true);
-  if (start.Text !== "namespace")
-    throw ParserError.UnexpectedSymbol(start, "export", "namespace");
+  const start = tokens.peek();
+  if (!start) throw new ParserError(undefined, "No namespace implementation");
+  if (start.Text === "export") {
+    NextBlock(tokens);
+    return ExtractNamespace(tokens, true);
+  }
 
-  const name = BuildWhile(tokens, ".", " {", () => NextBlock(tokens).Text).join(
-    "."
-  );
+  const name = BuildWhile(
+    tokens,
+    "namespace",
+    ".",
+    "{",
+    () => NextBlock(tokens).Text
+  ).join(".");
 
   const entities = BuildWhilePeek(
     tokens,
@@ -36,11 +42,7 @@ export function ParseUnbound(input: string): ComponentGroup<Namespace> {
   const group = new TokenGroup(tokens);
 
   const result: Array<Namespace> = [];
-  let next = group.next();
-  while (!next.done) {
-    if (next.value.Text !== "namespace")
-      throw ParserError.UnexpectedSymbol(next.value, "namespace");
-
+  while (group.peek()) {
     result.push(ExtractNamespace(group));
   }
 

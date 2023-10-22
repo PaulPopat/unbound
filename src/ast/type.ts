@@ -18,8 +18,15 @@ export class SchemaType extends Type {
     this.#properties = properties;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "schema_type";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+      properties: this.#properties.json,
+    };
   }
 }
 
@@ -31,8 +38,14 @@ export class ReferenceType extends Type {
     this.#name = name;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "reference_type";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+    };
   }
 }
 
@@ -42,6 +55,16 @@ export class IterableType extends Type {
   constructor(ctx: Location, type: Type) {
     super(ctx);
     this.#type = type;
+  }
+
+  get type_name() {
+    return "iterable_type";
+  }
+
+  get extra_json() {
+    return {
+      type: this.#type.json,
+    };
   }
 }
 
@@ -58,6 +81,17 @@ export class FunctionType extends Type {
     this.#parameters = parameters;
     this.#returns = returns;
   }
+
+  get type_name() {
+    return "function_type";
+  }
+
+  get extra_json() {
+    return {
+      parameters: this.#parameters.json,
+      returns: this.#returns.json,
+    };
+  }
 }
 
 export class UseType extends Type {
@@ -70,7 +104,14 @@ export class UseType extends Type {
     this.#constraints = constraints;
   }
 
-  get Name() {
-    return this.#name;
+  get type_name() {
+    return "function_type";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+      constraints: this.#constraints.json,
+    };
   }
 }

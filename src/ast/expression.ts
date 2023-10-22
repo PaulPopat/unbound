@@ -3,7 +3,7 @@ import { FunctionParameter } from "./property";
 import { Type } from "./type";
 import { Location } from "@location";
 
-export class Expression extends Component {}
+export abstract class Expression extends Component {}
 
 export type LiteralType = "string" | "raw_int";
 
@@ -15,6 +15,17 @@ export class LiteralExpression extends Expression {
     super(ctx);
     this.#type = type;
     this.#value = value;
+  }
+
+  get type_name() {
+    return "literal_expression";
+  }
+
+  get extra_json() {
+    return {
+      type: this.#type,
+      value: this.#value,
+    };
   }
 }
 
@@ -37,6 +48,18 @@ export class OperatorExpression extends Expression {
     this.#operator = operator;
     this.#right = right;
   }
+
+  get type_name() {
+    return "operator_expression";
+  }
+
+  get extra_json() {
+    return {
+      left: this.#left.json,
+      operator: this.#operator,
+      right: this.#right.json,
+    };
+  }
 }
 
 export class IfExpression<TStatement extends Component> extends Expression {
@@ -55,6 +78,18 @@ export class IfExpression<TStatement extends Component> extends Expression {
     this.#if = on_if;
     this.#else = on_else;
   }
+
+  get type_name() {
+    return "if_expression";
+  }
+
+  get extra_json() {
+    return {
+      check: this.#check.json,
+      if: this.#if.json,
+      else: this.#else.json,
+    };
+  }
 }
 
 export class CountExpression<TStatement extends Component> extends Expression {
@@ -72,6 +107,18 @@ export class CountExpression<TStatement extends Component> extends Expression {
     this.#to = to;
     this.#as = as;
     this.#using = using;
+  }
+
+  get type_name() {
+    return "count_expression";
+  }
+
+  get extra_json() {
+    return {
+      to: this.#to.json,
+      as: this.#as,
+      using: this.#using.json,
+    };
   }
 }
 
@@ -93,6 +140,18 @@ export class IterateExpression<
     this.#as = as;
     this.#using = using;
   }
+
+  get type_name() {
+    return "iterate_expression";
+  }
+
+  get extra_json() {
+    return {
+      over: this.#over.json,
+      as: this.#as,
+      using: this.#using.json,
+    };
+  }
 }
 
 export class MakeExpression<TStatement extends Component> extends Expression {
@@ -108,6 +167,17 @@ export class MakeExpression<TStatement extends Component> extends Expression {
     this.#struct = struct;
     this.#using = using;
   }
+
+  get type_name() {
+    return "make_expression";
+  }
+
+  get extra_json() {
+    return {
+      struct: this.#struct,
+      using: this.#using.json,
+    };
+  }
 }
 
 export class IsExpression extends Expression {
@@ -119,6 +189,17 @@ export class IsExpression extends Expression {
     this.#left = left;
     this.#right = right;
   }
+
+  get type_name() {
+    return "is_expression";
+  }
+
+  get extra_json() {
+    return {
+      left: this.#left.json,
+      right: this.#right.json,
+    };
+  }
 }
 
 export class ReferenceExpression extends Expression {
@@ -128,6 +209,16 @@ export class ReferenceExpression extends Expression {
     super(ctx);
     this.#name = name;
   }
+
+  get type_name() {
+    return "reference_expression";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+    };
+  }
 }
 
 export class BracketsExpression extends Expression {
@@ -136,6 +227,16 @@ export class BracketsExpression extends Expression {
   constructor(ctx: Location, expression: Expression) {
     super(ctx);
     this.#expression = expression;
+  }
+
+  get type_name() {
+    return "brackets_expression";
+  }
+
+  get extra_json() {
+    return {
+      expression: this.#expression.json,
+    };
   }
 }
 
@@ -152,19 +253,41 @@ export class LambdaExpression extends Expression {
     this.#parameters = parameters;
     this.#expression = expression;
   }
+
+  get type_name() {
+    return "lambda_expression";
+  }
+
+  get extra_json() {
+    return {
+      parameters: this.#parameters.json,
+      expression: this.#expression.json,
+    };
+  }
 }
 
 export class InvokationExpression extends Expression {
-  readonly #expression: Expression;
+  readonly #subject: Expression;
   readonly #parameters: ComponentGroup<Expression>;
 
   constructor(
     ctx: Location,
-    expression: Expression,
+    subject: Expression,
     parameters: ComponentGroup<Expression>
   ) {
     super(ctx);
-    this.#expression = expression;
+    this.#subject = subject;
     this.#parameters = parameters;
+  }
+
+  get type_name() {
+    return "invokation_expression";
+  }
+
+  get extra_json() {
+    return {
+      subject: this.#subject.json,
+      parameters: this.#parameters.json,
+    };
   }
 }
