@@ -16,6 +16,17 @@ describe("SplitTokens", () => {
     );
   });
 
+  it("combines operators", () => {
+    expect([...SplitTokens("this -> a test")].map((t) => t.json)).toStrictEqual(
+      [
+        new Token(new Location(0, 0, 0, 4), "this"),
+        new Token(new Location(0, 5, 0, 7), "->"),
+        new Token(new Location(0, 8, 0, 9), "a"),
+        new Token(new Location(0, 10, 0, 14), "test"),
+      ].map((t) => t.json)
+    );
+  });
+
   it("preserves single quote strings", () => {
     expect(
       [...SplitTokens("this 'is a' test")].map((t) => t.json)

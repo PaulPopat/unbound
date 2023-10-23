@@ -2,7 +2,7 @@ import { Location } from "@location";
 import { ParserError } from "./error";
 import { Token } from "./token";
 
-const is_word_character = /^[a-zA-Z0-9_]+$/gm;
+const is_word_character = /^(?:[a-zA-Z0-9_]+|[=\-\/\\+?*<>]+)$/gm;
 const is_quote_mark = /^['"`]$/gm;
 
 export function* SplitTokens(code: string): Generator<Token> {

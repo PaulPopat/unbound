@@ -35,8 +35,7 @@ function ExtractFunction(tokens: TokenGroup) {
     ExtractFunctionParameter(tokens)
   );
 
-  ExpectNext(tokens, "-");
-  ExpectNext(tokens, ">");
+  ExpectNext(tokens, "->");
 
   return {
     parameters,

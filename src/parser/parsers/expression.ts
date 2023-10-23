@@ -69,8 +69,7 @@ function ExtractLambda(tokens: TokenGroup, look_for: Array<string>) {
     ExtractFunctionParameter(tokens)
   );
 
-  ExpectNext(tokens, "-");
-  ExpectNext(tokens, ">");
+  ExpectNext(tokens, "->");
 
   return { parameters, expression: ExtractExpression(tokens, look_for) };
 }
