@@ -5,7 +5,7 @@ import { Location } from "@location";
 
 export abstract class Expression extends Component {}
 
-export type LiteralType = "string" | "raw_int";
+export type LiteralType = "string" | "int" | "char" | "float" | "double";
 
 export class LiteralExpression extends Expression {
   readonly #type: LiteralType;
@@ -288,6 +288,28 @@ export class InvokationExpression extends Expression {
     return {
       subject: this.#subject.json,
       parameters: this.#parameters.json,
+    };
+  }
+}
+
+export class AccessExpression extends Expression {
+  readonly #subject: Expression;
+  readonly #target: string;
+
+  constructor(ctx: Location, subject: Expression, target: string) {
+    super(ctx);
+    this.#subject = subject;
+    this.#target = target;
+  }
+
+  get type_name() {
+    return "invokation_expression";
+  }
+
+  get extra_json() {
+    return {
+      subject: this.#subject.json,
+      target: this.#target,
     };
   }
 }

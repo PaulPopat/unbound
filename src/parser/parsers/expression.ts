@@ -1,4 +1,5 @@
 import {
+  AccessExpression,
   BracketsExpression,
   ComponentGroup,
   CountExpression,
@@ -8,6 +9,7 @@ import {
   IsExpression,
   IterateExpression,
   LambdaExpression,
+  LiteralExpression,
   MakeExpression,
   Operator,
   OperatorExpression,
@@ -142,6 +144,57 @@ export function ExtractExpression(
         current.Location,
         result,
         new ComponentGroup(...parameters)
+      );
+    } else if (text === ".") {
+      if (!result)
+        throw new ParserError(
+          current.Location,
+          "Attempting an access without a left hand side"
+        );
+      result = new AccessExpression(current.Location, result, text);
+    } else if (text.match(/^[0-9]+i$/gm)) {
+      return new LiteralExpression(current.Location, "int", text);
+    } else if (text.match(/^[0-9]+$/gm)) {
+      ExpectNext(tokens, ".");
+      const next = NextBlock(tokens);
+      if (next.Text.match(/^[0-9]+f$/gm)) {
+        result = new LiteralExpression(
+          current.Location,
+          "float",
+          text + "." + next.Text
+        );
+      } else if (next.Text.match(/^[0-9]+d$/gm)) {
+        result = new LiteralExpression(
+          current.Location,
+          "double",
+          text + "." + next.Text
+        );
+      } else {
+        throw new ParserError(
+          current.Location,
+          "Floating values must be a float or a double"
+        );
+      }
+    } else if (text.startsWith('"')) {
+      if (!text.endsWith('"'))
+        throw new ParserError(current.Location, "Expected end of string");
+      result = new LiteralExpression(
+        current.Location,
+        "string",
+        text.substring(1, text.length - 1)
+      );
+    } else if (text.startsWith("'")) {
+      if (!text.endsWith("'"))
+        throw new ParserError(current.Location, "Expected end of string");
+      if (text.length !== 3)
+        throw new ParserError(
+          current.Location,
+          "Chars may have an exact length of 1"
+        );
+      result = new LiteralExpression(
+        current.Location,
+        "char",
+        text.substring(1, text.length - 1)
       );
     } else {
       result = new ReferenceExpression(current.Location, current.Text);
