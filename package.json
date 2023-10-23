@@ -26,10 +26,9 @@
   "jest": {
     "preset": "ts-jest",
     "moduleNameMapper": {
-      "^@compiler/ast$": "<rootDir>/src/ast",
-      "^@compiler/parser$": "<rootDir>/src/parser",
-      "^@test$": "<rootDir>/src/testing",
-      "^@compiler/location$": "<rootDir>/src/location"
+      "^@compiler/ast$": "<rootDir>/compiler/ast",
+      "^@compiler/parser$": "<rootDir>/compiler/parser",
+      "^@compiler/location$": "<rootDir>/compiler/location"
     }
   }
 }

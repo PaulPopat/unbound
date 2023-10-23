@@ -1,0 +1,6 @@
+namespace Test {
+  struct Test {
+    test: char;
+    other: bool;
+  }
+}
