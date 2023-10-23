@@ -2,7 +2,7 @@ import { Component, ComponentGroup } from "./base";
 import { FunctionParameter, Property } from "./property";
 import { Type } from "./type";
 import { Statement } from "./statement";
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 import { Expression } from "./expression";
 
 export abstract class Entity extends Component {

@@ -1,4 +1,4 @@
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 
 export abstract class Component {
   readonly #location: Location;

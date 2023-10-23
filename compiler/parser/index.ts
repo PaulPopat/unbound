@@ -1,4 +1,4 @@
-import { ComponentGroup, Entity, Namespace } from "@ast";
+import { ComponentGroup, Entity, Namespace } from "@compiler/ast";
 import { SplitTokens } from "./tokeniser";
 import { TokenGroup } from "./token";
 import { ParserError } from "./error";

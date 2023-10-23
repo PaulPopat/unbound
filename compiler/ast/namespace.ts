@@ -1,4 +1,4 @@
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 import { Component, ComponentGroup } from "./base";
 import { Entity } from "./entity";
 

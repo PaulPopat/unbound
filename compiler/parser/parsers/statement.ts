@@ -5,7 +5,7 @@ import {
   ReturnStatement,
   Statement,
   StoreStatement,
-} from "@ast";
+} from "@compiler/ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
 import { BuildWhile, ExpectNext, NextBlock } from "../utils";

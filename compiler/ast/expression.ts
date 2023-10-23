@@ -1,7 +1,7 @@
 import { Component, ComponentGroup } from "./base";
 import { FunctionParameter } from "./property";
 import { Type } from "./type";
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 
 export abstract class Expression extends Component {}
 

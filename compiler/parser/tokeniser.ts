@@ -1,4 +1,4 @@
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 import { ParserError } from "./error";
 import { Token } from "./token";
 

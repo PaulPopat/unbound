@@ -15,7 +15,7 @@ import {
   OperatorExpression,
   Operators,
   ReferenceExpression,
-} from "@ast";
+} from "@compiler/ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
 import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";

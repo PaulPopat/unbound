@@ -1,7 +1,7 @@
 import { SplitTokens } from "./tokeniser";
 import { ParserError } from "./error";
 import { Token } from "./token";
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 
 describe("SplitTokens", () => {
   it("splits into basic tokens", () => {

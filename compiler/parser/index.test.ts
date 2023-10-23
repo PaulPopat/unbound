@@ -8,10 +8,10 @@ import {
   SchemaEntity,
   StructEntity,
   UsingEntity,
-} from "@ast";
+} from "@compiler/ast";
 import { ParseUnbound } from ".";
 import { ParserError } from "./error";
-import { Location } from "@location";
+import { Location } from "@compiler/location";
 
 const blocks: Record<
   string,

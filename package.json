@@ -26,10 +26,10 @@
   "jest": {
     "preset": "ts-jest",
     "moduleNameMapper": {
-      "^@ast$": "<rootDir>/src/ast",
-      "^@parser$": "<rootDir>/src/parser",
+      "^@compiler/ast$": "<rootDir>/src/ast",
+      "^@compiler/parser$": "<rootDir>/src/parser",
       "^@test$": "<rootDir>/src/testing",
-      "^@location$": "<rootDir>/src/location"
+      "^@compiler/location$": "<rootDir>/src/location"
     }
   }
 }
