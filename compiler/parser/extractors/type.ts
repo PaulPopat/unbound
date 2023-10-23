@@ -16,6 +16,8 @@ export function ExtractFunctionParameter(
   tokens: TokenGroup
 ): FunctionParameter<Type> {
   const name = NextBlock(tokens);
+  if (tokens.peek()?.Text !== ":")
+    return new FunctionParameter(name.Location, name.Text, undefined);
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 

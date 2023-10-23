@@ -3,7 +3,7 @@ import { SplitTokens } from "./tokeniser";
 import { TokenGroup } from "./token";
 import { ParserError } from "./error";
 import { BuildWhile, BuildWhilePeek, ExpectNext, NextBlock } from "./utils";
-import { ExtractEntity } from "./parsers/entity";
+import { ExtractEntity } from "./extractors/entity";
 
 function ExtractNamespace(tokens: TokenGroup, exported = false): Namespace {
   const start = tokens.peek();

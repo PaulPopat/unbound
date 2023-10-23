@@ -25,9 +25,9 @@ export class Property<TType extends Component> extends Component {
 
 export class FunctionParameter<TType extends Component> extends Component {
   readonly #name: string;
-  readonly #type: TType;
+  readonly #type?: TType;
 
-  constructor(ctx: Location, name: string, type: TType) {
+  constructor(ctx: Location, name: string, type: TType | undefined) {
     super(ctx);
     this.#name = name;
     this.#type = type;
@@ -40,7 +40,7 @@ export class FunctionParameter<TType extends Component> extends Component {
   get extra_json() {
     return {
       name: this.#name,
-      type: this.#type.json,
+      type: this.#type?.json ?? null,
     };
   }
 }

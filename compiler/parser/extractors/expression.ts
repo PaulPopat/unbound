@@ -19,7 +19,7 @@ import {
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
 import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";
-import { ExtractStatement, ExtractStatementBlock } from "./statement";
+import { ExtractStatementBlock } from "./statement";
 import { ExtractFunctionParameter, ExtractType } from "./type";
 
 function IsOperator(item: string | undefined): item is Operator {
@@ -30,30 +30,21 @@ function ExtractIf(tokens: TokenGroup) {
   ExpectNext(tokens, "(");
   const check = ExtractExpression(tokens, [")"]);
   ExpectNext(tokens, ")");
-  const if_block =
-    tokens.peek()?.Text === "{"
-      ? ExtractStatementBlock(tokens)
-      : new ComponentGroup(ExtractStatement(tokens));
+  const if_block = ExtractStatementBlock(tokens);
   ExpectNext(tokens, "else");
-  const else_block =
-    tokens.peek()?.Text === "{"
-      ? ExtractStatementBlock(tokens)
-      : new ComponentGroup(ExtractStatement(tokens));
+  const else_block = ExtractStatementBlock(tokens);
 
   return { check, if_block, else_block };
 }
 
 function ExtractCountOrIterate(tokens: TokenGroup) {
   ExpectNext(tokens, "(");
-  const to = ExtractExpression(tokens, [")"]);
+  const to = ExtractExpression(tokens, ["as"]);
   ExpectNext(tokens, "as");
   const as = NextBlock(tokens).Text;
   ExpectNext(tokens, ")");
 
-  const block =
-    tokens.peek()?.Text === "{"
-      ? ExtractStatementBlock(tokens)
-      : new ComponentGroup(ExtractStatement(tokens));
+  const block = ExtractStatementBlock(tokens);
 
   return { to, as, block };
 }
@@ -81,7 +72,7 @@ export function ExtractExpression(
   look_for = [";"]
 ): Expression {
   let result: Expression | undefined;
-  while (look_for.includes(tokens.peek()?.Text ?? "")) {
+  while (!look_for.includes(tokens.peek()?.Text ?? "")) {
     const current = NextBlock(tokens);
     const text = current.Text;
 
@@ -136,9 +127,12 @@ export function ExtractExpression(
           "Attempting an invokation without a referenced function"
         );
 
-      const parameters = BuildWhileOnStart(tokens, ",", ")", () =>
-        ExtractExpression(tokens, [",", ")"])
-      );
+      const parameters =
+        tokens.peek()?.Text !== ")"
+          ? BuildWhileOnStart(tokens, ",", ")", () =>
+              ExtractExpression(tokens, [",", ")"])
+            )
+          : tokens.next() && [];
 
       result = new InvokationExpression(
         current.Location,
@@ -153,7 +147,7 @@ export function ExtractExpression(
         );
       result = new AccessExpression(current.Location, result, text);
     } else if (text.match(/^[0-9]+i$/gm)) {
-      return new LiteralExpression(current.Location, "int", text);
+      result = new LiteralExpression(current.Location, "int", text);
     } else if (text.match(/^[0-9]+$/gm)) {
       ExpectNext(tokens, ".");
       const next = NextBlock(tokens);

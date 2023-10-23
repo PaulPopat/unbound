@@ -43,3 +43,7 @@ fn test(): [int] {
   return result;
 }
 ```
+
+## Skip
+
+When wanting to ignore an item in an iterator loop and move on to the next, returning the `skip` keyword will tell the engine to run the loop again with the next value before continueing the execution.
