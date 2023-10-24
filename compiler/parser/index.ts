@@ -37,8 +37,11 @@ function ExtractNamespace(tokens: TokenGroup, exported = false): Namespace {
   );
 }
 
-export function ParseUnbound(input: string): ComponentGroup<Namespace> {
-  const tokens = SplitTokens(input);
+export function ParseUnbound(
+  input: string,
+  file_name: string
+): ComponentGroup<Namespace> {
+  const tokens = SplitTokens(input, file_name);
   const group = new TokenGroup(tokens);
 
   const result: Array<Namespace> = [];

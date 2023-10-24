@@ -9,6 +9,7 @@
         "exported": true,
         "type": "schema_entity",
         "location": {
+          "file_name": "empty exported schema.ub",
           "start": {
             "line": 1,
             "column": 9
@@ -22,6 +23,7 @@
     ],
     "type": "namespace",
     "location": {
+      "file_name": "empty exported schema.ub",
       "start": {
         "line": 0,
         "column": 0

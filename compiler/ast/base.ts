@@ -45,6 +45,7 @@ export class ComponentGroup<TComponent extends Component> {
 
   get Location() {
     return new Location(
+      this.First.Location.FileName,
       this.First.Location.StartLine,
       this.First.Location.StartColumn,
       this.Last.Location.EndLine,
@@ -54,5 +55,21 @@ export class ComponentGroup<TComponent extends Component> {
 
   get json() {
     return this.#components.map((c) => c.json);
+  }
+
+  iterator() {
+    return this.#components[Symbol.iterator]();
+  }
+}
+
+export class Ast<TType extends Component> {
+  readonly #data: Array<ComponentGroup<TType>>;
+
+  constructor(data: Array<ComponentGroup<TType>>) {
+    this.#data = data;
+  }
+
+  *iterator() {
+    for (const item of this.#data) yield* item.iterator();
   }
 }

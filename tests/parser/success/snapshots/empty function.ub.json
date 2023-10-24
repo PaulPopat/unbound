@@ -10,6 +10,7 @@
           "name": "int",
           "type": "reference_type",
           "location": {
+            "file_name": "empty function.ub",
             "start": {
               "line": 1,
               "column": 13
@@ -24,6 +25,7 @@
         "exported": false,
         "type": "function_entity",
         "location": {
+          "file_name": "empty function.ub",
           "start": {
             "line": 1,
             "column": 2
@@ -37,6 +39,7 @@
     ],
     "type": "namespace",
     "location": {
+      "file_name": "empty function.ub",
       "start": {
         "line": 0,
         "column": 0

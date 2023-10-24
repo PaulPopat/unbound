@@ -8,6 +8,7 @@
         "exported": false,
         "type": "using_entity",
         "location": {
+          "file_name": "using entity.ub",
           "start": {
             "line": 1,
             "column": 2
@@ -21,6 +22,7 @@
     ],
     "type": "namespace",
     "location": {
+      "file_name": "using entity.ub",
       "start": {
         "line": 0,
         "column": 0

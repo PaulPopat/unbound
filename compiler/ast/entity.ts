@@ -13,6 +13,10 @@ export abstract class Entity extends Component {
     this.#exported = exported;
   }
 
+  get Exported() {
+    return this.#exported;
+  }
+
   abstract get more_json(): Record<never, never>;
 
   get extra_json() {
@@ -42,6 +46,10 @@ export class FunctionEntity extends Entity {
     this.#parameters = parameters;
     this.#returns = returns;
     this.#content = content;
+  }
+
+  get Name() {
+    return this.#name;
   }
 
   get type_name() {

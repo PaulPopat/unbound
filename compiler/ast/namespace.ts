@@ -19,6 +19,18 @@ export class Namespace extends Component {
     this.#contents = contents;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
+  get Exported() {
+    return this.#exported;
+  }
+
+  get Contents() {
+    return this.#contents;
+  }
+
   get type_name() {
     return "namespace";
   }

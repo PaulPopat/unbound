@@ -9,6 +9,7 @@
         "exported": false,
         "type": "struct_entity",
         "location": {
+          "file_name": "empty struct.ub",
           "start": {
             "line": 1,
             "column": 2
@@ -22,6 +23,7 @@
     ],
     "type": "namespace",
     "location": {
+      "file_name": "empty struct.ub",
       "start": {
         "line": 0,
         "column": 0

@@ -40,13 +40,13 @@ describe("parser", () => {
   const success = Path.resolve(base, "success");
   const error = Path.resolve(base, "errors");
   for (const file of Fs.readdirSync(success)) {
-    snapshot_test(file, success, (d) => ParseUnbound(d).json);
+    snapshot_test(file, success, (d) => ParseUnbound(d, file).json);
   }
 
   for (const file of Fs.readdirSync(error)) {
     snapshot_test(file, error, (d) => {
       try {
-        ParseUnbound(d);
+        ParseUnbound(d, file);
       } catch (err: any) {
         return err.toString();
       }

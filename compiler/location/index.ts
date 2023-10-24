@@ -1,19 +1,26 @@
 export class Location {
+  readonly #file_name: string;
   readonly #start_line: number;
   readonly #start_column: number;
   readonly #end_line: number;
   readonly #end_column: number;
 
   constructor(
+    file_name: string,
     start_line: number,
     start_column: number,
     end_line: number,
     end_column: number
   ) {
+    this.#file_name = file_name;
     this.#start_line = start_line;
     this.#start_column = start_column;
     this.#end_line = end_line;
     this.#end_column = end_column;
+  }
+
+  get FileName() {
+    return this.#file_name;
   }
 
   get StartLine() {
@@ -34,6 +41,7 @@ export class Location {
 
   get json() {
     return {
+      file_name: this.#file_name,
       start: { line: this.StartLine, column: this.StartColumn },
       last: { line: this.EndLine, column: this.EndColumn },
     };
