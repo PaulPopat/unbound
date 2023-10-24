@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "parameters": [],
+        "returns": {
+          "name": "int",
+          "type": "reference_type",
+          "location": {
+            "start": {
+              "line": 1,
+              "column": 21
+            },
+            "last": {
+              "line": 1,
+              "column": 24
+            }
+          }
+        },
+        "content": [],
+        "exported": true,
+        "type": "function_entity",
+        "location": {
+          "start": {
+            "line": 1,
+            "column": 9
+          },
+          "last": {
+            "line": 1,
+            "column": 11
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

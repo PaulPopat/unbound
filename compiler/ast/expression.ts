@@ -303,7 +303,7 @@ export class AccessExpression extends Expression {
   }
 
   get type_name() {
-    return "invokation_expression";
+    return "access_expression";
   }
 
   get extra_json() {

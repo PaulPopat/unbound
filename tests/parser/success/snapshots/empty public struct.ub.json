@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "properties": [],
+        "exported": true,
+        "type": "struct_entity",
+        "location": {
+          "start": {
+            "line": 1,
+            "column": 9
+          },
+          "last": {
+            "line": 1,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

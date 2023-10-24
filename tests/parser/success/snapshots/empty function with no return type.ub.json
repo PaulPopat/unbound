@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "parameters": [],
+        "returns": null,
+        "content": [],
+        "exported": false,
+        "type": "function_entity",
+        "location": {
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 4
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

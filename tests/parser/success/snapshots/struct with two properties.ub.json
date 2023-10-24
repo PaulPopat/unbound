@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "properties": [
+          {
+            "name": "test",
+            "type": "property",
+            "location": {
+              "start": {
+                "line": 2,
+                "column": 4
+              },
+              "last": {
+                "line": 2,
+                "column": 8
+              }
+            }
+          },
+          {
+            "name": "other",
+            "type": "property",
+            "location": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "last": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          }
+        ],
+        "exported": false,
+        "type": "struct_entity",
+        "location": {
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 8
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

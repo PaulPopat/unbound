@@ -145,7 +145,8 @@ export function ExtractExpression(
           current.Location,
           "Attempting an access without a left hand side"
         );
-      result = new AccessExpression(current.Location, result, text);
+      const accessed = NextBlock(tokens);
+      result = new AccessExpression(current.Location, result, accessed.Text);
     } else if (text.match(/^[0-9]+i$/gm)) {
       result = new LiteralExpression(current.Location, "int", text);
     } else if (text.match(/^[0-9]+$/gm)) {
