@@ -23,7 +23,7 @@ export class LiteralExpression extends Expression {
 
   get extra_json() {
     return {
-      type: this.#type,
+      type_name: this.#type,
       value: this.#value,
     };
   }

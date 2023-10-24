@@ -524,8 +524,9 @@
                         }
                       ],
                       "expression": {
-                        "type": "literal_expression",
+                        "type_name": "string",
                         "value": "valid user",
+                        "type": "literal_expression",
                         "location": {
                           "start": {
                             "line": 26,
@@ -599,8 +600,9 @@
                       {
                         "name": "username",
                         "equals": {
-                          "type": "literal_expression",
+                          "type_name": "string",
                           "value": "Do I really need to say this?",
+                          "type": "literal_expression",
                           "location": {
                             "start": {
                               "line": 28,
