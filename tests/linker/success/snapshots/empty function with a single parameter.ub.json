@@ -1,0 +1,69 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "parameters": [
+          {
+            "name": "test",
+            "type": "function_parameter",
+            "location": {
+              "file_name": "empty function with a single parameter.ub",
+              "start": {
+                "line": 1,
+                "column": 11
+              },
+              "last": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "returns": {
+          "name": "int",
+          "type": "primitive_type",
+          "location": {
+            "file_name": "empty function with a single parameter.ub",
+            "start": {
+              "line": 1,
+              "column": 24
+            },
+            "last": {
+              "line": 1,
+              "column": 27
+            }
+          }
+        },
+        "content": [],
+        "exported": false,
+        "type": "function_entity",
+        "location": {
+          "file_name": "empty function with a single parameter.ub",
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 4
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "empty function with a single parameter.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

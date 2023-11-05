@@ -6,7 +6,7 @@ export class LinkerError extends Error {
 
   constructor(location: Location | undefined, message: string) {
     super(
-      `Parsing Error:\n${message}\nLine: ${location?.StartLine}\nColumn: ${location?.StartColumn}`
+      `Linking Error:\n${message}\nLine: ${location?.StartLine}\nColumn: ${location?.StartColumn}`
     );
 
     this.#location = location ?? new Location("", -1, -1, -1, -1);

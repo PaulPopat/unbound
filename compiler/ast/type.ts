@@ -98,6 +98,7 @@ export const PrimitiveNames = [
   "float",
   "bool",
   "long",
+  "any",
 ] as const;
 
 export type PrimitiveName = (typeof PrimitiveNames)[number];

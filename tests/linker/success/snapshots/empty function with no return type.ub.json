@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "parameters": [],
+        "returns": null,
+        "content": [],
+        "exported": false,
+        "type": "function_entity",
+        "location": {
+          "file_name": "empty function with no return type.ub",
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 4
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "empty function with no return type.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "parameters": [],
+        "returns": {
+          "name": "int",
+          "type": "primitive_type",
+          "location": {
+            "file_name": "exported empty function.ub",
+            "start": {
+              "line": 1,
+              "column": 21
+            },
+            "last": {
+              "line": 1,
+              "column": 24
+            }
+          }
+        },
+        "content": [],
+        "exported": true,
+        "type": "function_entity",
+        "location": {
+          "file_name": "exported empty function.ub",
+          "start": {
+            "line": 1,
+            "column": 9
+          },
+          "last": {
+            "line": 1,
+            "column": 11
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "exported empty function.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

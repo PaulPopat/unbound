@@ -72,6 +72,10 @@ export class ReferenceTypeVisitor extends Visitor {
       };
     } else if (target instanceof UseType) {
       this.#uses[target.Name] = target;
+      return {
+        result: undefined,
+        cleanup: () => {},
+      };
     } else if (target instanceof ReferenceType) {
       const possible = this.#find(target.Name);
 

@@ -7,7 +7,7 @@ import {
 } from "@compiler/ast";
 import { LinkerError } from "../error";
 
-export class ReferenceExpressionVisitor extends Visitor {
+export class FunctionCollectingVisitor extends Visitor {
   #functions: Record<string, FunctionEntity | ExternalFunctionDeclaration> = {};
   #namespace: string = "";
 

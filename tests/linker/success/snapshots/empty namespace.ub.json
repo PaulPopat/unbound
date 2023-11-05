@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [],
+    "type": "namespace",
+    "location": {
+      "file_name": "empty namespace.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

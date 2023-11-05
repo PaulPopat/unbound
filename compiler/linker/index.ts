@@ -1,18 +1,16 @@
-import { Ast, Component, FunctionEntity, Namespace } from "@compiler/ast";
-import { Linked } from "./linked";
+import { Ast, Component } from "@compiler/ast";
+import { FunctionCollectingVisitor } from "./visitor/function-collecting-visitor";
+import { TypeCollectingVisitor } from "./visitor/type-collecting-visitor";
+import { ReferenceExpressionVisitor } from "./visitor/reference-expression-visitor";
+import { ReferenceTypeVisitor } from "./visitor/reference-type-visitor";
 
-function LinkSymbol(ast: Ast<Namespace>, symbol: Component): Linked {}
+export function LinkUnbound(ast: Ast<Component>) {
+  const function_collector = new FunctionCollectingVisitor();
+  const type_collector = new TypeCollectingVisitor();
 
-export function* LinkUnbound(ast: Ast<Namespace>): Generator<Linked> {
-  for (const namespace of ast.iterator())
-    if (namespace.Name === "App")
-      for (const func of namespace.Contents.iterator())
-        if (!(func instanceof FunctionEntity) || func.Name !== "main") continue;
-        else yield LinkSymbol(ast, func);
-    else if (namespace.Exported)
-      for (const func of namespace.Contents.iterator())
-        if (!(func instanceof FunctionEntity) || !func.Exported) continue;
-        else yield LinkSymbol(ast, func);
+  return ast
+    .visited(function_collector)
+    .visited(type_collector)
+    .visited(new ReferenceExpressionVisitor(function_collector.Functions))
+    .visited(new ReferenceTypeVisitor(type_collector.Types));
 }
-
-export { Linked };

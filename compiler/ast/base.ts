@@ -127,4 +127,8 @@ export class Ast<TType extends Component> {
   visited(visitor: Visitor) {
     return new Ast(...this.#data.map((g) => g.visited(visitor)));
   }
+
+  get json() {
+    return this.#data.flatMap((d) => d.json);
+  }
 }

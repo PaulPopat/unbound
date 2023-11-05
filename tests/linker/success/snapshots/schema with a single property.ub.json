@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "properties": [
+          {
+            "name": "test",
+            "type": "property",
+            "location": {
+              "file_name": "schema with a single property.ub",
+              "start": {
+                "line": 2,
+                "column": 4
+              },
+              "last": {
+                "line": 2,
+                "column": 8
+              }
+            }
+          }
+        ],
+        "exported": false,
+        "type": "schema_entity",
+        "location": {
+          "file_name": "schema with a single property.ub",
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 8
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "schema with a single property.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

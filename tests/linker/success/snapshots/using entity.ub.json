@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Other",
+        "exported": false,
+        "type": "using_entity",
+        "location": {
+          "file_name": "using entity.ub",
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 7
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "using entity.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

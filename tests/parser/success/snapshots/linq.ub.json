@@ -321,7 +321,7 @@
                     "else": [
                       {
                         "value": {
-                          "name": "skip",
+                          "name": "next",
                           "type": "reference_expression",
                           "location": {
                             "file_name": "linq.ub",

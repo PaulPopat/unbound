@@ -1,6 +1,7 @@
 import {
   ExternalFunctionDeclaration,
   FunctionEntity,
+  Statement,
   StoreStatement,
   StructEntity,
 } from ".";
@@ -36,6 +37,24 @@ export class LiteralExpression extends Expression {
 
   inner_visited(visitor: Visitor): Component {
     return new LiteralExpression(this.Location, this.#type, this.#value);
+  }
+}
+
+export class NextExpression extends Expression {
+  constructor(ctx: Location) {
+    super(ctx);
+  }
+
+  get type_name() {
+    return "next_expression";
+  }
+
+  get extra_json() {
+    return {};
+  }
+
+  inner_visited(visitor: Visitor): Component {
+    return new NextExpression(this.Location);
   }
 }
 
@@ -137,6 +156,10 @@ export class CountExpression<TStatement extends Component> extends Expression {
     this.#using = using;
   }
 
+  get As() {
+    return this.#as;
+  }
+
   get type_name() {
     return "count_expression";
   }
@@ -176,6 +199,10 @@ export class IterateExpression<
     this.#over = over;
     this.#as = as;
     this.#using = using;
+  }
+
+  get As() {
+    return this.#as;
   }
 
   get type_name() {
@@ -296,7 +323,9 @@ type PossibleReferences =
   | StructEntity
   | FunctionEntity
   | FunctionParameter<Type>
-  | ExternalFunctionDeclaration;
+  | ExternalFunctionDeclaration
+  | CountExpression<Statement>
+  | IterateExpression<Statement>;
 
 export class LinkedReferenceExpression extends Expression {
   readonly #name: string;
@@ -315,7 +344,7 @@ export class LinkedReferenceExpression extends Expression {
   get extra_json() {
     return {
       name: this.#name,
-      references: this.#references,
+      references: this.#references.json,
     };
   }
 

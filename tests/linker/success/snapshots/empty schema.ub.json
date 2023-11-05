@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      {
+        "name": "Test",
+        "properties": [],
+        "exported": false,
+        "type": "schema_entity",
+        "location": {
+          "file_name": "empty schema.ub",
+          "start": {
+            "line": 1,
+            "column": 2
+          },
+          "last": {
+            "line": 1,
+            "column": 8
+          }
+        }
+      }
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "empty schema.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]

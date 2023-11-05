@@ -1,6 +1,8 @@
+import { LinkUnbound } from "@compiler/linker";
 import { ParseUnbound } from "@compiler/parser";
 import Fs from "fs";
 import Path from "path";
+import { Ast } from "../compiler/ast/base";
 
 function try_read(path: string) {
   try {
@@ -52,6 +54,31 @@ describe("parser", () => {
       }
 
       throw new Error("Parsing succeeded");
+    });
+  }
+});
+
+describe("linker", () => {
+  const base = Path.resolve(__dirname, "linker");
+  const success = Path.resolve(base, "success");
+  const error = Path.resolve(base, "errors");
+  for (const file of Fs.readdirSync(success)) {
+    snapshot_test(
+      file,
+      success,
+      (d) => LinkUnbound(new Ast(ParseUnbound(d, file))).json
+    );
+  }
+
+  for (const file of Fs.readdirSync(error)) {
+    snapshot_test(file, error, (d) => {
+      try {
+        LinkUnbound(new Ast(ParseUnbound(d, file))).json;
+      } catch (err: any) {
+        return err.toString();
+      }
+
+      throw new Error("Linking succeeded");
     });
   }
 });

@@ -9,7 +9,9 @@ import {
   LinkedReferenceExpression,
   MakeExpression,
   Namespace,
+  NextExpression,
   ReferenceExpression,
+  Statement,
   StoreStatement,
   Type,
   UsingEntity,
@@ -25,9 +27,16 @@ export class ReferenceExpressionVisitor extends Visitor {
   #namespace: string = "";
   #using: Array<string> = [];
   #parameters: Record<string, FunctionParameter<Type>> = {};
-  #locals: Array<Record<string, StoreStatement>> = [];
+  #locals: Array<
+    Record<
+      string,
+      StoreStatement | CountExpression<Statement> | IterateExpression<Statement>
+    >
+  > = [];
 
-  constructor(functions: Record<string, FunctionEntity>) {
+  constructor(
+    functions: Record<string, FunctionEntity | ExternalFunctionDeclaration>
+  ) {
     super();
     this.#functions = functions;
   }
@@ -54,7 +63,13 @@ export class ReferenceExpressionVisitor extends Visitor {
     return undefined;
   }
 
-  #add_local(name: string, statement: StoreStatement) {
+  #add_local(
+    name: string,
+    statement:
+      | StoreStatement
+      | CountExpression<Statement>
+      | IterateExpression<Statement>
+  ) {
     this.#locals[this.#locals.length - 1][name] = statement;
   }
 
@@ -125,10 +140,22 @@ export class ReferenceExpressionVisitor extends Visitor {
     } else if (target instanceof StoreStatement) {
       this.#add_local(target.Name, target);
     } else if (
-      target instanceof IfExpression ||
       target instanceof CountExpression ||
       target instanceof IterateExpression
     ) {
+      this.#raise();
+      this.#add_local(target.As, target);
+      return {
+        result: undefined,
+        cleanup: () => this.#drop(),
+      };
+    } else if (target instanceof IfExpression) {
+      this.#raise();
+      return {
+        result: undefined,
+        cleanup: () => this.#drop(),
+      };
+    } else if (target instanceof MakeExpression) {
       this.#raise();
       return {
         result: undefined,
@@ -136,11 +163,17 @@ export class ReferenceExpressionVisitor extends Visitor {
       };
     } else if (target instanceof ReferenceExpression) {
       const map = this.#find(target.Name);
-      if (!map)
+      if (!map) {
+        if (target.Name === "next")
+          return {
+            result: new NextExpression(target.Location),
+            cleanup: () => {},
+          };
         throw new LinkerError(
           target.Location,
           `Could not resolve symbol ${target.Name}`
         );
+      }
 
       return {
         result: new LinkedReferenceExpression(
