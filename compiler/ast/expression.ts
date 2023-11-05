@@ -29,7 +29,7 @@ export class LiteralExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new LiteralExpression(this.Location, this.#type, this.#value);
   }
 }
@@ -66,7 +66,7 @@ export class OperatorExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new OperatorExpression(
       this.Location,
       this.#left.type_safe_visited(Expression, visitor),
@@ -105,7 +105,7 @@ export class IfExpression<TStatement extends Component> extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new IfExpression(
       this.Location,
       this.#check.type_safe_visited(Expression, visitor),
@@ -144,7 +144,7 @@ export class CountExpression<TStatement extends Component> extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new CountExpression(
       this.Location,
       this.#to.type_safe_visited(Expression, visitor),
@@ -185,7 +185,7 @@ export class IterateExpression<
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new IterateExpression(
       this.Location,
       this.#over.type_safe_visited(Expression, visitor),
@@ -220,7 +220,7 @@ export class MakeExpression<TStatement extends Component> extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new MakeExpression(
       this.Location,
       this.#struct,
@@ -250,7 +250,7 @@ export class IsExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new IsExpression(
       this.Location,
       this.#left.type_safe_visited(Expression, visitor),
@@ -277,7 +277,7 @@ export class ReferenceExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new ReferenceExpression(this.Location, this.#name);
   }
 }
@@ -309,7 +309,7 @@ export class LinkedReferenceExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new LinkedReferenceExpression(
       this.Location,
       this.#name,
@@ -336,7 +336,7 @@ export class BracketsExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new BracketsExpression(
       this.Location,
       this.#expression.type_safe_visited(Expression, visitor)
@@ -369,7 +369,7 @@ export class LambdaExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new LambdaExpression(
       this.Location,
       this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
@@ -403,7 +403,7 @@ export class InvokationExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new InvokationExpression(
       this.Location,
       this.#subject.type_safe_visited(Expression, visitor),
@@ -433,7 +433,7 @@ export class AccessExpression extends Expression {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new AccessExpression(
       this.Location,
       this.#subject.type_safe_visited(Expression, visitor),

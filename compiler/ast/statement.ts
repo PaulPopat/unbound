@@ -25,7 +25,7 @@ export class StoreStatement extends Statement {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new StoreStatement(
       this.Location,
       this.#name,
@@ -52,7 +52,7 @@ export class ReturnStatement extends Statement {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new ReturnStatement(
       this.Location,
       this.#value.type_safe_visited(Expression, visitor)
@@ -81,7 +81,7 @@ export class AssignStatement extends Statement {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new AssignStatement(
       this.Location,
       this.#name,
@@ -108,7 +108,7 @@ export class PanicStatement extends Statement {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new PanicStatement(
       this.Location,
       this.#value.type_safe_visited(Expression, visitor)

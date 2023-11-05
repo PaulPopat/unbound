@@ -1,9 +1,12 @@
 import { Location } from "@compiler/location";
 
-export abstract class Visitor<T extends Component> {
-  abstract get OperatesOn(): Array<new (...args: any[]) => T>;
+export abstract class Visitor {
+  abstract get OperatesOn(): Array<new (...args: any[]) => Component>;
 
-  abstract Visit(target: T): Component | undefined;
+  abstract Visit(target: Component): {
+    result: Component | undefined;
+    cleanup: () => void;
+  };
 }
 
 export abstract class Component {
@@ -17,21 +20,25 @@ export abstract class Component {
     return this.#location;
   }
 
-  abstract inner_visited(visitor: Visitor<Component>): Component;
+  abstract inner_visited(visitor: Visitor): Component;
 
-  visited(visitor: Visitor<Component>): Component {
+  visited(visitor: Visitor): Component {
     if (!visitor.OperatesOn.find((o) => this instanceof o))
       return this.inner_visited(visitor);
 
-    const result = visitor.Visit(this);
-    if (!result) return this.inner_visited(visitor);
+    const { result, cleanup } = visitor.Visit(this);
+    try {
+      if (!result) return this.inner_visited(visitor);
 
-    return result;
+      return result;
+    } finally {
+      cleanup();
+    }
   }
 
   type_safe_visited<T extends Component>(
     checker: abstract new (...args: any[]) => T,
-    visitor: Visitor<Component>
+    visitor: Visitor
   ) {
     const result = this.visited(visitor);
     if (!(result instanceof checker))
@@ -82,7 +89,7 @@ export class ComponentGroup<TComponent extends Component> {
     );
   }
 
-  visited(visitor: Visitor<Component>) {
+  visited(visitor: Visitor) {
     return new ComponentGroup(
       ...this.#components.map((c) => c.visited(visitor))
     );
@@ -90,7 +97,7 @@ export class ComponentGroup<TComponent extends Component> {
 
   type_safe_visited<T extends Component>(
     checker: abstract new (...args: any[]) => T,
-    visitor: Visitor<Component>
+    visitor: Visitor
   ) {
     return new ComponentGroup(
       ...this.#components.map((c) => c.type_safe_visited(checker, visitor))
@@ -117,7 +124,7 @@ export class Ast<TType extends Component> {
     for (const item of this.#data) yield* item.iterator();
   }
 
-  visited(visitor: Visitor<Component>) {
+  visited(visitor: Visitor) {
     return new Ast(...this.#data.map((g) => g.visited(visitor)));
   }
 }

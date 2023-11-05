@@ -29,7 +29,7 @@ export class SchemaType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new SchemaType(
       this.Location,
       this.#name,
@@ -56,7 +56,7 @@ export class ReferenceType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new ReferenceType(this.Location, this.#name);
   }
 }
@@ -82,7 +82,7 @@ export class LinkedReferenceType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new LinkedReferenceType(this.Location, this.#name, this.#references);
   }
 }
@@ -105,7 +105,7 @@ export class IterableType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new IterableType(
       this.Location,
       this.#type.type_safe_visited(Type, visitor)
@@ -138,7 +138,7 @@ export class FunctionType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new FunctionType(
       this.Location,
       this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
@@ -168,7 +168,7 @@ export class UseType extends Type {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new UseType(
       this.Location,
       this.#name,

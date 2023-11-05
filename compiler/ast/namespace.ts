@@ -43,7 +43,7 @@ export class Namespace extends Component {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new Namespace(
       this.Location,
       this.#exported,

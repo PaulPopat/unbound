@@ -65,7 +65,7 @@ export class FunctionEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new FunctionEntity(
       this.Location,
       this.Exported,
@@ -103,7 +103,7 @@ export class StructEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new StructEntity(
       this.Location,
       this.Exported,
@@ -139,7 +139,7 @@ export class SchemaEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new SchemaEntity(
       this.Location,
       this.Exported,
@@ -167,7 +167,7 @@ export class UsingEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new UsingEntity(this.Location, this.Exported, this.#name);
   }
 }
@@ -201,7 +201,7 @@ export class ExternalFunctionDeclaration extends Component {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new ExternalFunctionDeclaration(
       this.Location,
       this.#name,
@@ -241,7 +241,7 @@ export class LibEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new LibEntity(
       this.Location,
       this.Exported,
@@ -273,7 +273,7 @@ export class SystemEntity extends Entity {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new SystemEntity(
       this.Location,
       this.Exported,

@@ -22,7 +22,7 @@ export class Property<TType extends Component> extends Component {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new Property(this.Location, this.#name, this.#type.visited(visitor));
   }
 }
@@ -48,7 +48,7 @@ export class FunctionParameter<TType extends Component> extends Component {
     };
   }
 
-  inner_visited(visitor: Visitor<Component>): Component {
+  inner_visited(visitor: Visitor): Component {
     return new FunctionParameter(
       this.Location,
       this.#name,
