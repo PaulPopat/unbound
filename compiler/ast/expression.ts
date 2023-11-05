@@ -267,6 +267,10 @@ export class ReferenceExpression extends Expression {
     this.#name = name;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
   get type_name() {
     return "reference_expression";
   }

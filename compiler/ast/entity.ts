@@ -52,6 +52,10 @@ export class FunctionEntity extends Entity {
     return this.#name;
   }
 
+  get Parameters() {
+    return this.#parameters;
+  }
+
   get type_name() {
     return "function_entity";
   }
@@ -155,6 +159,10 @@ export class UsingEntity extends Entity {
   constructor(ctx: Location, exported: boolean, name: string) {
     super(ctx, exported);
     this.#name = name;
+  }
+
+  get Name() {
+    return this.#name;
   }
 
   get type_name() {

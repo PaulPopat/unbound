@@ -14,6 +14,14 @@ export class StoreStatement extends Statement {
     this.#equals = equals;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
+  get Equals() {
+    return this.#equals;
+  }
+
   get type_name() {
     return "store_statement";
   }
