@@ -1,6 +1,7 @@
 import {
   Component,
   CountExpression,
+  ExternalFunctionDeclaration,
   FunctionEntity,
   FunctionParameter,
   IfExpression,
@@ -17,7 +18,10 @@ import {
 import { LinkerError } from "../error";
 
 export class ReferenceExpressionVisitor extends Visitor {
-  readonly #functions: Record<string, FunctionEntity>;
+  readonly #functions: Record<
+    string,
+    FunctionEntity | ExternalFunctionDeclaration
+  >;
   #namespace: string = "";
   #using: Array<string> = [];
   #parameters: Record<string, FunctionParameter<Type>> = {};
@@ -38,7 +42,11 @@ export class ReferenceExpressionVisitor extends Visitor {
       const possible = this.#functions[full];
       if (!possible) continue;
 
-      if (area === this.#namespace) return possible;
+      if (
+        area === this.#namespace ||
+        possible instanceof ExternalFunctionDeclaration
+      )
+        return possible;
 
       if (possible.Exported) return possible;
     }

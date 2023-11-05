@@ -1,4 +1,9 @@
-import { FunctionEntity, StoreStatement, StructEntity } from ".";
+import {
+  ExternalFunctionDeclaration,
+  FunctionEntity,
+  StoreStatement,
+  StructEntity,
+} from ".";
 import { Component, ComponentGroup, Visitor } from "./base";
 import { FunctionParameter } from "./property";
 import { Type } from "./type";
@@ -290,7 +295,8 @@ type PossibleReferences =
   | StoreStatement
   | StructEntity
   | FunctionEntity
-  | FunctionParameter<Type>;
+  | FunctionParameter<Type>
+  | ExternalFunctionDeclaration;
 
 export class LinkedReferenceExpression extends Expression {
   readonly #name: string;

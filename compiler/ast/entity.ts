@@ -96,6 +96,10 @@ export class StructEntity extends Entity {
     this.#properties = properties;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
   get type_name() {
     return "struct_entity";
   }
@@ -130,6 +134,10 @@ export class SchemaEntity extends Entity {
     super(ctx, exported);
     this.#name = name;
     this.#properties = properties;
+  }
+
+  get Name() {
+    return this.#name;
   }
 
   get type_name() {
@@ -195,6 +203,10 @@ export class ExternalFunctionDeclaration extends Component {
     this.#name = name;
     this.#parameters = parameters;
     this.#returns = returns;
+  }
+
+  get Name() {
+    return this.#name;
   }
 
   get type_name() {
