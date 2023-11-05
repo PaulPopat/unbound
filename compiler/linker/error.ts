@@ -9,7 +9,7 @@ export class LinkerError extends Error {
       `Parsing Error:\n${message}\nLine: ${location?.StartLine}\nColumn: ${location?.StartColumn}`
     );
 
-    this.#location = location ?? new Location(-1, -1, -1, -1);
+    this.#location = location ?? new Location("", -1, -1, -1, -1);
     this.#message = message;
   }
 }

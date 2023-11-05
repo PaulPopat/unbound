@@ -1,4 +1,5 @@
-import { Component, ComponentGroup } from "./base";
+import { FunctionEntity, StoreStatement, StructEntity } from ".";
+import { Component, ComponentGroup, Visitor } from "./base";
 import { FunctionParameter } from "./property";
 import { Type } from "./type";
 import { Location } from "@compiler/location";
@@ -26,6 +27,10 @@ export class LiteralExpression extends Expression {
       type_name: this.#type,
       value: this.#value,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new LiteralExpression(this.Location, this.#type, this.#value);
   }
 }
 
@@ -60,6 +65,15 @@ export class OperatorExpression extends Expression {
       right: this.#right.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new OperatorExpression(
+      this.Location,
+      this.#left.type_safe_visited(Expression, visitor),
+      this.#operator,
+      this.#right.type_safe_visited(Expression, visitor)
+    );
+  }
 }
 
 export class IfExpression<TStatement extends Component> extends Expression {
@@ -90,6 +104,15 @@ export class IfExpression<TStatement extends Component> extends Expression {
       else: this.#else.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new IfExpression(
+      this.Location,
+      this.#check.type_safe_visited(Expression, visitor),
+      this.#if.visited(visitor),
+      this.#else.visited(visitor)
+    );
+  }
 }
 
 export class CountExpression<TStatement extends Component> extends Expression {
@@ -119,6 +142,15 @@ export class CountExpression<TStatement extends Component> extends Expression {
       as: this.#as,
       using: this.#using.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new CountExpression(
+      this.Location,
+      this.#to.type_safe_visited(Expression, visitor),
+      this.#as,
+      this.#using.visited(visitor)
+    );
   }
 }
 
@@ -152,6 +184,15 @@ export class IterateExpression<
       using: this.#using.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new IterateExpression(
+      this.Location,
+      this.#over.type_safe_visited(Expression, visitor),
+      this.#as,
+      this.#using.visited(visitor)
+    );
+  }
 }
 
 export class MakeExpression<TStatement extends Component> extends Expression {
@@ -178,6 +219,14 @@ export class MakeExpression<TStatement extends Component> extends Expression {
       using: this.#using.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new MakeExpression(
+      this.Location,
+      this.#struct,
+      this.#using.visited(visitor)
+    );
+  }
 }
 
 export class IsExpression extends Expression {
@@ -200,6 +249,14 @@ export class IsExpression extends Expression {
       right: this.#right.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new IsExpression(
+      this.Location,
+      this.#left.type_safe_visited(Expression, visitor),
+      this.#right.type_safe_visited(Type, visitor)
+    );
+  }
 }
 
 export class ReferenceExpression extends Expression {
@@ -219,6 +276,46 @@ export class ReferenceExpression extends Expression {
       name: this.#name,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new ReferenceExpression(this.Location, this.#name);
+  }
+}
+
+type PossibleReferences =
+  | StoreStatement
+  | StructEntity
+  | FunctionEntity
+  | FunctionParameter<Type>;
+
+export class LinkedReferenceExpression extends Expression {
+  readonly #name: string;
+  readonly #references: PossibleReferences;
+
+  constructor(ctx: Location, name: string, references: PossibleReferences) {
+    super(ctx);
+    this.#name = name;
+    this.#references = references;
+  }
+
+  get type_name() {
+    return "linked_reference_expression";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+      references: this.#references,
+    };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new LinkedReferenceExpression(
+      this.Location,
+      this.#name,
+      this.#references
+    );
+  }
 }
 
 export class BracketsExpression extends Expression {
@@ -237,6 +334,13 @@ export class BracketsExpression extends Expression {
     return {
       expression: this.#expression.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new BracketsExpression(
+      this.Location,
+      this.#expression.type_safe_visited(Expression, visitor)
+    );
   }
 }
 
@@ -264,6 +368,14 @@ export class LambdaExpression extends Expression {
       expression: this.#expression.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new LambdaExpression(
+      this.Location,
+      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
+      this.#expression.type_safe_visited(Expression, visitor)
+    );
+  }
 }
 
 export class InvokationExpression extends Expression {
@@ -290,6 +402,14 @@ export class InvokationExpression extends Expression {
       parameters: this.#parameters.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new InvokationExpression(
+      this.Location,
+      this.#subject.type_safe_visited(Expression, visitor),
+      this.#parameters.type_safe_visited(Expression, visitor)
+    );
+  }
 }
 
 export class AccessExpression extends Expression {
@@ -311,5 +431,13 @@ export class AccessExpression extends Expression {
       subject: this.#subject.json,
       target: this.#target,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new AccessExpression(
+      this.Location,
+      this.#subject.type_safe_visited(Expression, visitor),
+      this.#target
+    );
   }
 }

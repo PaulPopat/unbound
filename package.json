@@ -29,7 +29,8 @@
       "^@compiler/ast$": "<rootDir>/compiler/ast",
       "^@compiler/parser$": "<rootDir>/compiler/parser",
       "^@compiler/location$": "<rootDir>/compiler/location",
-      "^@compiler/linker$": "<rootDir>/compiler/linker"
+      "^@compiler/linker$": "<rootDir>/compiler/linker",
+      "^@compiler/ris$": "<rootDir>/compiler/ris"
     }
   }
 }

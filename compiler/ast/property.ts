@@ -1,5 +1,5 @@
 import { Location } from "@compiler/location";
-import { Component } from "./base";
+import { Component, Visitor } from "./base";
 
 export class Property<TType extends Component> extends Component {
   readonly #name: string;
@@ -20,6 +20,10 @@ export class Property<TType extends Component> extends Component {
       name: this.#name,
       type: this.#type.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new Property(this.Location, this.#name, this.#type.visited(visitor));
   }
 }
 
@@ -42,5 +46,13 @@ export class FunctionParameter<TType extends Component> extends Component {
       name: this.#name,
       type: this.#type?.json ?? null,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new FunctionParameter(
+      this.Location,
+      this.#name,
+      this.#type?.visited(visitor)
+    );
   }
 }

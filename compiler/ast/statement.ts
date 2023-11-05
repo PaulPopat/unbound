@@ -1,5 +1,5 @@
 import { Location } from "@compiler/location";
-import { Component } from "./base";
+import { Component, Visitor } from "./base";
 import { Expression } from "./expression";
 
 export abstract class Statement extends Component {}
@@ -24,6 +24,14 @@ export class StoreStatement extends Statement {
       equals: this.#equals.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new StoreStatement(
+      this.Location,
+      this.#name,
+      this.#equals.type_safe_visited(Expression, visitor)
+    );
+  }
 }
 
 export class ReturnStatement extends Statement {
@@ -42,6 +50,13 @@ export class ReturnStatement extends Statement {
     return {
       value: this.#value.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new ReturnStatement(
+      this.Location,
+      this.#value.type_safe_visited(Expression, visitor)
+    );
   }
 }
 
@@ -65,6 +80,14 @@ export class AssignStatement extends Statement {
       equals: this.#equals.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new AssignStatement(
+      this.Location,
+      this.#name,
+      this.#equals.type_safe_visited(Expression, visitor)
+    );
+  }
 }
 
 export class PanicStatement extends Statement {
@@ -83,5 +106,12 @@ export class PanicStatement extends Statement {
     return {
       value: this.#value.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new PanicStatement(
+      this.Location,
+      this.#value.type_safe_visited(Expression, visitor)
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { Location } from "@compiler/location";
-import { Component, ComponentGroup } from "./base";
+import { Component, ComponentGroup, Visitor } from "./base";
 import { Entity } from "./entity";
 
 export class Namespace extends Component {
@@ -41,5 +41,14 @@ export class Namespace extends Component {
       exported: this.#exported,
       contents: this.#contents.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new Namespace(
+      this.Location,
+      this.#exported,
+      this.#name,
+      this.#contents.type_safe_visited(Entity, visitor)
+    );
   }
 }

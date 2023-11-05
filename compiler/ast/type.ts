@@ -1,5 +1,5 @@
 import { Location } from "@compiler/location";
-import { Component, ComponentGroup } from "./base";
+import { Component, ComponentGroup, Visitor } from "./base";
 import { FunctionParameter, Property } from "./property";
 
 export abstract class Type extends Component {}
@@ -28,6 +28,14 @@ export class SchemaType extends Type {
       properties: this.#properties.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new SchemaType(
+      this.Location,
+      this.#name,
+      this.#properties.type_safe_visited(Property<Type>, visitor)
+    );
+  }
 }
 
 export class ReferenceType extends Type {
@@ -47,6 +55,36 @@ export class ReferenceType extends Type {
       name: this.#name,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new ReferenceType(this.Location, this.#name);
+  }
+}
+
+export class LinkedReferenceType extends Type {
+  readonly #name: string;
+  readonly #references: Type;
+
+  constructor(ctx: Location, name: string, references: Type) {
+    super(ctx);
+    this.#name = name;
+    this.#references = references;
+  }
+
+  get type_name() {
+    return "linked_reference_type";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+      references: this.#references.json,
+    };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new LinkedReferenceType(this.Location, this.#name, this.#references);
+  }
 }
 
 export class IterableType extends Type {
@@ -65,6 +103,13 @@ export class IterableType extends Type {
     return {
       type: this.#type.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new IterableType(
+      this.Location,
+      this.#type.type_safe_visited(Type, visitor)
+    );
   }
 }
 
@@ -92,6 +137,14 @@ export class FunctionType extends Type {
       returns: this.#returns.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new FunctionType(
+      this.Location,
+      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
+      this.#returns.type_safe_visited(Type, visitor)
+    );
+  }
 }
 
 export class UseType extends Type {
@@ -113,5 +166,13 @@ export class UseType extends Type {
       name: this.#name,
       constraints: this.#constraints.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new UseType(
+      this.Location,
+      this.#name,
+      this.#constraints.type_safe_visited(Type, visitor)
+    );
   }
 }

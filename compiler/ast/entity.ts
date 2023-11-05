@@ -1,4 +1,4 @@
-import { Component, ComponentGroup } from "./base";
+import { Component, ComponentGroup, Visitor } from "./base";
 import { FunctionParameter, Property } from "./property";
 import { Type } from "./type";
 import { Statement } from "./statement";
@@ -64,6 +64,17 @@ export class FunctionEntity extends Entity {
       content: this.#content.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new FunctionEntity(
+      this.Location,
+      this.Exported,
+      this.#name,
+      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
+      this.#returns?.visited(visitor),
+      this.#content.type_safe_visited(Statement, visitor)
+    );
+  }
 }
 
 export class StructEntity extends Entity {
@@ -90,6 +101,15 @@ export class StructEntity extends Entity {
       name: this.#name,
       properties: this.#properties.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new StructEntity(
+      this.Location,
+      this.Exported,
+      this.#name,
+      this.#properties.type_safe_visited(Property<Type>, visitor)
+    );
   }
 }
 
@@ -118,6 +138,15 @@ export class SchemaEntity extends Entity {
       properties: this.#properties.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new SchemaEntity(
+      this.Location,
+      this.Exported,
+      this.#name,
+      this.#properties.type_safe_visited(Property<Type>, visitor)
+    );
+  }
 }
 
 export class UsingEntity extends Entity {
@@ -136,6 +165,10 @@ export class UsingEntity extends Entity {
     return {
       name: this.#name,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new UsingEntity(this.Location, this.Exported, this.#name);
   }
 }
 
@@ -166,6 +199,15 @@ export class ExternalFunctionDeclaration extends Component {
       parameters: this.#parameters.json,
       returns: this.#returns.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new ExternalFunctionDeclaration(
+      this.Location,
+      this.#name,
+      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
+      this.#returns.type_safe_visited(Type, visitor)
+    );
   }
 }
 
@@ -198,6 +240,15 @@ export class LibEntity extends Entity {
       content: this.#content.json,
     };
   }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new LibEntity(
+      this.Location,
+      this.Exported,
+      this.#name.type_safe_visited(Expression, visitor),
+      this.#content.type_safe_visited(ExternalFunctionDeclaration, visitor)
+    );
+  }
 }
 
 export class SystemEntity extends Entity {
@@ -220,5 +271,13 @@ export class SystemEntity extends Entity {
     return {
       content: this.#content.json,
     };
+  }
+
+  inner_visited(visitor: Visitor<Component>): Component {
+    return new SystemEntity(
+      this.Location,
+      this.Exported,
+      this.#content.type_safe_visited(ExternalFunctionDeclaration, visitor)
+    );
   }
 }
