@@ -46,6 +46,10 @@ export class ReferenceType extends Type {
     this.#name = name;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
   get type_name() {
     return "reference_type";
   }
@@ -84,6 +88,44 @@ export class LinkedReferenceType extends Type {
 
   inner_visited(visitor: Visitor): Component {
     return new LinkedReferenceType(this.Location, this.#name, this.#references);
+  }
+}
+
+export const PrimitiveNames = [
+  "int",
+  "char",
+  "double",
+  "float",
+  "bool",
+  "long",
+] as const;
+
+export type PrimitiveName = (typeof PrimitiveNames)[number];
+
+export function IsPrimitiveName(input: string): input is PrimitiveName {
+  return PrimitiveNames.includes(input as any);
+}
+
+export class PrimitiveType extends Type {
+  readonly #name: PrimitiveName;
+
+  constructor(ctx: Location, name: PrimitiveName) {
+    super(ctx);
+    this.#name = name;
+  }
+
+  get type_name() {
+    return "primitive_type";
+  }
+
+  get extra_json() {
+    return {
+      name: this.#name,
+    };
+  }
+
+  inner_visited(visitor: Visitor): Component {
+    return new PrimitiveType(this.Location, this.#name);
   }
 }
 
@@ -155,6 +197,10 @@ export class UseType extends Type {
     super(ctx);
     this.#name = name;
     this.#constraints = constraints;
+  }
+
+  get Name() {
+    return this.#name;
   }
 
   get type_name() {
