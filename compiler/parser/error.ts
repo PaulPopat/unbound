@@ -7,7 +7,9 @@ export class ParserError extends Error {
 
   constructor(location: Location | undefined, message: string) {
     super(
-      `Parsing Error:\n${message}\nFile: ${location?.FileName}\nLine: ${location?.StartLine}\nColumn: ${location?.StartColumn}`
+      `Parsing Error:\n${message}\nFile: ${location?.FileName}\nLine: ${
+        location?.StartLine ?? -1 + 1
+      }\nColumn: ${location?.StartColumn ?? -1 + 1}`
     );
 
     this.#location = location ?? new Location("", -1, -1, -1, -1);

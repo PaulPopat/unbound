@@ -71,7 +71,7 @@
                     }
                   }
                 },
-                "type": "linked_reference_expression",
+                "type": "reference_expression",
                 "location": {
                   "file_name": "linq.ub",
                   "start": {
@@ -89,7 +89,22 @@
                 {
                   "value": {
                     "subject": {
-                      "subject": {
+                      "name": "selector",
+                      "type": "function_parameter",
+                      "location": {
+                        "file_name": "linq.ub",
+                        "start": {
+                          "line": 1,
+                          "column": 40
+                        },
+                        "last": {
+                          "line": 1,
+                          "column": 48
+                        }
+                      }
+                    },
+                    "parameters": [
+                      {
                         "name": "item",
                         "references": {
                           "over": {
@@ -182,7 +197,7 @@
                             }
                           }
                         },
-                        "type": "linked_reference_expression",
+                        "type": "reference_expression",
                         "location": {
                           "file_name": "linq.ub",
                           "start": {
@@ -194,22 +209,8 @@
                             "column": 17
                           }
                         }
-                      },
-                      "target": "selector",
-                      "type": "access_expression",
-                      "location": {
-                        "file_name": "linq.ub",
-                        "start": {
-                          "line": 3,
-                          "column": 17
-                        },
-                        "last": {
-                          "line": 3,
-                          "column": 18
-                        }
                       }
-                    },
-                    "parameters": [],
+                    ],
                     "type": "invokation_expression",
                     "location": {
                       "file_name": "linq.ub",
@@ -346,7 +347,7 @@
                     }
                   }
                 },
-                "type": "linked_reference_expression",
+                "type": "reference_expression",
                 "location": {
                   "file_name": "linq.ub",
                   "start": {
@@ -365,7 +366,22 @@
                   "value": {
                     "check": {
                       "subject": {
-                        "subject": {
+                        "name": "predicate",
+                        "type": "function_parameter",
+                        "location": {
+                          "file_name": "linq.ub",
+                          "start": {
+                            "line": 7,
+                            "column": 39
+                          },
+                          "last": {
+                            "line": 7,
+                            "column": 48
+                          }
+                        }
+                      },
+                      "parameters": [
+                        {
                           "name": "item",
                           "references": {
                             "over": {
@@ -534,7 +550,7 @@
                               }
                             }
                           },
-                          "type": "linked_reference_expression",
+                          "type": "reference_expression",
                           "location": {
                             "file_name": "linq.ub",
                             "start": {
@@ -546,22 +562,8 @@
                               "column": 21
                             }
                           }
-                        },
-                        "target": "predicate",
-                        "type": "access_expression",
-                        "location": {
-                          "file_name": "linq.ub",
-                          "start": {
-                            "line": 9,
-                            "column": 21
-                          },
-                          "last": {
-                            "line": 9,
-                            "column": 22
-                          }
                         }
-                      },
-                      "parameters": [],
+                      ],
                       "type": "invokation_expression",
                       "location": {
                         "file_name": "linq.ub",
@@ -746,7 +748,7 @@
                               }
                             }
                           },
-                          "type": "linked_reference_expression",
+                          "type": "reference_expression",
                           "location": {
                             "file_name": "linq.ub",
                             "start": {
@@ -962,7 +964,176 @@
           {
             "value": {
               "subject": {
-                "subject": {
+                "name": "select",
+                "parameters": [
+                  {
+                    "name": "self",
+                    "type": "function_parameter",
+                    "location": {
+                      "file_name": "linq.ub",
+                      "start": {
+                        "line": 1,
+                        "column": 19
+                      },
+                      "last": {
+                        "line": 1,
+                        "column": 23
+                      }
+                    }
+                  },
+                  {
+                    "name": "selector",
+                    "type": "function_parameter",
+                    "location": {
+                      "file_name": "linq.ub",
+                      "start": {
+                        "line": 1,
+                        "column": 40
+                      },
+                      "last": {
+                        "line": 1,
+                        "column": 48
+                      }
+                    }
+                  }
+                ],
+                "returns": {
+                  "type": "iterable_type",
+                  "location": {
+                    "file_name": "linq.ub",
+                    "start": {
+                      "line": 1,
+                      "column": 77
+                    },
+                    "last": {
+                      "line": 1,
+                      "column": 78
+                    }
+                  }
+                },
+                "content": [
+                  {
+                    "value": {
+                      "over": {
+                        "name": "self",
+                        "type": "reference_expression",
+                        "location": {
+                          "file_name": "linq.ub",
+                          "start": {
+                            "line": 2,
+                            "column": 20
+                          },
+                          "last": {
+                            "line": 2,
+                            "column": 24
+                          }
+                        }
+                      },
+                      "as": "item",
+                      "using": [
+                        {
+                          "value": {
+                            "subject": {
+                              "subject": {
+                                "name": "item",
+                                "type": "reference_expression",
+                                "location": {
+                                  "file_name": "linq.ub",
+                                  "start": {
+                                    "line": 3,
+                                    "column": 13
+                                  },
+                                  "last": {
+                                    "line": 3,
+                                    "column": 17
+                                  }
+                                }
+                              },
+                              "target": "selector",
+                              "type": "access_expression",
+                              "location": {
+                                "file_name": "linq.ub",
+                                "start": {
+                                  "line": 3,
+                                  "column": 17
+                                },
+                                "last": {
+                                  "line": 3,
+                                  "column": 18
+                                }
+                              }
+                            },
+                            "parameters": [],
+                            "type": "invokation_expression",
+                            "location": {
+                              "file_name": "linq.ub",
+                              "start": {
+                                "line": 3,
+                                "column": 26
+                              },
+                              "last": {
+                                "line": 3,
+                                "column": 27
+                              }
+                            }
+                          },
+                          "type": "return_statement",
+                          "location": {
+                            "file_name": "linq.ub",
+                            "start": {
+                              "line": 3,
+                              "column": 6
+                            },
+                            "last": {
+                              "line": 3,
+                              "column": 12
+                            }
+                          }
+                        }
+                      ],
+                      "type": "iterate_expression",
+                      "location": {
+                        "file_name": "linq.ub",
+                        "start": {
+                          "line": 2,
+                          "column": 11
+                        },
+                        "last": {
+                          "line": 2,
+                          "column": 18
+                        }
+                      }
+                    },
+                    "type": "return_statement",
+                    "location": {
+                      "file_name": "linq.ub",
+                      "start": {
+                        "line": 2,
+                        "column": 4
+                      },
+                      "last": {
+                        "line": 2,
+                        "column": 10
+                      }
+                    }
+                  }
+                ],
+                "exported": true,
+                "type": "function_entity",
+                "location": {
+                  "file_name": "linq.ub",
+                  "start": {
+                    "line": 1,
+                    "column": 9
+                  },
+                  "last": {
+                    "line": 1,
+                    "column": 11
+                  }
+                }
+              },
+              "parameters": [
+                {
                   "subject": {
                     "subject": {
                       "name": "self",
@@ -981,7 +1152,7 @@
                           }
                         }
                       },
-                      "type": "linked_reference_expression",
+                      "type": "reference_expression",
                       "location": {
                         "file_name": "linq.ub",
                         "start": {
@@ -1070,21 +1241,6 @@
                     }
                   }
                 },
-                "target": "select",
-                "type": "access_expression",
-                "location": {
-                  "file_name": "linq.ub",
-                  "start": {
-                    "line": 27,
-                    "column": 15
-                  },
-                  "last": {
-                    "line": 27,
-                    "column": 16
-                  }
-                }
-              },
-              "parameters": [
                 {
                   "parameters": [
                     {

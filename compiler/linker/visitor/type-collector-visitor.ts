@@ -9,7 +9,7 @@ import {
   Visitor,
 } from "@compiler/ast";
 import { LinkerError } from "../error";
-import { PatternMatch } from "@compiler/utils";
+import { PatternMatch } from "../pattern-match";
 
 export class TypeCollectorVisitor extends Visitor {
   readonly #types: Record<string, StructEntity | SchemaEntity>;

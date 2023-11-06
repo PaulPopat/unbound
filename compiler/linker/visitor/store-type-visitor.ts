@@ -25,7 +25,7 @@ import {
   Type,
 } from "@compiler/ast";
 import { TypeCollectorVisitor } from "./type-collector-visitor";
-import { PatternMatch } from "../../utils/pattern-match";
+import { PatternMatch } from "../pattern-match";
 import { LinkerError } from "../error";
 
 export class StoreTypeVisitor extends TypeCollectorVisitor {

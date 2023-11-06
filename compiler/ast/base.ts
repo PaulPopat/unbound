@@ -1,4 +1,5 @@
 import { Location } from "@compiler/location";
+import { LinkerError } from "../linker/error";
 
 export abstract class Visitor {
   abstract get OperatesOn(): Array<new (...args: any[]) => Component>;
@@ -41,10 +42,10 @@ export abstract class Component {
     visitor: Visitor
   ) {
     const result = this.visited(visitor);
-    if (!(result instanceof checker))
-      throw new Error("Invalid type from visitor");
+    // if (!(result instanceof checker))
+    //   throw new LinkerError(this.Location, "Invalid type from visitor");
 
-    return result;
+    return result as T;
   }
 
   abstract get type_name(): string;

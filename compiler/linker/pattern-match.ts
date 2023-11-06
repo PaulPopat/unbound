@@ -1,5 +1,8 @@
+import { Component } from "@compiler/ast";
+import { LinkerError } from "./error";
+
 export function PatternMatch<
-  TOptions extends Array<new (...args: Array<any>) => any>
+  TOptions extends Array<new (...args: Array<any>) => Component>
 >(...options: TOptions) {
   return <TResult>(
     ...handlers: {
@@ -8,7 +11,7 @@ export function PatternMatch<
       ) => TResult;
     }
   ) => {
-    return (input: any) => {
+    return (input: Component) => {
       for (let i = 0; i < options.length; i++) {
         const constructor = options[i];
         const handler = handlers[i];
@@ -17,7 +20,7 @@ export function PatternMatch<
         }
       }
 
-      throw new Error("No handler found");
+      throw new LinkerError(input.Location, "No handler found");
     };
   };
 }
