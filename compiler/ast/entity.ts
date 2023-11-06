@@ -56,6 +56,10 @@ export class FunctionEntity extends Entity {
     return this.#parameters;
   }
 
+  get Returns() {
+    return this.#returns;
+  }
+
   get type_name() {
     return "function_entity";
   }
@@ -98,6 +102,20 @@ export class StructEntity extends Entity {
 
   get Name() {
     return this.#name;
+  }
+
+  HasKey(key: string) {
+    for (const property of this.#properties.iterator())
+      if (property.Name === key) return true;
+
+    return false;
+  }
+
+  GetKey(key: string) {
+    for (const property of this.#properties.iterator())
+      if (property.Name === key) return property;
+
+    return undefined;
   }
 
   get type_name() {

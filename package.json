@@ -30,7 +30,7 @@
       "^@compiler/parser$": "<rootDir>/compiler/parser",
       "^@compiler/location$": "<rootDir>/compiler/location",
       "^@compiler/linker$": "<rootDir>/compiler/linker",
-      "^@compiler/ris$": "<rootDir>/compiler/ris"
+      "^@compiler/utils$": "<rootDir>/compiler/utils"
     }
   }
 }

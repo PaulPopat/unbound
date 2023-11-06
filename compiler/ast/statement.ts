@@ -55,6 +55,10 @@ export class ReturnStatement extends Statement {
     this.#value = value;
   }
 
+  get Value() {
+    return this.#value;
+  }
+
   get type_name() {
     return "return_statement";
   }

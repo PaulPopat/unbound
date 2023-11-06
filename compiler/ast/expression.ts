@@ -12,7 +12,14 @@ import { Location } from "@compiler/location";
 
 export abstract class Expression extends Component {}
 
-export type LiteralType = "string" | "int" | "char" | "float" | "double";
+export type LiteralType =
+  | "string"
+  | "int"
+  | "char"
+  | "float"
+  | "double"
+  | "long"
+  | "bool";
 
 export class LiteralExpression extends Expression {
   readonly #type: LiteralType;
@@ -22,6 +29,14 @@ export class LiteralExpression extends Expression {
     super(ctx);
     this.#type = type;
     this.#value = value;
+  }
+
+  get Type() {
+    return this.#type;
+  }
+
+  get Value() {
+    return this.#value;
   }
 
   get type_name() {
@@ -78,6 +93,18 @@ export class OperatorExpression extends Expression {
     this.#right = right;
   }
 
+  get Left() {
+    return this.#left;
+  }
+
+  get Operator() {
+    return this.#operator;
+  }
+
+  get Right() {
+    return this.#right;
+  }
+
   get type_name() {
     return "operator_expression";
   }
@@ -115,6 +142,18 @@ export class IfExpression<TStatement extends Component> extends Expression {
     this.#check = check;
     this.#if = on_if;
     this.#else = on_else;
+  }
+
+  get Check() {
+    return this.#check;
+  }
+
+  get If() {
+    return this.#if;
+  }
+
+  get Else() {
+    return this.#else;
   }
 
   get type_name() {
@@ -158,6 +197,10 @@ export class CountExpression<TStatement extends Component> extends Expression {
 
   get As() {
     return this.#as;
+  }
+
+  get Body() {
+    return this.#using;
   }
 
   get type_name() {
@@ -205,6 +248,10 @@ export class IterateExpression<
     return this.#as;
   }
 
+  get Body() {
+    return this.#using;
+  }
+
   get type_name() {
     return "iterate_expression";
   }
@@ -230,15 +277,30 @@ export class IterateExpression<
 export class MakeExpression<TStatement extends Component> extends Expression {
   readonly #struct: string;
   readonly #using: ComponentGroup<TStatement>;
+  readonly #struct_entity?: StructEntity;
 
   constructor(
     ctx: Location,
     struct: string,
-    using: ComponentGroup<TStatement>
+    using: ComponentGroup<TStatement>,
+    struct_entity?: StructEntity
   ) {
     super(ctx);
     this.#struct = struct;
     this.#using = using;
+    this.#struct_entity = struct_entity;
+  }
+
+  get Struct() {
+    return this.#struct;
+  }
+
+  get Using() {
+    return this.#using;
+  }
+
+  get StructEntity() {
+    return this.#struct_entity;
   }
 
   get type_name() {
@@ -314,6 +376,10 @@ export class ReferenceExpression extends Expression {
     return this.#name;
   }
 
+  get References() {
+    return this.#references;
+  }
+
   get type_name() {
     return "reference_expression";
   }
@@ -336,6 +402,10 @@ export class BracketsExpression extends Expression {
   constructor(ctx: Location, expression: Expression) {
     super(ctx);
     this.#expression = expression;
+  }
+
+  get Expression() {
+    return this.#expression;
   }
 
   get type_name() {
@@ -368,6 +438,14 @@ export class LambdaExpression extends Expression {
     super(ctx);
     this.#parameters = parameters;
     this.#expression = expression;
+  }
+
+  get Parameters() {
+    return this.#parameters;
+  }
+
+  get Expression() {
+    return this.#expression;
   }
 
   get type_name() {
@@ -404,6 +482,14 @@ export class InvokationExpression extends Expression {
     this.#parameters = parameters;
   }
 
+  get Subject() {
+    return this.#subject;
+  }
+
+  get Parameters() {
+    return this.#parameters;
+  }
+
   get type_name() {
     return "invokation_expression";
   }
@@ -432,6 +518,14 @@ export class AccessExpression extends Expression {
     super(ctx);
     this.#subject = subject;
     this.#target = target;
+  }
+
+  get Subject() {
+    return this.#subject;
+  }
+
+  get Target() {
+    return this.#target;
   }
 
   get type_name() {

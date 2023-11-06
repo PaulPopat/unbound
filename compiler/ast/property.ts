@@ -11,6 +11,14 @@ export class Property<TType extends Component> extends Component {
     this.#type = type;
   }
 
+  get Name() {
+    return this.#name;
+  }
+
+  get Type() {
+    return this.#type;
+  }
+
   get type_name() {
     return "property";
   }

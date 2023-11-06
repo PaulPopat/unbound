@@ -1,6 +1,7 @@
 import { Location } from "@compiler/location";
 import { Component, ComponentGroup, Visitor } from "./base";
 import { FunctionParameter, Property } from "./property";
+import { StructEntity } from ".";
 
 export abstract class Type extends Component {}
 
@@ -135,16 +136,20 @@ export class IterableType extends Type {
 
 export class FunctionType extends Type {
   readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
-  readonly #returns: Type;
+  readonly #returns: Type | StructEntity;
 
   constructor(
     ctx: Location,
     parameters: ComponentGroup<FunctionParameter<Type>>,
-    returns: Type
+    returns: Type | StructEntity
   ) {
     super(ctx);
     this.#parameters = parameters;
     this.#returns = returns;
+  }
+
+  get Returns() {
+    return this.#returns;
   }
 
   get type_name() {

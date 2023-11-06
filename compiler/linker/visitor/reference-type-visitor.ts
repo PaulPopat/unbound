@@ -1,82 +1,27 @@
 import {
   Component,
-  FunctionEntity,
   IsPrimitiveName,
-  Namespace,
+  MakeExpression,
   PrimitiveType,
   ReferenceType,
   SchemaEntity,
   StructEntity,
-  UseType,
-  UsingEntity,
-  Visitor,
 } from "@compiler/ast";
+import { TypeCollectorVisitor } from "./type-collector-visitor";
 import { LinkerError } from "../error";
 
-export class ReferenceTypeVisitor extends Visitor {
-  readonly #types: Record<string, StructEntity | SchemaEntity>;
-  #namespace: string = "";
-  #using: Array<string> = [];
-  #uses: Record<string, UseType> = {};
-
+export class ReferenceTypeVisitor extends TypeCollectorVisitor {
   constructor(types: Record<string, StructEntity | SchemaEntity>) {
-    super();
-    this.#types = types;
+    super(types);
   }
 
-  #find(name: string) {
-    if (this.#uses[name]) return this.#uses[name];
-
-    for (const area of this.#using) {
-      const full = `${area}.${name}`;
-      const possible = this.#types[full];
-      if (!possible) continue;
-
-      if (area === this.#namespace) return possible;
-
-      if (possible.Exported) return possible;
-    }
-
-    return undefined;
-  }
   get OperatesOn(): (new (...args: any[]) => Component)[] {
-    return [Namespace, UsingEntity, FunctionEntity, UseType, ReferenceType];
+    return [...super.OperatesOn, ReferenceType, MakeExpression];
   }
 
   Visit(target: Component) {
-    if (target instanceof Namespace) {
-      this.#namespace = target.Name;
-      this.#using = [target.Name];
-      return {
-        result: undefined,
-        cleanup: () => {
-          this.#using = [];
-          this.#uses = {};
-          this.#namespace = "";
-        },
-      };
-    } else if (target instanceof UsingEntity) {
-      this.#using = [...this.#using, target.Name];
-      return {
-        result: undefined,
-        cleanup: () => {},
-      };
-    } else if (target instanceof FunctionEntity) {
-      this.#uses = {};
-      return {
-        result: undefined,
-        cleanup: () => {
-          this.#uses = {};
-        },
-      };
-    } else if (target instanceof UseType) {
-      this.#uses[target.Name] = target;
-      return {
-        result: undefined,
-        cleanup: () => {},
-      };
-    } else if (target instanceof ReferenceType) {
-      const possible = this.#find(target.Name);
+    if (target instanceof ReferenceType) {
+      const possible = this.find(target.Name);
 
       if (possible)
         return {
@@ -89,11 +34,21 @@ export class ReferenceTypeVisitor extends Visitor {
           result: new PrimitiveType(target.Location, target.Name),
           cleanup: () => {},
         };
+    } else if (target instanceof MakeExpression) {
+      const result = this.find(target.Struct);
+      if (!(result instanceof StructEntity))
+        throw new LinkerError(target.Location, "Only structs may be made");
+      return {
+        result: new MakeExpression(
+          target.Location,
+          target.Struct,
+          target.Using,
+          result
+        ),
+        cleanup: () => {},
+      };
     }
 
-    throw new LinkerError(
-      target.Location,
-      "Component is not a recognised type"
-    );
+    return super.Visit(target);
   }
 }

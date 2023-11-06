@@ -34,7 +34,7 @@
       "@compiler/parser": ["./compiler/parser"],
       "@compiler/location": ["./compiler/location"],
       "@compiler/linker": ["./compiler/linker"],
-      "@compiler/ris": ["./compiler/ris"]
+      "@compiler/utils": ["./compiler/utils"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "rootDirs": [
       "./compiler"
