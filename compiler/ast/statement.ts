@@ -1,17 +1,20 @@
 import { Location } from "@compiler/location";
 import { Component, Visitor } from "./base";
 import { Expression } from "./expression";
+import { Type } from "./type";
 
 export abstract class Statement extends Component {}
 
 export class StoreStatement extends Statement {
   readonly #name: string;
   readonly #equals: Expression;
+  readonly #type?: Type;
 
-  constructor(ctx: Location, name: string, equals: Expression) {
+  constructor(ctx: Location, name: string, equals: Expression, type?: Type) {
     super(ctx);
     this.#name = name;
     this.#equals = equals;
+    this.#type = type;
   }
 
   get Name() {
@@ -30,6 +33,7 @@ export class StoreStatement extends Statement {
     return {
       name: this.#name,
       equals: this.#equals.json,
+      type: this.#type?.json,
     };
   }
 
@@ -37,7 +41,8 @@ export class StoreStatement extends Statement {
     return new StoreStatement(
       this.Location,
       this.#name,
-      this.#equals.type_safe_visited(Expression, visitor)
+      this.#equals.type_safe_visited(Expression, visitor),
+      this.#type
     );
   }
 }

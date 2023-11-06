@@ -2,7 +2,6 @@ import {
   Component,
   FunctionEntity,
   IsPrimitiveName,
-  LinkedReferenceType,
   Namespace,
   PrimitiveType,
   ReferenceType,
@@ -81,11 +80,7 @@ export class ReferenceTypeVisitor extends Visitor {
 
       if (possible)
         return {
-          result: new LinkedReferenceType(
-            target.Location,
-            target.Name,
-            possible
-          ),
+          result: new ReferenceType(target.Location, target.Name, possible),
           cleanup: () => {},
         };
 

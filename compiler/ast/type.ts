@@ -40,10 +40,12 @@ export class SchemaType extends Type {
 
 export class ReferenceType extends Type {
   readonly #name: string;
+  readonly #references?: Type;
 
-  constructor(ctx: Location, name: string) {
+  constructor(ctx: Location, name: string, references?: Type) {
     super(ctx);
     this.#name = name;
+    this.#references = references;
   }
 
   get Name() {
@@ -57,37 +59,12 @@ export class ReferenceType extends Type {
   get extra_json() {
     return {
       name: this.#name,
+      references: this.#references?.json,
     };
   }
 
   inner_visited(visitor: Visitor): Component {
-    return new ReferenceType(this.Location, this.#name);
-  }
-}
-
-export class LinkedReferenceType extends Type {
-  readonly #name: string;
-  readonly #references: Type;
-
-  constructor(ctx: Location, name: string, references: Type) {
-    super(ctx);
-    this.#name = name;
-    this.#references = references;
-  }
-
-  get type_name() {
-    return "linked_reference_type";
-  }
-
-  get extra_json() {
-    return {
-      name: this.#name,
-      references: this.#references.json,
-    };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new LinkedReferenceType(this.Location, this.#name, this.#references);
+    return new ReferenceType(this.Location, this.#name, this.#references);
   }
 }
 

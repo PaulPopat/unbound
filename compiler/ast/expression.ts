@@ -291,12 +291,23 @@ export class IsExpression extends Expression {
   }
 }
 
+type PossibleReferences =
+  | StoreStatement
+  | StructEntity
+  | FunctionEntity
+  | FunctionParameter<Type>
+  | ExternalFunctionDeclaration
+  | CountExpression<Statement>
+  | IterateExpression<Statement>;
+
 export class ReferenceExpression extends Expression {
   readonly #name: string;
+  readonly #references?: PossibleReferences;
 
-  constructor(ctx: Location, name: string) {
+  constructor(ctx: Location, name: string, references?: PossibleReferences) {
     super(ctx);
     this.#name = name;
+    this.#references = references;
   }
 
   get Name() {
@@ -310,50 +321,12 @@ export class ReferenceExpression extends Expression {
   get extra_json() {
     return {
       name: this.#name,
+      references: this.#references?.json,
     };
   }
 
   inner_visited(visitor: Visitor): Component {
-    return new ReferenceExpression(this.Location, this.#name);
-  }
-}
-
-type PossibleReferences =
-  | StoreStatement
-  | StructEntity
-  | FunctionEntity
-  | FunctionParameter<Type>
-  | ExternalFunctionDeclaration
-  | CountExpression<Statement>
-  | IterateExpression<Statement>;
-
-export class LinkedReferenceExpression extends Expression {
-  readonly #name: string;
-  readonly #references: PossibleReferences;
-
-  constructor(ctx: Location, name: string, references: PossibleReferences) {
-    super(ctx);
-    this.#name = name;
-    this.#references = references;
-  }
-
-  get type_name() {
-    return "linked_reference_expression";
-  }
-
-  get extra_json() {
-    return {
-      name: this.#name,
-      references: this.#references.json,
-    };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new LinkedReferenceExpression(
-      this.Location,
-      this.#name,
-      this.#references
-    );
+    return new ReferenceExpression(this.Location, this.#name, this.#references);
   }
 }
 

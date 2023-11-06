@@ -6,7 +6,6 @@ import {
   FunctionParameter,
   IfExpression,
   IterateExpression,
-  LinkedReferenceExpression,
   MakeExpression,
   Namespace,
   NextExpression,
@@ -176,11 +175,7 @@ export class ReferenceExpressionVisitor extends Visitor {
       }
 
       return {
-        result: new LinkedReferenceExpression(
-          target.Location,
-          target.Name,
-          map
-        ),
+        result: new ReferenceExpression(target.Location, target.Name, map),
         cleanup: () => {},
       };
     }
