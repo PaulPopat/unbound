@@ -4,7 +4,7 @@ import {
   FunctionEntity,
   Namespace,
   Visitor,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { LinkerError } from "../error";
 
 export class FunctionCollectingVisitor extends Visitor {

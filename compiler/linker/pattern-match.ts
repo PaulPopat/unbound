@@ -1,4 +1,4 @@
-import { Component } from "@compiler/ast";
+import { Component } from "#compiler/ast";
 import { LinkerError } from "./error";
 
 export function PatternMatch<
@@ -20,7 +20,10 @@ export function PatternMatch<
         }
       }
 
-      throw new LinkerError(input.Location, "No handler found");
+      throw new LinkerError(
+        input.Location,
+        `No handler found. This is definitely a bug with the compiler.\nFound: ${input.constructor.name}`
+      );
     };
   };
 }

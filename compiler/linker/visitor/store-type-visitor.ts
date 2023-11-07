@@ -23,7 +23,7 @@ import {
   StoreStatement,
   StructEntity,
   Type,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { TypeCollectorVisitor } from "./type-collector-visitor";
 import { PatternMatch } from "../pattern-match";
 import { LinkerError } from "../error";

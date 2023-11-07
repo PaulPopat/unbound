@@ -1,19 +1,15 @@
-import { Location } from "@compiler/location";
-import { Component, ComponentGroup, Visitor } from "./base";
-import { FunctionParameter, Property } from "./property";
+import { Location } from "#compiler/location";
+import { AstItem, Component, ComponentGroup, ComponentStore } from "./base";
 import { StructEntity } from ".";
 
 export abstract class Type extends Component {}
 
+@AstItem
 export class SchemaType extends Type {
   readonly #name: string;
-  readonly #properties: ComponentGroup<Property<Type>>;
+  readonly #properties: ComponentGroup;
 
-  constructor(
-    ctx: Location,
-    name: string,
-    properties: ComponentGroup<Property<Type>>
-  ) {
+  constructor(ctx: Location, name: string, properties: ComponentGroup) {
     super(ctx);
     this.#name = name;
     this.#properties = properties;
@@ -29,28 +25,25 @@ export class SchemaType extends Type {
       properties: this.#properties.json,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new SchemaType(
-      this.Location,
-      this.#name,
-      this.#properties.type_safe_visited(Property<Type>, visitor)
-    );
-  }
 }
 
+@AstItem
 export class ReferenceType extends Type {
   readonly #name: string;
-  readonly #references?: Type;
+  readonly #references?: number;
 
   constructor(ctx: Location, name: string, references?: Type) {
     super(ctx);
     this.#name = name;
-    this.#references = references;
+    this.#references = references?.Index;
   }
 
   get Name() {
     return this.#name;
+  }
+
+  get References() {
+    return this.#references ? ComponentStore.Get(this.#references) : undefined;
   }
 
   get type_name() {
@@ -60,12 +53,8 @@ export class ReferenceType extends Type {
   get extra_json() {
     return {
       name: this.#name,
-      references: this.#references?.json,
+      references: this.References?.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new ReferenceType(this.Location, this.#name, this.#references);
   }
 }
 
@@ -85,6 +74,7 @@ export function IsPrimitiveName(input: string): input is PrimitiveName {
   return PrimitiveNames.includes(input as any);
 }
 
+@AstItem
 export class PrimitiveType extends Type {
   readonly #name: PrimitiveName;
 
@@ -102,18 +92,19 @@ export class PrimitiveType extends Type {
       name: this.#name,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new PrimitiveType(this.Location, this.#name);
-  }
 }
 
+@AstItem
 export class IterableType extends Type {
-  readonly #type: Type;
+  readonly #type: number;
 
   constructor(ctx: Location, type: Type) {
     super(ctx);
-    this.#type = type;
+    this.#type = type.Index;
+  }
+
+  get Type() {
+    return ComponentStore.Get(this.#type);
   }
 
   get type_name() {
@@ -122,34 +113,28 @@ export class IterableType extends Type {
 
   get extra_json() {
     return {
-      type: this.#type.json,
+      type: this.Type.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new IterableType(
-      this.Location,
-      this.#type.type_safe_visited(Type, visitor)
-    );
   }
 }
 
+@AstItem
 export class FunctionType extends Type {
-  readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
-  readonly #returns: Type | StructEntity;
+  readonly #parameters: ComponentGroup;
+  readonly #returns: number;
 
   constructor(
     ctx: Location,
-    parameters: ComponentGroup<FunctionParameter<Type>>,
+    parameters: ComponentGroup,
     returns: Type | StructEntity
   ) {
     super(ctx);
     this.#parameters = parameters;
-    this.#returns = returns;
+    this.#returns = returns.Index;
   }
 
   get Returns() {
-    return this.#returns;
+    return ComponentStore.Get(this.#returns);
   }
 
   get type_name() {
@@ -159,24 +144,17 @@ export class FunctionType extends Type {
   get extra_json() {
     return {
       parameters: this.#parameters.json,
-      returns: this.#returns.json,
+      returns: this.Returns.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new FunctionType(
-      this.Location,
-      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
-      this.#returns.type_safe_visited(Type, visitor)
-    );
   }
 }
 
+@AstItem
 export class UseType extends Type {
   readonly #name: string;
-  readonly #constraints: ComponentGroup<Type>;
+  readonly #constraints: ComponentGroup;
 
-  constructor(ctx: Location, name: string, constraints: ComponentGroup<Type>) {
+  constructor(ctx: Location, name: string, constraints: ComponentGroup) {
     super(ctx);
     this.#name = name;
     this.#constraints = constraints;
@@ -186,8 +164,12 @@ export class UseType extends Type {
     return this.#name;
   }
 
+  get Constraints() {
+    return this.#constraints;
+  }
+
   get type_name() {
-    return "function_type";
+    return "use_type";
   }
 
   get extra_json() {
@@ -195,13 +177,5 @@ export class UseType extends Type {
       name: this.#name,
       constraints: this.#constraints.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new UseType(
-      this.Location,
-      this.#name,
-      this.#constraints.type_safe_visited(Type, visitor)
-    );
   }
 }

@@ -1,8 +1,7 @@
-import { Component, ComponentGroup, Visitor } from "./base";
-import { FunctionParameter, Property } from "./property";
+import { AstItem, Component, ComponentGroup, ComponentStore } from "./base";
+import { Property } from "./property";
 import { Type } from "./type";
-import { Statement } from "./statement";
-import { Location } from "@compiler/location";
+import { Location } from "#compiler/location";
 import { Expression } from "./expression";
 
 export abstract class Entity extends Component {
@@ -27,24 +26,25 @@ export abstract class Entity extends Component {
   }
 }
 
+@AstItem
 export class FunctionEntity extends Entity {
   readonly #name: string;
-  readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
-  readonly #returns: Type | undefined;
-  readonly #content: ComponentGroup<Statement>;
+  readonly #parameters: ComponentGroup;
+  readonly #returns: number | undefined;
+  readonly #content: ComponentGroup;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: string,
-    parameters: ComponentGroup<FunctionParameter<Type>>,
+    parameters: ComponentGroup,
     returns: Type | undefined,
-    content: ComponentGroup<Statement>
+    content: ComponentGroup
   ) {
     super(ctx, exported);
     this.#name = name;
     this.#parameters = parameters;
-    this.#returns = returns;
+    this.#returns = returns?.Index;
     this.#content = content;
   }
 
@@ -57,7 +57,7 @@ export class FunctionEntity extends Entity {
   }
 
   get Returns() {
-    return this.#returns;
+    return this.#returns ? ComponentStore.Get(this.#returns) : undefined;
   }
 
   get type_name() {
@@ -68,32 +68,22 @@ export class FunctionEntity extends Entity {
     return {
       name: this.#name,
       parameters: this.#parameters.json,
-      returns: this.#returns?.json ?? null,
+      returns: this.Returns?.json ?? null,
       content: this.#content.json,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new FunctionEntity(
-      this.Location,
-      this.Exported,
-      this.#name,
-      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
-      this.#returns?.visited(visitor),
-      this.#content.type_safe_visited(Statement, visitor)
-    );
-  }
 }
 
+@AstItem
 export class StructEntity extends Entity {
   readonly #name: string;
-  readonly #properties: ComponentGroup<Property<Type>>;
+  readonly #properties: ComponentGroup;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: string,
-    properties: ComponentGroup<Property<Type>>
+    properties: ComponentGroup
   ) {
     super(ctx, exported);
     this.#name = name;
@@ -106,14 +96,15 @@ export class StructEntity extends Entity {
 
   HasKey(key: string) {
     for (const property of this.#properties.iterator())
-      if (property.Name === key) return true;
+      if (property instanceof Property) if (property.Name === key) return true;
 
     return false;
   }
 
   GetKey(key: string) {
     for (const property of this.#properties.iterator())
-      if (property.Name === key) return property;
+      if (property instanceof Property)
+        if (property.Name === key) return property;
 
     return undefined;
   }
@@ -128,26 +119,18 @@ export class StructEntity extends Entity {
       properties: this.#properties.json,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new StructEntity(
-      this.Location,
-      this.Exported,
-      this.#name,
-      this.#properties.type_safe_visited(Property<Type>, visitor)
-    );
-  }
 }
 
+@AstItem
 export class SchemaEntity extends Entity {
   readonly #name: string;
-  readonly #properties: ComponentGroup<Property<Type>>;
+  readonly #properties: ComponentGroup;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: string,
-    properties: ComponentGroup<Property<Type>>
+    properties: ComponentGroup
   ) {
     super(ctx, exported);
     this.#name = name;
@@ -168,17 +151,9 @@ export class SchemaEntity extends Entity {
       properties: this.#properties.json,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new SchemaEntity(
-      this.Location,
-      this.Exported,
-      this.#name,
-      this.#properties.type_safe_visited(Property<Type>, visitor)
-    );
-  }
 }
 
+@AstItem
 export class UsingEntity extends Entity {
   readonly #name: string;
 
@@ -200,31 +175,32 @@ export class UsingEntity extends Entity {
       name: this.#name,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new UsingEntity(this.Location, this.Exported, this.#name);
-  }
 }
 
+@AstItem
 export class ExternalFunctionDeclaration extends Component {
   readonly #name: string;
-  readonly #parameters: ComponentGroup<FunctionParameter<Type>>;
-  readonly #returns: Type;
+  readonly #parameters: ComponentGroup;
+  readonly #returns: number;
 
   constructor(
     ctx: Location,
     name: string,
-    parameters: ComponentGroup<FunctionParameter<Type>>,
+    parameters: ComponentGroup,
     returns: Type
   ) {
     super(ctx);
     this.#name = name;
     this.#parameters = parameters;
-    this.#returns = returns;
+    this.#returns = returns.Index;
   }
 
   get Name() {
     return this.#name;
+  }
+
+  get Returns() {
+    return ComponentStore.Get(this.#returns);
   }
 
   get type_name() {
@@ -235,29 +211,21 @@ export class ExternalFunctionDeclaration extends Component {
     return {
       name: this.#name,
       parameters: this.#parameters.json,
-      returns: this.#returns.json,
+      returns: this.Returns.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new ExternalFunctionDeclaration(
-      this.Location,
-      this.#name,
-      this.#parameters.type_safe_visited(FunctionParameter<Type>, visitor),
-      this.#returns.type_safe_visited(Type, visitor)
-    );
   }
 }
 
+@AstItem
 export class LibEntity extends Entity {
   readonly #name: Expression;
-  readonly #content: ComponentGroup<ExternalFunctionDeclaration>;
+  readonly #content: ComponentGroup;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: Expression,
-    content: ComponentGroup<ExternalFunctionDeclaration>
+    content: ComponentGroup
   ) {
     super(ctx, exported);
     this.#name = name;
@@ -278,25 +246,13 @@ export class LibEntity extends Entity {
       content: this.#content.json,
     };
   }
-
-  inner_visited(visitor: Visitor): Component {
-    return new LibEntity(
-      this.Location,
-      this.Exported,
-      this.#name.type_safe_visited(Expression, visitor),
-      this.#content.type_safe_visited(ExternalFunctionDeclaration, visitor)
-    );
-  }
 }
 
+@AstItem
 export class SystemEntity extends Entity {
-  readonly #content: ComponentGroup<ExternalFunctionDeclaration>;
+  readonly #content: ComponentGroup;
 
-  constructor(
-    ctx: Location,
-    exported: boolean,
-    content: ComponentGroup<ExternalFunctionDeclaration>
-  ) {
+  constructor(ctx: Location, exported: boolean, content: ComponentGroup) {
     super(ctx, exported);
     this.#content = content;
   }
@@ -309,13 +265,5 @@ export class SystemEntity extends Entity {
     return {
       content: this.#content.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new SystemEntity(
-      this.Location,
-      this.Exported,
-      this.#content.type_safe_visited(ExternalFunctionDeclaration, visitor)
-    );
   }
 }

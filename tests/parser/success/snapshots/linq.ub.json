@@ -321,8 +321,7 @@
                     "else": [
                       {
                         "value": {
-                          "name": "next",
-                          "type": "reference_expression",
+                          "type": "next_expression",
                           "location": {
                             "file_name": "linq.ub",
                             "start": {

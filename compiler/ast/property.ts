@@ -1,14 +1,16 @@
-import { Location } from "@compiler/location";
-import { Component, Visitor } from "./base";
+import { Location } from "#compiler/location";
+import { AstItem, Component, ComponentStore } from "./base";
+import { Type } from "./type";
 
-export class Property<TType extends Component> extends Component {
+@AstItem
+export class Property extends Component {
   readonly #name: string;
-  readonly #type: TType;
+  readonly #type: number;
 
-  constructor(ctx: Location, name: string, type: TType) {
+  constructor(ctx: Location, name: string, type: Type) {
     super(ctx);
     this.#name = name;
-    this.#type = type;
+    this.#type = type.Index;
   }
 
   get Name() {
@@ -16,7 +18,7 @@ export class Property<TType extends Component> extends Component {
   }
 
   get Type() {
-    return this.#type;
+    return ComponentStore.Get(this.#type);
   }
 
   get type_name() {
@@ -26,23 +28,20 @@ export class Property<TType extends Component> extends Component {
   get extra_json() {
     return {
       name: this.#name,
-      type: this.#type.json,
+      type: this.Type.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new Property(this.Location, this.#name, this.#type.visited(visitor));
   }
 }
 
-export class FunctionParameter<TType extends Component> extends Component {
+@AstItem
+export class FunctionParameter extends Component {
   readonly #name: string;
-  readonly #type?: TType;
+  readonly #type?: number;
 
-  constructor(ctx: Location, name: string, type: TType | undefined) {
+  constructor(ctx: Location, name: string, type: Type | undefined) {
     super(ctx);
     this.#name = name;
-    this.#type = type;
+    this.#type = type?.Index;
   }
 
   get Name() {
@@ -50,7 +49,7 @@ export class FunctionParameter<TType extends Component> extends Component {
   }
 
   get Type() {
-    return this.#type;
+    return this.#type ? ComponentStore.Get(this.#type) : undefined;
   }
 
   get type_name() {
@@ -60,15 +59,7 @@ export class FunctionParameter<TType extends Component> extends Component {
   get extra_json() {
     return {
       name: this.#name,
-      type: this.#type?.json ?? null,
+      type: this.Type?.json ?? null,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new FunctionParameter(
-      this.Location,
-      this.#name,
-      this.#type?.visited(visitor)
-    );
   }
 }

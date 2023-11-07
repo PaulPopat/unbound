@@ -2,9 +2,8 @@ import {
   Component,
   ExternalFunctionDeclaration,
   FunctionEntity,
-  NextExpression,
   ReferenceExpression,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { LinkerError } from "../error";
 import { ReferenceCollectorVisitor } from "./reference-collector-visitor";
 
@@ -23,11 +22,6 @@ export class ReferenceExpressionVisitor extends ReferenceCollectorVisitor {
     if (target instanceof ReferenceExpression) {
       const map = this.find(target.Name);
       if (!map) {
-        if (target.Name === "next")
-          return {
-            result: new NextExpression(target.Location),
-            cleanup: () => {},
-          };
         throw new LinkerError(
           target.Location,
           `Could not resolve symbol ${target.Name}`

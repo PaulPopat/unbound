@@ -8,14 +8,10 @@ import {
   IterateExpression,
   MakeExpression,
   Namespace,
-  NextExpression,
-  ReferenceExpression,
-  Statement,
   StoreStatement,
-  Type,
   UsingEntity,
   Visitor,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { LinkerError } from "../error";
 
 export class ReferenceCollectorVisitor extends Visitor {
@@ -25,12 +21,9 @@ export class ReferenceCollectorVisitor extends Visitor {
   >;
   #namespace: string = "";
   #using: Array<string> = [];
-  #parameters: Record<string, FunctionParameter<Type>> = {};
+  #parameters: Record<string, FunctionParameter> = {};
   #locals: Array<
-    Record<
-      string,
-      StoreStatement | CountExpression<Statement> | IterateExpression<Statement>
-    >
+    Record<string, StoreStatement | CountExpression | IterateExpression>
   > = [];
 
   constructor(
@@ -64,10 +57,7 @@ export class ReferenceCollectorVisitor extends Visitor {
 
   #add_local(
     name: string,
-    statement:
-      | StoreStatement
-      | CountExpression<Statement>
-      | IterateExpression<Statement>
+    statement: StoreStatement | CountExpression | IterateExpression
   ) {
     this.#locals[this.#locals.length - 1][name] = statement;
   }
@@ -118,7 +108,7 @@ export class ReferenceCollectorVisitor extends Visitor {
     } else if (target instanceof FunctionEntity) {
       this.#parameters = [...target.Parameters.iterator()]
         .map((p) => {
-          if (!p.Type)
+          if (!(p instanceof FunctionParameter) || !p.Type)
             throw new LinkerError(
               p.Location,
               "Top level functions must have parameter types"
@@ -128,7 +118,7 @@ export class ReferenceCollectorVisitor extends Visitor {
         })
         .reduce(
           (c, [n, t]) => ({ ...c, [n]: t }),
-          {} as Record<string, FunctionParameter<Type>>
+          {} as Record<string, FunctionParameter>
         );
 
       return {

@@ -6,7 +6,7 @@ import {
   ReferenceType,
   SchemaEntity,
   StructEntity,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { TypeCollectorVisitor } from "./type-collector-visitor";
 import { LinkerError } from "../error";
 
@@ -34,6 +34,11 @@ export class ReferenceTypeVisitor extends TypeCollectorVisitor {
           result: new PrimitiveType(target.Location, target.Name),
           cleanup: () => {},
         };
+
+      throw new LinkerError(
+        target.Location,
+        `Could not resolve symbol: ${target.Name}`
+      );
     } else if (target instanceof MakeExpression) {
       const result = this.find(target.Struct);
       if (!(result instanceof StructEntity))

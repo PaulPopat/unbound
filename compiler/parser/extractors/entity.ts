@@ -8,7 +8,7 @@ import {
   StructEntity,
   SystemEntity,
   UsingEntity,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { TokenGroup } from "../token";
 import {
   BuildWhile,

@@ -1,20 +1,21 @@
-import { Location } from "@compiler/location";
-import { Component, Visitor } from "./base";
+import { Location } from "#compiler/location";
+import { AstItem, Component, ComponentStore } from "./base";
 import { Expression } from "./expression";
 import { Type } from "./type";
 
 export abstract class Statement extends Component {}
 
+@AstItem
 export class StoreStatement extends Statement {
   readonly #name: string;
-  readonly #equals: Expression;
-  readonly #type?: Type;
+  readonly #equals: number;
+  readonly #type?: number;
 
   constructor(ctx: Location, name: string, equals: Expression, type?: Type) {
     super(ctx);
     this.#name = name;
-    this.#equals = equals;
-    this.#type = type;
+    this.#equals = equals.Index;
+    this.#type = type?.Index;
   }
 
   get Name() {
@@ -22,7 +23,11 @@ export class StoreStatement extends Statement {
   }
 
   get Equals() {
-    return this.#equals;
+    return ComponentStore.Get(this.#equals);
+  }
+
+  get Type() {
+    return this.#type ? ComponentStore.Get(this.#type) : undefined;
   }
 
   get type_name() {
@@ -32,31 +37,23 @@ export class StoreStatement extends Statement {
   get extra_json() {
     return {
       name: this.#name,
-      equals: this.#equals.json,
-      type: this.#type?.json,
+      equals: this.Equals.json,
+      type: this.Type?.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new StoreStatement(
-      this.Location,
-      this.#name,
-      this.#equals.type_safe_visited(Expression, visitor),
-      this.#type
-    );
   }
 }
 
+@AstItem
 export class ReturnStatement extends Statement {
-  readonly #value: Expression;
+  readonly #value: number;
 
   constructor(ctx: Location, value: Expression) {
     super(ctx);
-    this.#value = value;
+    this.#value = value.Index;
   }
 
   get Value() {
-    return this.#value;
+    return ComponentStore.Get(this.#value);
   }
 
   get type_name() {
@@ -65,26 +62,28 @@ export class ReturnStatement extends Statement {
 
   get extra_json() {
     return {
-      value: this.#value.json,
+      value: this.Value.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new ReturnStatement(
-      this.Location,
-      this.#value.type_safe_visited(Expression, visitor)
-    );
   }
 }
 
+@AstItem
 export class AssignStatement extends Statement {
   readonly #name: string;
-  readonly #equals: Expression;
+  readonly #equals: number;
 
   constructor(ctx: Location, name: string, equals: Expression) {
     super(ctx);
     this.#name = name;
-    this.#equals = equals;
+    this.#equals = equals.Index;
+  }
+
+  get Name() {
+    return this.#name;
+  }
+
+  get Equals() {
+    return ComponentStore.Get(this.#equals);
   }
 
   get type_name() {
@@ -94,25 +93,22 @@ export class AssignStatement extends Statement {
   get extra_json() {
     return {
       name: this.#name,
-      equals: this.#equals.json,
+      equals: this.Equals.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new AssignStatement(
-      this.Location,
-      this.#name,
-      this.#equals.type_safe_visited(Expression, visitor)
-    );
   }
 }
 
+@AstItem
 export class PanicStatement extends Statement {
-  readonly #value: Expression;
+  readonly #value: number;
 
   constructor(ctx: Location, value: Expression) {
     super(ctx);
-    this.#value = value;
+    this.#value = value.Index;
+  }
+
+  get Value() {
+    return ComponentStore.Get(this.#value);
   }
 
   get type_name() {
@@ -121,14 +117,7 @@ export class PanicStatement extends Statement {
 
   get extra_json() {
     return {
-      value: this.#value.json,
+      value: this.Value.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new PanicStatement(
-      this.Location,
-      this.#value.type_safe_visited(Expression, visitor)
-    );
   }
 }

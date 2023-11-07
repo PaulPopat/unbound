@@ -4,7 +4,7 @@ import {
   SchemaEntity,
   StructEntity,
   Visitor,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { LinkerError } from "../error";
 
 export class TypeCollectingVisitor extends Visitor {

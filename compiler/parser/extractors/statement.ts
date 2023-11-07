@@ -5,7 +5,7 @@ import {
   ReturnStatement,
   Statement,
   StoreStatement,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
 import { BuildWhile, ExpectNext, NextBlock } from "../utils";
@@ -63,9 +63,7 @@ export function ExtractStatement(tokens: TokenGroup): Statement {
   }
 }
 
-export function ExtractStatementBlock(
-  tokens: TokenGroup
-): ComponentGroup<Statement> {
+export function ExtractStatementBlock(tokens: TokenGroup): ComponentGroup {
   return new ComponentGroup(
     ...BuildWhile(tokens, "{", ";", "}", () => ExtractStatement(tokens))
   );

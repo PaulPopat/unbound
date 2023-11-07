@@ -11,11 +11,12 @@ import {
   LambdaExpression,
   LiteralExpression,
   MakeExpression,
+  NextExpression,
   Operator,
   OperatorExpression,
   Operators,
   ReferenceExpression,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
 import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";
@@ -92,6 +93,8 @@ export function ExtractExpression(
         text,
         ExtractExpression(tokens, look_for)
       );
+    } else if (text === "next") {
+      result = new NextExpression(current.Location);
     } else if (text === "if") {
       const { check, if_block, else_block } = ExtractIf(tokens);
       result = new IfExpression(current.Location, check, if_block, else_block);

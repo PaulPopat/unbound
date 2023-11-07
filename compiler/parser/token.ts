@@ -1,4 +1,4 @@
-import { Location } from "@compiler/location";
+import { Location } from "#compiler/location";
 
 export class Token {
   readonly #location: Location;

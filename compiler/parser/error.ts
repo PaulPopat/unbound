@@ -1,4 +1,4 @@
-import { Location } from "@compiler/location";
+import { Location } from "#compiler/location";
 import { Token } from "./token";
 
 export class ParserError extends Error {

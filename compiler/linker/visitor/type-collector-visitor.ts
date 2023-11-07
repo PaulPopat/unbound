@@ -7,8 +7,7 @@ import {
   UseType,
   UsingEntity,
   Visitor,
-} from "@compiler/ast";
-import { LinkerError } from "../error";
+} from "#compiler/ast";
 import { PatternMatch } from "../pattern-match";
 
 export class TypeCollectorVisitor extends Visitor {
@@ -75,6 +74,8 @@ export class TypeCollectorVisitor extends Visitor {
         };
       },
       (use) => {
+        console.log(use.Name);
+
         this.#uses[use.Name] = use;
         return {
           result: undefined,

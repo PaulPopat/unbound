@@ -8,23 +8,25 @@ import {
   SchemaType,
   Type,
   UseType,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { TokenGroup } from "../token";
 import { BuildWhile, BuildWhileOnStart, ExpectNext, NextBlock } from "../utils";
 
 export function ExtractFunctionParameter(
   tokens: TokenGroup
-): FunctionParameter<Type> {
+): FunctionParameter {
   const name = NextBlock(tokens);
-  if (tokens.peek()?.Text !== ":")
+  if (tokens.peek()?.Text !== ":") {
+    debugger;
     return new FunctionParameter(name.Location, name.Text, undefined);
+  }
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 
   return new FunctionParameter(name.Location, name.Text, type);
 }
 
-export function ExtractProperty(tokens: TokenGroup): Property<Type> {
+export function ExtractProperty(tokens: TokenGroup): Property {
   const name = NextBlock(tokens);
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);

@@ -1,4 +1,4 @@
-import { ComponentGroup, Entity, Namespace } from "@compiler/ast";
+import { ComponentGroup, Namespace } from "#compiler/ast";
 import { SplitTokens } from "./tokeniser";
 import { TokenGroup } from "./token";
 import { ParserError } from "./error";
@@ -37,10 +37,7 @@ function ExtractNamespace(tokens: TokenGroup, exported = false): Namespace {
   );
 }
 
-export function ParseUnbound(
-  input: string,
-  file_name: string
-): ComponentGroup<Namespace> {
+export function ParseUnbound(input: string, file_name: string): ComponentGroup {
   const tokens = SplitTokens(input, file_name);
   const group = new TokenGroup(tokens);
 

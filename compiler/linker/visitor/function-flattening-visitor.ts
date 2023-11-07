@@ -5,7 +5,7 @@ import {
   InvokationExpression,
   ReferenceExpression,
   StructEntity,
-} from "@compiler/ast";
+} from "#compiler/ast";
 import { ReferenceCollectorVisitor } from "./reference-collector-visitor";
 import { LinkerError } from "../error";
 

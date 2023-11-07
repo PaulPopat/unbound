@@ -1,17 +1,17 @@
-import { Location } from "@compiler/location";
-import { Component, ComponentGroup, Visitor } from "./base";
-import { Entity } from "./entity";
+import { Location } from "#compiler/location";
+import { AstItem, Component, ComponentGroup } from "./base";
 
+@AstItem
 export class Namespace extends Component {
   readonly #name: string;
   readonly #exported: boolean;
-  readonly #contents: ComponentGroup<Entity>;
+  readonly #contents: ComponentGroup;
 
   constructor(
     ctx: Location,
     exported: boolean,
     name: string,
-    contents: ComponentGroup<Entity>
+    contents: ComponentGroup
   ) {
     super(ctx);
     this.#name = name;
@@ -41,14 +41,5 @@ export class Namespace extends Component {
       exported: this.#exported,
       contents: this.#contents.json,
     };
-  }
-
-  inner_visited(visitor: Visitor): Component {
-    return new Namespace(
-      this.Location,
-      this.#exported,
-      this.#name,
-      this.#contents.type_safe_visited(Entity, visitor)
-    );
   }
 }
