@@ -95,7 +95,7 @@
     }
   },
   {
-    "name": "updated",
+    "name": "a",
     "equals": 5,
     "type": "store_statement",
     "location": {
@@ -172,7 +172,7 @@
     }
   },
   {
-    "name": "TestFn",
+    "name": "",
     "parameters": [
       1
     ],

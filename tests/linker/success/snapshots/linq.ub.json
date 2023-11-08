@@ -309,7 +309,7 @@
     }
   },
   {
-    "name": "select",
+    "name": "d",
     "parameters": [
       3,
       9
@@ -705,7 +705,7 @@
     }
   },
   {
-    "name": "where",
+    "name": "e",
     "parameters": [
       23,
       28
@@ -811,7 +811,7 @@
     }
   },
   {
-    "name": "User",
+    "name": "b",
     "properties": [
       48
     ],
@@ -1158,7 +1158,7 @@
     }
   },
   {
-    "name": "sort_users",
+    "name": "c",
     "parameters": [
       52
     ],

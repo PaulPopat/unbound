@@ -25,6 +25,7 @@
     "#compiler/ast": "./dist/compiler/ast/index.js",
     "#compiler/parser": "./dist/compiler/parser/index.js",
     "#compiler/location": "./dist/compiler/location/index.js",
-    "#compiler/linker": "./dist/compiler/linker/index.js"
+    "#compiler/linker": "./dist/compiler/linker/index.js",
+    "#compiler/writer": "./dist/compiler/writer/index.js"
   }
 }

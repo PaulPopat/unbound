@@ -19,7 +19,7 @@ const _children = Symbol();
 
 export function AstItem(
   target: new (...args: any[]) => Component,
-  context: ClassDecoratorContext
+  _: ClassDecoratorContext
 ) {
   const result = function (...args: any[]) {
     const instance = new target(...args);
@@ -69,6 +69,8 @@ export abstract class Component {
       location: this.#location.json,
     };
   }
+
+  // abstract toC(): string;
 }
 
 export class ComponentStore {
@@ -170,6 +172,10 @@ export class ComponentGroup {
     for (const component of this.#components)
       yield ComponentStore.Get(component);
   }
+
+  // toC(joiner: string) {
+  //   return [...this.iterator()].map((c) => c.toC()).join(joiner);
+  // }
 }
 
 export class Ast {

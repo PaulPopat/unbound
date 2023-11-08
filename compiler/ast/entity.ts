@@ -3,6 +3,7 @@ import { Property } from "./property";
 import { Type } from "./type";
 import { Location } from "#compiler/location";
 import { Expression } from "./expression";
+import { WriterError } from "./error";
 
 export abstract class Entity extends Component {
   readonly #exported: boolean;
@@ -55,9 +56,12 @@ export class FunctionEntity extends Entity {
   get Parameters() {
     return this.#parameters;
   }
-
   get Returns() {
     return this.#returns ? ComponentStore.Get(this.#returns) : undefined;
+  }
+
+  get Content() {
+    return this.#content;
   }
 
   get type_name() {
@@ -92,6 +96,10 @@ export class StructEntity extends Entity {
 
   get Name() {
     return this.#name;
+  }
+
+  get Properties() {
+    return this.#properties;
   }
 
   HasKey(key: string) {

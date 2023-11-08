@@ -15,9 +15,8 @@
     }
   },
   {
-    "name": "Test",
+    "name": "",
     "parameters": [],
-    "returns": 0,
     "content": [],
     "exported": true,
     "type": "function_entity",

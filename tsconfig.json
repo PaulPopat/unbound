@@ -33,7 +33,8 @@
       "#compiler/ast": ["./compiler/ast"],
       "#compiler/parser": ["./compiler/parser"],
       "#compiler/location": ["./compiler/location"],
-      "#compiler/linker": ["./compiler/linker"]
+      "#compiler/linker": ["./compiler/linker"],
+      "#compiler/writer": ["./compiler/writer"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "rootDirs": [
       "./compiler",
