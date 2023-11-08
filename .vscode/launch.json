@@ -9,8 +9,8 @@
       "request": "launch",
       "name": "Debug Current Test",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": ["-t", "${fileBasename}"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test", "${file}"],
       "console": "integratedTerminal"
     }
   ]

@@ -2,8 +2,10 @@ import { LinkUnbound } from "#compiler/linker";
 import { ParseUnbound } from "#compiler/parser";
 import Fs from "fs";
 import Path from "path";
-import { Ast } from "#compiler/ast";
+import { Ast, ComponentStore } from "#compiler/ast";
 import expect from "expect";
+
+const test_file = process.argv[1] ? Path.resolve(process.argv[1]) : undefined;
 
 function try_read(path: string) {
   try {
@@ -31,6 +33,8 @@ function it(name: string, handler: () => void) {
     console.log(`Error for: ${describing} -> ${name}`);
     console.error(err);
     errors = true;
+  } finally {
+    ComponentStore.Clear();
   }
 }
 
@@ -41,11 +45,14 @@ function snapshot_test(
 ) {
   if (file_name === "snapshots") return;
   const path = Path.resolve(dirname, file_name);
+
+  if (test_file && test_file !== path) return;
   const expected_path = Path.resolve(dirname, "snapshots", file_name + ".json");
 
   it(file_name, () => {
     const content = Fs.readFileSync(path, "utf-8");
-    const result = process(content);
+    let result = process(content);
+    if (typeof result !== "string") result = ComponentStore.Json;
     const expected = try_read(expected_path);
 
     if (!expected) {
@@ -64,7 +71,7 @@ describe("parser", () => {
   const success = Path.resolve(base, "success");
   const error = Path.resolve(base, "errors");
   for (const file of Fs.readdirSync(success)) {
-    snapshot_test(file, success, (d) => ParseUnbound(d, file).json);
+    snapshot_test(file, success, (d) => ParseUnbound(d, file));
   }
 
   for (const file of Fs.readdirSync(error)) {
@@ -85,10 +92,8 @@ describe("linker", () => {
   const success = Path.resolve(base, "success");
   const error = Path.resolve(base, "errors");
   for (const file of Fs.readdirSync(success)) {
-    snapshot_test(
-      file,
-      success,
-      (d) => LinkUnbound(new Ast(ParseUnbound(d, file))).json
+    snapshot_test(file, success, (d) =>
+      LinkUnbound(new Ast(ParseUnbound(d, file)))
     );
   }
 

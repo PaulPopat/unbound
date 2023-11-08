@@ -14,7 +14,7 @@ import {
 } from "#compiler/ast";
 import { LinkerError } from "../error";
 
-export class ReferenceCollectorVisitor extends Visitor {
+export class ReferenceNameIndexingVisitor extends Visitor {
   readonly #functions: Record<
     string,
     FunctionEntity | ExternalFunctionDeclaration
@@ -24,7 +24,7 @@ export class ReferenceCollectorVisitor extends Visitor {
   #parameters: Record<string, FunctionParameter> = {};
   #locals: Array<
     Record<string, StoreStatement | CountExpression | IterateExpression>
-  > = [];
+  > = [{}];
 
   constructor(
     functions: Record<string, FunctionEntity | ExternalFunctionDeclaration>
@@ -130,6 +130,10 @@ export class ReferenceCollectorVisitor extends Visitor {
       };
     } else if (target instanceof StoreStatement) {
       this.#add_local(target.Name, target);
+      return {
+        result: undefined,
+        cleanup: () => {},
+      };
     } else if (
       target instanceof CountExpression ||
       target instanceof IterateExpression

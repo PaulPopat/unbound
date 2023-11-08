@@ -37,8 +37,8 @@ export class StoreStatement extends Statement {
   get extra_json() {
     return {
       name: this.#name,
-      equals: this.Equals.json,
-      type: this.Type?.json,
+      equals: this.#equals,
+      type: this.#type,
     };
   }
 }
@@ -62,7 +62,7 @@ export class ReturnStatement extends Statement {
 
   get extra_json() {
     return {
-      value: this.Value.json,
+      value: this.#value,
     };
   }
 }
@@ -93,7 +93,7 @@ export class AssignStatement extends Statement {
   get extra_json() {
     return {
       name: this.#name,
-      equals: this.Equals.json,
+      equals: this.#equals,
     };
   }
 }
@@ -117,7 +117,7 @@ export class PanicStatement extends Statement {
 
   get extra_json() {
     return {
-      value: this.Value.json,
+      value: this.#value,
     };
   }
 }

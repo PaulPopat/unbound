@@ -1,56 +1,91 @@
 [
   {
+    "name": "char",
+    "type": "reference_type",
+    "location": {
+      "file_name": "schema with two parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 10
+      },
+      "last": {
+        "line": 2,
+        "column": 14
+      }
+    }
+  },
+  {
+    "name": "test",
+    "type_name": 0,
+    "type": "property",
+    "location": {
+      "file_name": "schema with two parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 4
+      },
+      "last": {
+        "line": 2,
+        "column": 8
+      }
+    }
+  },
+  {
+    "name": "bool",
+    "type": "reference_type",
+    "location": {
+      "file_name": "schema with two parameters.ub",
+      "start": {
+        "line": 3,
+        "column": 11
+      },
+      "last": {
+        "line": 3,
+        "column": 15
+      }
+    }
+  },
+  {
+    "name": "other",
+    "type_name": 2,
+    "type": "property",
+    "location": {
+      "file_name": "schema with two parameters.ub",
+      "start": {
+        "line": 3,
+        "column": 4
+      },
+      "last": {
+        "line": 3,
+        "column": 9
+      }
+    }
+  },
+  {
+    "name": "Test",
+    "properties": [
+      1,
+      3
+    ],
+    "exported": false,
+    "type": "schema_entity",
+    "location": {
+      "file_name": "schema with two parameters.ub",
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "last": {
+        "line": 1,
+        "column": 8
+      }
+    }
+  },
+  {
     "name": "Test",
     "exported": false,
     "contents": [
-      {
-        "name": "Test",
-        "properties": [
-          {
-            "name": "test",
-            "type": "property",
-            "location": {
-              "file_name": "schema with two parameters.ub",
-              "start": {
-                "line": 2,
-                "column": 4
-              },
-              "last": {
-                "line": 2,
-                "column": 8
-              }
-            }
-          },
-          {
-            "name": "other",
-            "type": "property",
-            "location": {
-              "file_name": "schema with two parameters.ub",
-              "start": {
-                "line": 3,
-                "column": 4
-              },
-              "last": {
-                "line": 3,
-                "column": 9
-              }
-            }
-          }
-        ],
-        "exported": false,
-        "type": "schema_entity",
-        "location": {
-          "file_name": "schema with two parameters.ub",
-          "start": {
-            "line": 1,
-            "column": 2
-          },
-          "last": {
-            "line": 1,
-            "column": 8
-          }
-        }
-      }
+      4
     ],
     "type": "namespace",
     "location": {

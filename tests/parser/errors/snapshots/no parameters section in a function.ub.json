@@ -1,1 +1,1 @@
-"Error: Parsing Error:\nUnexpected symbol. Expected one of '(' but received ':'\nFile: no parameters section in a function.ub\nLine: 1\nColumn: 9"
+"Error: Unexpected symbol. Expected one of '(' but received ':'\nFile: no parameters section in a function.ub\nLine: 1\nColumn: 9"

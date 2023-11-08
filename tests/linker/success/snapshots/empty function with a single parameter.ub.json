@@ -1,57 +1,76 @@
 [
   {
+    "name": "bool",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "empty function with a single parameter.ub",
+      "start": {
+        "line": 1,
+        "column": 17
+      },
+      "last": {
+        "line": 1,
+        "column": 21
+      }
+    }
+  },
+  {
+    "name": "test",
+    "type_name": 0,
+    "type": "function_parameter",
+    "location": {
+      "file_name": "empty function with a single parameter.ub",
+      "start": {
+        "line": 1,
+        "column": 11
+      },
+      "last": {
+        "line": 1,
+        "column": 15
+      }
+    }
+  },
+  {
+    "name": "int",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "empty function with a single parameter.ub",
+      "start": {
+        "line": 1,
+        "column": 24
+      },
+      "last": {
+        "line": 1,
+        "column": 27
+      }
+    }
+  },
+  {
+    "name": "Test",
+    "parameters": [
+      1
+    ],
+    "returns": 2,
+    "content": [],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "empty function with a single parameter.ub",
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "last": {
+        "line": 1,
+        "column": 4
+      }
+    }
+  },
+  {
     "name": "Test",
     "exported": false,
     "contents": [
-      {
-        "name": "Test",
-        "parameters": [
-          {
-            "name": "test",
-            "type": "function_parameter",
-            "location": {
-              "file_name": "empty function with a single parameter.ub",
-              "start": {
-                "line": 1,
-                "column": 11
-              },
-              "last": {
-                "line": 1,
-                "column": 15
-              }
-            }
-          }
-        ],
-        "returns": {
-          "name": "int",
-          "type": "primitive_type",
-          "location": {
-            "file_name": "empty function with a single parameter.ub",
-            "start": {
-              "line": 1,
-              "column": 24
-            },
-            "last": {
-              "line": 1,
-              "column": 27
-            }
-          }
-        },
-        "content": [],
-        "exported": false,
-        "type": "function_entity",
-        "location": {
-          "file_name": "empty function with a single parameter.ub",
-          "start": {
-            "line": 1,
-            "column": 2
-          },
-          "last": {
-            "line": 1,
-            "column": 4
-          }
-        }
-      }
+      3
     ],
     "type": "namespace",
     "location": {

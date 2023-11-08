@@ -28,7 +28,7 @@ export class Property extends Component {
   get extra_json() {
     return {
       name: this.#name,
-      type: this.Type.json,
+      type_name: this.#type,
     };
   }
 }
@@ -49,7 +49,7 @@ export class FunctionParameter extends Component {
   }
 
   get Type() {
-    return this.#type ? ComponentStore.Get(this.#type) : undefined;
+    return this.#type != null ? ComponentStore.Get(this.#type) : undefined;
   }
 
   get type_name() {
@@ -59,7 +59,7 @@ export class FunctionParameter extends Component {
   get extra_json() {
     return {
       name: this.#name,
-      type: this.Type?.json ?? null,
+      type_name: this.#type ?? null,
     };
   }
 }

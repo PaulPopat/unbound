@@ -68,7 +68,7 @@ export class FunctionEntity extends Entity {
     return {
       name: this.#name,
       parameters: this.#parameters.json,
-      returns: this.Returns?.json ?? null,
+      returns: this.#returns,
       content: this.#content.json,
     };
   }
@@ -211,7 +211,7 @@ export class ExternalFunctionDeclaration extends Component {
     return {
       name: this.#name,
       parameters: this.#parameters.json,
-      returns: this.Returns.json,
+      returns: this.#returns,
     };
   }
 }

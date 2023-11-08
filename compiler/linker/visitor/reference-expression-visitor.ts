@@ -5,9 +5,9 @@ import {
   ReferenceExpression,
 } from "#compiler/ast";
 import { LinkerError } from "../error";
-import { ReferenceCollectorVisitor } from "./reference-collector-visitor";
+import { ReferenceNameIndexingVisitor } from "./reference-name-indexing-visitor";
 
-export class ReferenceExpressionVisitor extends ReferenceCollectorVisitor {
+export class ReferenceExpressionVisitor extends ReferenceNameIndexingVisitor {
   constructor(
     functions: Record<string, FunctionEntity | ExternalFunctionDeclaration>
   ) {

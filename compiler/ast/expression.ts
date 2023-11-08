@@ -98,9 +98,9 @@ export class OperatorExpression extends Expression {
 
   get extra_json() {
     return {
-      left: this.Left.json,
+      left: this.#left,
       operator: this.#operator,
-      right: this.Right.json,
+      right: this.#right,
     };
   }
 }
@@ -141,7 +141,7 @@ export class IfExpression<TStatement extends Component> extends Expression {
 
   get extra_json() {
     return {
-      check: this.Check.json,
+      check: this.#check,
       if: this.#if.json,
       else: this.#else.json,
     };
@@ -184,7 +184,7 @@ export class CountExpression extends Expression {
 
   get extra_json() {
     return {
-      to: this.To.json,
+      to: this.#to,
       as: this.#as,
       using: this.#using.json,
     };
@@ -227,7 +227,7 @@ export class IterateExpression extends Expression {
 
   get extra_json() {
     return {
-      over: this.Over.json,
+      over: this.#over,
       as: this.#as,
       using: this.#using.json,
     };
@@ -303,8 +303,8 @@ export class IsExpression extends Expression {
 
   get extra_json() {
     return {
-      left: this.Left.json,
-      right: this.Right.json,
+      left: this.#left,
+      right: this.#right,
     };
   }
 }
@@ -335,7 +335,7 @@ export class ReferenceExpression extends Expression {
   get extra_json() {
     return {
       name: this.#name,
-      references: this.References?.json,
+      references: this.#references,
     };
   }
 }
@@ -359,7 +359,7 @@ export class BracketsExpression extends Expression {
 
   get extra_json() {
     return {
-      expression: this.Expression.json,
+      expression: this.#expression,
     };
   }
 }
@@ -394,7 +394,7 @@ export class LambdaExpression extends Expression {
   get extra_json() {
     return {
       parameters: this.#parameters.json,
-      expression: this.Expression.json,
+      expression: this.#expression,
     };
   }
 }
@@ -424,7 +424,7 @@ export class InvokationExpression extends Expression {
 
   get extra_json() {
     return {
-      subject: this.Subject.json,
+      subject: this.#subject,
       parameters: this.#parameters.json,
     };
   }
@@ -455,7 +455,7 @@ export class AccessExpression extends Expression {
 
   get extra_json() {
     return {
-      subject: this.Subject.json,
+      subject: this.#subject,
       target: this.#target,
     };
   }

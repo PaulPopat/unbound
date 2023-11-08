@@ -1,25 +1,26 @@
 [
   {
     "name": "Test",
+    "properties": [],
+    "exported": true,
+    "type": "struct_entity",
+    "location": {
+      "file_name": "empty public struct.ub",
+      "start": {
+        "line": 1,
+        "column": 9
+      },
+      "last": {
+        "line": 1,
+        "column": 15
+      }
+    }
+  },
+  {
+    "name": "Test",
     "exported": false,
     "contents": [
-      {
-        "name": "Test",
-        "properties": [],
-        "exported": true,
-        "type": "struct_entity",
-        "location": {
-          "file_name": "empty public struct.ub",
-          "start": {
-            "line": 1,
-            "column": 9
-          },
-          "last": {
-            "line": 1,
-            "column": 15
-          }
-        }
-      }
+      0
     ],
     "type": "namespace",
     "location": {

@@ -1,0 +1,7 @@
+namespace Test {
+  fn TestFn(input: int): bool {
+    store updated = input + 1i;
+
+    return updated == 2i;
+  }
+}

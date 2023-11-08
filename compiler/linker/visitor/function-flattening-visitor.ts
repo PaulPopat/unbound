@@ -6,10 +6,10 @@ import {
   ReferenceExpression,
   StructEntity,
 } from "#compiler/ast";
-import { ReferenceCollectorVisitor } from "./reference-collector-visitor";
+import { ReferenceNameIndexingVisitor } from "./reference-name-indexing-visitor";
 import { LinkerError } from "../error";
 
-export class FunctionFlatteningVisitor extends ReferenceCollectorVisitor {
+export class FunctionFlatteningVisitor extends ReferenceNameIndexingVisitor {
   get OperatesOn(): (new (...args: any[]) => Component)[] {
     return [...super.OperatesOn, InvokationExpression];
   }

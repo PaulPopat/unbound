@@ -7,7 +7,7 @@ import {
 } from "#compiler/ast";
 import { LinkerError } from "../error";
 
-export class TypeCollectingVisitor extends Visitor {
+export class TypeNameIndexingVisitor extends Visitor {
   #types: Record<string, StructEntity | SchemaEntity> = {};
   #namespace: string = "";
 

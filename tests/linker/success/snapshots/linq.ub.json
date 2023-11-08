@@ -1,7 +1,7 @@
 [
   {
     "name": "any",
-    "type": "reference_type",
+    "type": "primitive_type",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -65,6 +65,7 @@
   },
   {
     "name": "T",
+    "references": 1,
     "type": "reference_type",
     "location": {
       "file_name": "linq.ub",
@@ -96,7 +97,7 @@
   },
   {
     "name": "any",
-    "type": "reference_type",
+    "type": "primitive_type",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -163,6 +164,7 @@
   },
   {
     "name": "R",
+    "references": 7,
     "type": "reference_type",
     "location": {
       "file_name": "linq.ub",
@@ -193,6 +195,7 @@
   },
   {
     "name": "self",
+    "references": 3,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -208,6 +211,7 @@
   },
   {
     "name": "item",
+    "references": 17,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -238,8 +242,10 @@
     }
   },
   {
-    "subject": 14,
-    "parameters": [],
+    "subject": 9,
+    "parameters": [
+      13
+    ],
     "type": "invokation_expression",
     "location": {
       "file_name": "linq.ub",
@@ -328,7 +334,7 @@
   },
   {
     "name": "any",
-    "type": "reference_type",
+    "type": "primitive_type",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -392,6 +398,7 @@
   },
   {
     "name": "T",
+    "references": 21,
     "type": "reference_type",
     "location": {
       "file_name": "linq.ub",
@@ -423,7 +430,7 @@
   },
   {
     "name": "bool",
-    "type": "reference_type",
+    "type": "primitive_type",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -472,6 +479,7 @@
   },
   {
     "name": "T",
+    "references": 21,
     "type": "reference_type",
     "location": {
       "file_name": "linq.ub",
@@ -502,6 +510,7 @@
   },
   {
     "name": "self",
+    "references": 23,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -517,6 +526,7 @@
   },
   {
     "name": "item",
+    "references": 41,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -547,8 +557,10 @@
     }
   },
   {
-    "subject": 33,
-    "parameters": [],
+    "subject": 28,
+    "parameters": [
+      32
+    ],
     "type": "invokation_expression",
     "location": {
       "file_name": "linq.ub",
@@ -564,6 +576,7 @@
   },
   {
     "name": "item",
+    "references": 41,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -753,7 +766,7 @@
   },
   {
     "name": "char",
-    "type": "reference_type",
+    "type": "primitive_type",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -818,6 +831,7 @@
   },
   {
     "name": "User",
+    "references": 49,
     "type": "reference_type",
     "location": {
       "file_name": "linq.ub",
@@ -864,6 +878,7 @@
   },
   {
     "name": "self",
+    "references": 52,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
@@ -990,8 +1005,9 @@
     }
   },
   {
-    "subject": 54,
+    "subject": 43,
     "parameters": [
+      53,
       60
     ],
     "type": "invokation_expression",
@@ -1108,8 +1124,9 @@
     }
   },
   {
-    "subject": 62,
+    "subject": 19,
     "parameters": [
+      61,
       67
     ],
     "type": "invokation_expression",

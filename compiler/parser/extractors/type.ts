@@ -17,7 +17,6 @@ export function ExtractFunctionParameter(
 ): FunctionParameter {
   const name = NextBlock(tokens);
   if (tokens.peek()?.Text !== ":") {
-    debugger;
     return new FunctionParameter(name.Location, name.Text, undefined);
   }
   ExpectNext(tokens, ":");

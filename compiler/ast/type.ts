@@ -53,7 +53,7 @@ export class ReferenceType extends Type {
   get extra_json() {
     return {
       name: this.#name,
-      references: this.References?.json,
+      references: this.#references,
     };
   }
 }
@@ -113,7 +113,7 @@ export class IterableType extends Type {
 
   get extra_json() {
     return {
-      type: this.Type.json,
+      type_name: this.#type,
     };
   }
 }
@@ -144,7 +144,7 @@ export class FunctionType extends Type {
   get extra_json() {
     return {
       parameters: this.#parameters.json,
-      returns: this.Returns.json,
+      returns: this.#returns,
     };
   }
 }

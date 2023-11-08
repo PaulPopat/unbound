@@ -1,41 +1,43 @@
 [
   {
+    "name": "int",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "empty function.ub",
+      "start": {
+        "line": 1,
+        "column": 13
+      },
+      "last": {
+        "line": 1,
+        "column": 16
+      }
+    }
+  },
+  {
+    "name": "Test",
+    "parameters": [],
+    "returns": 0,
+    "content": [],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "empty function.ub",
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "last": {
+        "line": 1,
+        "column": 4
+      }
+    }
+  },
+  {
     "name": "Test",
     "exported": false,
     "contents": [
-      {
-        "name": "Test",
-        "parameters": [],
-        "returns": {
-          "name": "int",
-          "type": "primitive_type",
-          "location": {
-            "file_name": "empty function.ub",
-            "start": {
-              "line": 1,
-              "column": 13
-            },
-            "last": {
-              "line": 1,
-              "column": 16
-            }
-          }
-        },
-        "content": [],
-        "exported": false,
-        "type": "function_entity",
-        "location": {
-          "file_name": "empty function.ub",
-          "start": {
-            "line": 1,
-            "column": 2
-          },
-          "last": {
-            "line": 1,
-            "column": 4
-          }
-        }
-      }
+      1
     ],
     "type": "namespace",
     "location": {

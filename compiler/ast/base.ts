@@ -3,6 +3,8 @@ import { AsyncLocalStorage } from "node:async_hooks";
 
 const component_context = new AsyncLocalStorage<{ index: number }>();
 
+const visiting_context = new AsyncLocalStorage<Array<number>>();
+
 export abstract class Visitor {
   abstract get OperatesOn(): Array<new (...args: any[]) => Component>;
 
@@ -26,14 +28,12 @@ export function AstItem(
       component_context.getStore()?.index ?? ComponentStore.Register(instance);
     instance[_index] = index;
     instance[_children] = (
-      args.filter((a) => a instanceof Component) as Array<Component>
-    )
-      .concat(
-        ...args
-          .filter((a) => a instanceof ComponentGroup)
-          .flatMap((a: ComponentGroup) => [...a.iterator()])
-      )
-      .map((c) => c.Index);
+      args.filter(
+        (a) => a instanceof Component || a instanceof ComponentGroup
+      ) as Array<Component | ComponentGroup>
+    ).flatMap((c) =>
+      c instanceof Component ? [c.Index] : [...c.iterator()].map((c) => c.Index)
+    );
     return instance;
   };
 
@@ -92,31 +92,44 @@ export class ComponentStore {
   }
 
   static Visit(item: Component, visitor: Visitor) {
-    const instance = this.#Get(item.Index);
+    return visiting_context.run(visiting_context.getStore() ?? [], () => {
+      if (visiting_context.getStore()?.includes(item.Index)) return item;
 
-    if (visitor.OperatesOn.find((o) => instance instanceof o)) {
-      const { result, cleanup } = component_context.run(
-        { index: instance.Index },
-        () => visitor.Visit(instance)
-      );
+      visiting_context.getStore()?.push(item.Index);
+      const instance = this.#Get(item.Index);
 
-      if (result) {
+      if (visitor.OperatesOn.find((o) => instance instanceof o)) {
+        const { result, cleanup } = component_context.run(
+          { index: instance.Index },
+          () => visitor.Visit(instance)
+        );
+
+        if (result) {
+          cleanup();
+          this.#data[result.Index] = result;
+        }
+
+        for (const child of instance[_children]) {
+          this.Visit(this.#Get(child), visitor);
+        }
+
         cleanup();
-        this.#data[result.Index] = result;
+      } else {
+        for (const child of instance[_children]) {
+          this.Visit(this.#Get(child), visitor);
+        }
       }
 
-      for (const child of instance[_children]) {
-        this.Visit(this.#Get(child), visitor);
-      }
+      return this.#Get(item.Index);
+    });
+  }
 
-      cleanup();
-    } else {
-      for (const child of instance[_children]) {
-        this.Visit(this.#Get(child), visitor);
-      }
-    }
+  static get Json() {
+    return this.#data.map((d) => d.json);
+  }
 
-    return this.#Get(item.Index);
+  static Clear() {
+    this.#data = [];
   }
 }
 
@@ -150,7 +163,7 @@ export class ComponentGroup {
   }
 
   get json() {
-    return this.#components.map((c) => ComponentStore.Get(c).json);
+    return this.#components;
   }
 
   *iterator() {

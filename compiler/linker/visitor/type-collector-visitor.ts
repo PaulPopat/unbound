@@ -74,8 +74,6 @@ export class TypeCollectorVisitor extends Visitor {
         };
       },
       (use) => {
-        console.log(use.Name);
-
         this.#uses[use.Name] = use;
         return {
           result: undefined,

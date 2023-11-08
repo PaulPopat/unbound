@@ -1,0 +1,217 @@
+[
+  {
+    "name": "int",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 1,
+        "column": 19
+      },
+      "last": {
+        "line": 1,
+        "column": 22
+      }
+    }
+  },
+  {
+    "name": "input",
+    "type_name": 0,
+    "type": "function_parameter",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 1,
+        "column": 12
+      },
+      "last": {
+        "line": 1,
+        "column": 17
+      }
+    }
+  },
+  {
+    "name": "bool",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 1,
+        "column": 25
+      },
+      "last": {
+        "line": 1,
+        "column": 29
+      }
+    }
+  },
+  {
+    "name": "input",
+    "references": 1,
+    "type": "reference_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 20
+      },
+      "last": {
+        "line": 2,
+        "column": 25
+      }
+    }
+  },
+  {
+    "type_name": "int",
+    "value": "1i",
+    "type": "literal_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 28
+      },
+      "last": {
+        "line": 2,
+        "column": 30
+      }
+    }
+  },
+  {
+    "left": 3,
+    "operator": "+",
+    "right": 4,
+    "type": "operator_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 26
+      },
+      "last": {
+        "line": 2,
+        "column": 27
+      }
+    }
+  },
+  {
+    "name": "updated",
+    "equals": 5,
+    "type": "store_statement",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 4
+      },
+      "last": {
+        "line": 2,
+        "column": 9
+      }
+    }
+  },
+  {
+    "name": "updated",
+    "type": "reference_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 4,
+        "column": 11
+      },
+      "last": {
+        "line": 4,
+        "column": 18
+      }
+    }
+  },
+  {
+    "name": "==",
+    "type": "reference_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 4,
+        "column": 19
+      },
+      "last": {
+        "line": 4,
+        "column": 21
+      }
+    }
+  },
+  {
+    "type_name": "int",
+    "value": "2i",
+    "type": "literal_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 4,
+        "column": 22
+      },
+      "last": {
+        "line": 4,
+        "column": 24
+      }
+    }
+  },
+  {
+    "value": 9,
+    "type": "return_statement",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 4,
+        "column": 4
+      },
+      "last": {
+        "line": 4,
+        "column": 10
+      }
+    }
+  },
+  {
+    "name": "TestFn",
+    "parameters": [
+      1
+    ],
+    "returns": 2,
+    "content": [
+      6,
+      10
+    ],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 1,
+        "column": 2
+      },
+      "last": {
+        "line": 1,
+        "column": 4
+      }
+    }
+  },
+  {
+    "name": "Test",
+    "exported": false,
+    "contents": [
+      11
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "last": {
+        "line": 0,
+        "column": 9
+      }
+    }
+  }
+]
