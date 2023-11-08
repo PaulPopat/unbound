@@ -1,5 +1,6 @@
 import { Location } from "#compiler/location";
-import { AstItem, Component, ComponentStore } from "./base";
+import { AstItem, Component, ComponentStore, WriterContext } from "./base";
+import { WriterError } from "./error";
 import { Type } from "./type";
 
 @AstItem
@@ -31,6 +32,10 @@ export class Property extends Component {
       type_name: this.#type,
     };
   }
+
+  toC(ctx: WriterContext): string {
+    return `${this.Type.toC(ctx)} ${this.#name}`;
+  }
 }
 
 @AstItem
@@ -61,5 +66,15 @@ export class FunctionParameter extends Component {
       name: this.#name,
       type_name: this.#type ?? null,
     };
+  }
+
+  toC(ctx: WriterContext): string {
+    const type = this.Type;
+    if (!type)
+      throw new WriterError(
+        this.Location,
+        "For now, we require function argument types in all places"
+      );
+    return `${type.toC(ctx)} ${this.#name}`;
   }
 }

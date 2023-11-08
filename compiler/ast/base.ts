@@ -5,6 +5,17 @@ const component_context = new AsyncLocalStorage<{ index: number }>();
 
 const visiting_context = new AsyncLocalStorage<Array<number>>();
 
+type TargetOs = "win" | "unix" | "darwin";
+
+const writer_context = new AsyncLocalStorage<{}>();
+
+export type WriterContext = {
+  target: TargetOs;
+  add: (text: string) => void;
+
+  data: any;
+};
+
 export abstract class Visitor {
   abstract get OperatesOn(): Array<new (...args: any[]) => Component>;
 
@@ -70,7 +81,7 @@ export abstract class Component {
     };
   }
 
-  // abstract toC(): string;
+  abstract toC(ctx: WriterContext): string;
 }
 
 export class ComponentStore {
@@ -173,9 +184,9 @@ export class ComponentGroup {
       yield ComponentStore.Get(component);
   }
 
-  // toC(joiner: string) {
-  //   return [...this.iterator()].map((c) => c.toC()).join(joiner);
-  // }
+  toC(joiner: string, ctx: any) {
+    return [...this.iterator()].map((c) => c.toC(ctx)).join(joiner);
+  }
 }
 
 export class Ast {
@@ -200,5 +211,20 @@ export class Ast {
       result.push(ComponentStore.Visit(item, visitor));
 
     return new Ast(...result.map((c) => new ComponentGroup(c)));
+  }
+
+  toC(target: TargetOs) {
+    const additions: Array<string> = [];
+    const ctx = {
+      target,
+      add(text: string) {
+        if (additions.includes(text)) return;
+        additions.push(text);
+      },
+      data: {},
+    };
+    const result = this.#data.map((d) => d.toC(ctx)).join("\n");
+
+    return additions.join("\n") + "\n" + result;
   }
 }
