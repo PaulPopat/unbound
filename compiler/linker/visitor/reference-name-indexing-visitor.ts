@@ -6,6 +6,7 @@ import {
   FunctionParameter,
   IfExpression,
   IterateExpression,
+  LambdaExpression,
   MakeExpression,
   Namespace,
   StoreStatement,
@@ -13,6 +14,12 @@ import {
   Visitor,
 } from "#compiler/ast";
 import { LinkerError } from "../error";
+
+type Local =
+  | StoreStatement
+  | CountExpression
+  | IterateExpression
+  | FunctionParameter;
 
 export class ReferenceNameIndexingVisitor extends Visitor {
   readonly #functions: Record<
@@ -22,9 +29,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
   #namespace: string = "";
   #using: Array<string> = [];
   #parameters: Record<string, FunctionParameter> = {};
-  #locals: Array<
-    Record<string, StoreStatement | CountExpression | IterateExpression>
-  > = [{}];
+  #locals: Array<Record<string, Local>> = [{}];
 
   constructor(
     functions: Record<string, FunctionEntity | ExternalFunctionDeclaration>
@@ -55,10 +60,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
     return undefined;
   }
 
-  #add_local(
-    name: string,
-    statement: StoreStatement | CountExpression | IterateExpression
-  ) {
+  #add_local(name: string, statement: Local) {
     this.#locals[this.#locals.length - 1][name] = statement;
   }
 
@@ -80,6 +82,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
       IfExpression,
       CountExpression,
       IterateExpression,
+      LambdaExpression,
     ];
   }
 
@@ -155,6 +158,32 @@ export class ReferenceNameIndexingVisitor extends Visitor {
       return {
         result: undefined,
         cleanup: () => this.#drop(),
+      };
+    } else if (target instanceof LambdaExpression) {
+      this.#raise();
+
+      const locals = [...target.Parameters.iterator()]
+        .map((p) => {
+          if (!(p instanceof FunctionParameter) || !p.Type)
+            throw new LinkerError(
+              p.Location,
+              "Currently, lambdas must have parameter types"
+            );
+
+          return [p.Name, p] as const;
+        })
+        .reduce(
+          (c, [n, t]) => ({ ...c, [n]: t }),
+          {} as Record<string, FunctionParameter>
+        );
+
+      for (const local in locals) this.#add_local(local, locals[local]);
+
+      return {
+        result: undefined,
+        cleanup: () => {
+          this.#drop();
+        },
       };
     }
 

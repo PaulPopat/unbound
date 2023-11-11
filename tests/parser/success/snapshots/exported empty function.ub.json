@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "int",
     "type": "reference_type",
     "location": {
@@ -14,7 +14,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "Test",
     "parameters": [],
     "returns": 0,
@@ -33,7 +33,7 @@
       }
     }
   },
-  {
+  "2": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -52,4 +52,4 @@
       }
     }
   }
-]
+}

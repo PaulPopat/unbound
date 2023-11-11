@@ -42,8 +42,4 @@ export class Namespace extends Component {
       contents: this.#contents.json,
     };
   }
-
-  toC(): string {
-    return "";
-  }
 }

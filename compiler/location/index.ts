@@ -51,3 +51,22 @@ export class Location {
     return `\nFile: ${this.FileName}\nLine: ${this.StartLine}\nColumn: ${this.StartColumn}`;
   }
 }
+
+const name_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+export class Namer {
+  static #index: number = -1;
+
+  static GetName() {
+    let name = "";
+    let current = this.#index;
+
+    while (current >= 0) {
+      name += name_chars[current];
+      current -= name_chars.length;
+    }
+
+    this.#index += 1;
+    return name;
+  }
+}

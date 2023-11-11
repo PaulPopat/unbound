@@ -59,7 +59,18 @@ export class NextExpression extends Expression {
   }
 }
 
-export const Operators = ["+", "-"] as const;
+export const Operators = [
+  "+",
+  "-",
+  "/",
+  "*",
+  "==",
+  "!=",
+  "<",
+  ">",
+  "<=",
+  ">=",
+] as const;
 export type Operator = (typeof Operators)[number];
 
 @AstItem

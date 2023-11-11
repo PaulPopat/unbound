@@ -24,8 +24,8 @@ namespace LinqUser {
   }
 
   export fn sort_users(self: [User]) {
-    return self.where(fn (user) -> user.username == "valid user")
-               .select(fn (user) -> make User {
+    return self.where(fn (user: User) -> user.username == "valid user")
+               .select(fn (user: User) -> make User {
                   assign username = "Do I really need to say this?";
                });
   }

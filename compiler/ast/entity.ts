@@ -1,15 +1,8 @@
-import {
-  AstItem,
-  Component,
-  ComponentGroup,
-  ComponentStore,
-  WriterContext,
-} from "./base";
-import { FunctionParameter, Property } from "./property";
+import { AstItem, Component, ComponentGroup, ComponentStore } from "./base";
+import { Property } from "./property";
 import { Type } from "./type";
 import { Location } from "#compiler/location";
-import { Expression, LiteralExpression } from "./expression";
-import { WriterError } from "./error";
+import { Expression } from "./expression";
 import { AsyncLocalStorage } from "node:async_hooks";
 
 export abstract class Entity extends Component {
@@ -83,36 +76,6 @@ export class FunctionEntity extends Entity {
       content: this.#content.json,
     };
   }
-
-  toC(ctx: WriterContext): string {
-    const returns = this.Returns;
-    if (!returns)
-      throw new WriterError(
-        this.Location,
-        "Currently, explicit returns must be provided."
-      );
-
-    const locals: Array<string> = [];
-    return `void ${this.#name} (${returns.toC({
-      ...ctx,
-      data: {
-        ...ctx.data,
-        locals,
-      },
-    })}* c_returns, ${this.#parameters.toC(",", {
-      ...ctx,
-      data: {
-        ...ctx.data,
-        locals,
-      },
-    })}) {${this.#content.toC(";", {
-      ...ctx,
-      data: {
-        ...ctx.data,
-        locals,
-      },
-    })}}`;
-  }
 }
 
 @AstItem
@@ -164,10 +127,6 @@ export class StructEntity extends Entity {
       properties: this.#properties.json,
     };
   }
-
-  toC(ctx: any): string {
-    return `struct ${this.#name} {${this.#properties.toC(";", ctx)}}`;
-  }
 }
 
 @AstItem
@@ -200,10 +159,6 @@ export class SchemaEntity extends Entity {
       properties: this.#properties.json,
     };
   }
-
-  toC(): string {
-    return "";
-  }
 }
 
 @AstItem
@@ -227,10 +182,6 @@ export class UsingEntity extends Entity {
     return {
       name: this.#name,
     };
-  }
-
-  toC(): string {
-    return "";
   }
 }
 
@@ -279,89 +230,6 @@ export class ExternalFunctionDeclaration extends Component {
       returns: this.#returns,
     };
   }
-
-  toC(ctx: WriterContext): string {
-    if (!ctx.data.extern)
-      throw new WriterError(
-        this.Location,
-        "An external function declaration must be in a lib or system entity"
-      );
-
-    switch (ctx.data.extern.type) {
-      case "lib":
-        switch (ctx.target) {
-          case "unix":
-          case "darwin":
-            return `void ${this.#name} (${this.Returns.toC(
-              ctx
-            )}* c_returns, ${this.#parameters.toC(",", ctx)}) {
-              init_${NameFromPath(ctx.data.extern.path)}();
-
-              ${this.Returns.toC(ctx)} (*implementation)(
-                ${this.#parameters.toC(",", ctx)}
-              );
-
-              implementation = dlsym(
-                ${NameFromPath(ctx.data.extern.path)},
-                "${this.#name}"
-              );
-    
-              c_returns[0] = (*implementation)(${[
-                ...this.#parameters.iterator(),
-              ]
-                .map((p) => {
-                  if (!(p instanceof FunctionParameter))
-                    throw new WriterError(
-                      p.Location,
-                      "Expected a function parameter"
-                    );
-
-                  return p.Name;
-                })
-                .join(",")})
-            }`;
-          case "win":
-            return `void ${this.#name} (${this.Returns.toC(
-              ctx
-            )}* c_returns, ${this.#parameters.toC(",", ctx)}) {
-              init_${NameFromPath(ctx.data.extern.path)}();
-
-              ${this.Returns.toC(ctx)} (*implementation)(
-                ${this.#parameters.toC(",", ctx)}
-              );
-
-              implementation = GetProcAddress(
-                ${NameFromPath(ctx.data.extern.path)},
-                "${this.#name}"
-              );
-
-              c_returns[0] = (*implementation)(${[
-                ...this.#parameters.iterator(),
-              ]
-                .map((p) => {
-                  if (!(p instanceof FunctionParameter))
-                    throw new WriterError(
-                      p.Location,
-                      "Expected a function parameter"
-                    );
-
-                  return p.Name;
-                })
-                .join(",")})
-            }`;
-        }
-      case "system":
-        throw new WriterError(
-          this.Location,
-          "Looks like this may not be needed"
-        );
-    }
-
-    throw new WriterError(
-      this.Location,
-      "This is definitely a bug with the compiler"
-    );
-  }
 }
 
 @AstItem
@@ -394,53 +262,6 @@ export class LibEntity extends Entity {
       content: this.#content.json,
     };
   }
-
-  toC(ctx: WriterContext): string {
-    const name = this.Name;
-    if (!(name instanceof LiteralExpression) || name.Type !== "string")
-      throw new WriterError(
-        this.Location,
-        "Only literal strings may be used to load a lib"
-      );
-
-    const path = name.Value;
-
-    switch (ctx.target) {
-      case "unix":
-      case "darwin":
-        ctx.add("#include <dlfcn.h>");
-
-        return `
-          void* ${NameFromPath(path)}
-
-          void init_${NameFromPath(path)}() {
-            if (!${NameFromPath(path)}) {
-              ${NameFromPath} = dlopen ("${path}", RTLD_LAZY);
-            }
-          }
-
-          ${external_function_context.run({ type: "lib", path: path }, () =>
-            this.#content.toC("\n", ctx)
-          )}
-        `;
-      case "win":
-        ctx.add("<windows.h>");
-
-        return `
-          HINSTANCE ${NameFromPath(path)};
-
-          void init_${NameFromPath(path)}() {
-            if (!${NameFromPath(path)}) {
-              ${NameFromPath(path)} = LoadLibrary("${path}");
-            }
-          }
-
-          ${external_function_context.run({ type: "lib", path: path }, () =>
-            this.#content.toC("\n", ctx)
-          )}
-        `;
-    }
-  }
 }
 
 @AstItem
@@ -460,9 +281,5 @@ export class SystemEntity extends Entity {
     return {
       content: this.#content.json,
     };
-  }
-
-  toC(): string {
-    throw new WriterError(this.Location, "Looks like this may not be needed");
   }
 }

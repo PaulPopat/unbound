@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "bool",
     "type": "primitive_type",
     "location": {
@@ -14,7 +14,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "test",
     "type_name": 0,
     "type": "function_parameter",
@@ -30,7 +30,7 @@
       }
     }
   },
-  {
+  "2": {
     "name": "char",
     "type": "primitive_type",
     "location": {
@@ -45,7 +45,7 @@
       }
     }
   },
-  {
+  "3": {
     "name": "other",
     "type_name": 2,
     "type": "function_parameter",
@@ -61,7 +61,7 @@
       }
     }
   },
-  {
+  "4": {
     "name": "int",
     "type": "primitive_type",
     "location": {
@@ -76,8 +76,8 @@
       }
     }
   },
-  {
-    "name": "",
+  "5": {
+    "name": "a",
     "parameters": [
       1,
       3
@@ -98,7 +98,7 @@
       }
     }
   },
-  {
+  "6": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -117,4 +117,4 @@
       }
     }
   }
-]
+}

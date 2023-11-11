@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "any",
     "type": "primitive_type",
     "location": {
@@ -14,7 +14,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "T",
     "constraints": [
       0
@@ -32,7 +32,7 @@
       }
     }
   },
-  {
+  "2": {
     "type_name": 1,
     "type": "iterable_type",
     "location": {
@@ -47,7 +47,7 @@
       }
     }
   },
-  {
+  "3": {
     "name": "self",
     "type_name": 2,
     "type": "function_parameter",
@@ -63,7 +63,7 @@
       }
     }
   },
-  {
+  "4": {
     "name": "T",
     "references": 1,
     "type": "reference_type",
@@ -79,7 +79,7 @@
       }
     }
   },
-  {
+  "5": {
     "name": "item",
     "type_name": 4,
     "type": "function_parameter",
@@ -95,7 +95,7 @@
       }
     }
   },
-  {
+  "6": {
     "name": "any",
     "type": "primitive_type",
     "location": {
@@ -110,7 +110,7 @@
       }
     }
   },
-  {
+  "7": {
     "name": "R",
     "constraints": [
       6
@@ -128,7 +128,7 @@
       }
     }
   },
-  {
+  "8": {
     "parameters": [
       5
     ],
@@ -146,7 +146,7 @@
       }
     }
   },
-  {
+  "9": {
     "name": "selector",
     "type_name": 8,
     "type": "function_parameter",
@@ -162,7 +162,7 @@
       }
     }
   },
-  {
+  "10": {
     "name": "R",
     "references": 7,
     "type": "reference_type",
@@ -178,7 +178,7 @@
       }
     }
   },
-  {
+  "11": {
     "type_name": 10,
     "type": "iterable_type",
     "location": {
@@ -193,7 +193,7 @@
       }
     }
   },
-  {
+  "12": {
     "name": "self",
     "references": 3,
     "type": "reference_expression",
@@ -209,7 +209,7 @@
       }
     }
   },
-  {
+  "13": {
     "name": "item",
     "references": 17,
     "type": "reference_expression",
@@ -225,7 +225,7 @@
       }
     }
   },
-  {
+  "14": {
     "subject": 13,
     "target": "selector",
     "type": "access_expression",
@@ -241,7 +241,7 @@
       }
     }
   },
-  {
+  "15": {
     "subject": 9,
     "parameters": [
       13
@@ -259,7 +259,7 @@
       }
     }
   },
-  {
+  "16": {
     "value": 15,
     "type": "return_statement",
     "location": {
@@ -274,7 +274,7 @@
       }
     }
   },
-  {
+  "17": {
     "over": 12,
     "as": "item",
     "using": [
@@ -293,7 +293,7 @@
       }
     }
   },
-  {
+  "18": {
     "value": 17,
     "type": "return_statement",
     "location": {
@@ -308,8 +308,8 @@
       }
     }
   },
-  {
-    "name": "d",
+  "19": {
+    "name": "k",
     "parameters": [
       3,
       9
@@ -332,7 +332,7 @@
       }
     }
   },
-  {
+  "20": {
     "name": "any",
     "type": "primitive_type",
     "location": {
@@ -347,7 +347,7 @@
       }
     }
   },
-  {
+  "21": {
     "name": "T",
     "constraints": [
       20
@@ -365,7 +365,7 @@
       }
     }
   },
-  {
+  "22": {
     "type_name": 21,
     "type": "iterable_type",
     "location": {
@@ -380,7 +380,7 @@
       }
     }
   },
-  {
+  "23": {
     "name": "self",
     "type_name": 22,
     "type": "function_parameter",
@@ -396,7 +396,7 @@
       }
     }
   },
-  {
+  "24": {
     "name": "T",
     "references": 21,
     "type": "reference_type",
@@ -412,7 +412,7 @@
       }
     }
   },
-  {
+  "25": {
     "name": "item",
     "type_name": 24,
     "type": "function_parameter",
@@ -428,7 +428,7 @@
       }
     }
   },
-  {
+  "26": {
     "name": "bool",
     "type": "primitive_type",
     "location": {
@@ -443,7 +443,7 @@
       }
     }
   },
-  {
+  "27": {
     "parameters": [
       25
     ],
@@ -461,7 +461,7 @@
       }
     }
   },
-  {
+  "28": {
     "name": "predicate",
     "type_name": 27,
     "type": "function_parameter",
@@ -477,7 +477,7 @@
       }
     }
   },
-  {
+  "29": {
     "name": "T",
     "references": 21,
     "type": "reference_type",
@@ -493,7 +493,7 @@
       }
     }
   },
-  {
+  "30": {
     "type_name": 29,
     "type": "iterable_type",
     "location": {
@@ -508,7 +508,7 @@
       }
     }
   },
-  {
+  "31": {
     "name": "self",
     "references": 23,
     "type": "reference_expression",
@@ -524,7 +524,7 @@
       }
     }
   },
-  {
+  "32": {
     "name": "item",
     "references": 41,
     "type": "reference_expression",
@@ -540,7 +540,7 @@
       }
     }
   },
-  {
+  "33": {
     "subject": 32,
     "target": "predicate",
     "type": "access_expression",
@@ -556,7 +556,7 @@
       }
     }
   },
-  {
+  "34": {
     "subject": 28,
     "parameters": [
       32
@@ -574,7 +574,7 @@
       }
     }
   },
-  {
+  "35": {
     "name": "item",
     "references": 41,
     "type": "reference_expression",
@@ -590,7 +590,7 @@
       }
     }
   },
-  {
+  "36": {
     "value": 35,
     "type": "return_statement",
     "location": {
@@ -605,7 +605,7 @@
       }
     }
   },
-  {
+  "37": {
     "type": "next_expression",
     "location": {
       "file_name": "linq.ub",
@@ -619,7 +619,7 @@
       }
     }
   },
-  {
+  "38": {
     "value": 37,
     "type": "return_statement",
     "location": {
@@ -634,7 +634,7 @@
       }
     }
   },
-  {
+  "39": {
     "check": 34,
     "if": [
       36
@@ -655,7 +655,7 @@
       }
     }
   },
-  {
+  "40": {
     "value": 39,
     "type": "return_statement",
     "location": {
@@ -670,7 +670,7 @@
       }
     }
   },
-  {
+  "41": {
     "over": 31,
     "as": "item",
     "using": [
@@ -689,7 +689,7 @@
       }
     }
   },
-  {
+  "42": {
     "value": 41,
     "type": "return_statement",
     "location": {
@@ -704,8 +704,8 @@
       }
     }
   },
-  {
-    "name": "e",
+  "43": {
+    "name": "l",
     "parameters": [
       23,
       28
@@ -728,7 +728,7 @@
       }
     }
   },
-  {
+  "44": {
     "name": "Linq",
     "exported": false,
     "contents": [
@@ -748,7 +748,7 @@
       }
     }
   },
-  {
+  "45": {
     "name": "Linq",
     "exported": false,
     "type": "using_entity",
@@ -764,7 +764,7 @@
       }
     }
   },
-  {
+  "46": {
     "name": "char",
     "type": "primitive_type",
     "location": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  {
+  "47": {
     "type_name": 46,
     "type": "iterable_type",
     "location": {
@@ -794,7 +794,7 @@
       }
     }
   },
-  {
+  "48": {
     "name": "username",
     "type_name": 47,
     "type": "property",
@@ -810,8 +810,8 @@
       }
     }
   },
-  {
-    "name": "b",
+  "49": {
+    "name": "i",
     "properties": [
       48
     ],
@@ -829,7 +829,7 @@
       }
     }
   },
-  {
+  "50": {
     "name": "User",
     "references": 49,
     "type": "reference_type",
@@ -845,7 +845,7 @@
       }
     }
   },
-  {
+  "51": {
     "type_name": 50,
     "type": "iterable_type",
     "location": {
@@ -860,7 +860,7 @@
       }
     }
   },
-  {
+  "52": {
     "name": "self",
     "type_name": 51,
     "type": "function_parameter",
@@ -876,7 +876,7 @@
       }
     }
   },
-  {
+  "53": {
     "name": "self",
     "references": 52,
     "type": "reference_expression",
@@ -892,7 +892,7 @@
       }
     }
   },
-  {
+  "54": {
     "subject": 53,
     "target": "where",
     "type": "access_expression",
@@ -908,9 +908,25 @@
       }
     }
   },
-  {
+  "55": {
+    "name": "User",
+    "references": 49,
+    "type": "reference_type",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 32
+      },
+      "last": {
+        "line": 26,
+        "column": 36
+      }
+    }
+  },
+  "56": {
     "name": "user",
-    "type_name": null,
+    "type_name": 55,
     "type": "function_parameter",
     "location": {
       "file_name": "linq.ub",
@@ -924,53 +940,39 @@
       }
     }
   },
-  {
+  "57": {
     "name": "user",
+    "references": 56,
     "type": "reference_expression",
     "location": {
       "file_name": "linq.ub",
       "start": {
         "line": 26,
-        "column": 35
+        "column": 41
       },
       "last": {
         "line": 26,
-        "column": 39
+        "column": 45
       }
     }
   },
-  {
-    "subject": 56,
+  "58": {
+    "subject": 57,
     "target": "username",
     "type": "access_expression",
     "location": {
       "file_name": "linq.ub",
       "start": {
         "line": 26,
-        "column": 39
+        "column": 45
       },
       "last": {
         "line": 26,
-        "column": 40
+        "column": 46
       }
     }
   },
-  {
-    "name": "==",
-    "type": "reference_expression",
-    "location": {
-      "file_name": "linq.ub",
-      "start": {
-        "line": 26,
-        "column": 49
-      },
-      "last": {
-        "line": 26,
-        "column": 51
-      }
-    }
-  },
-  {
+  "59": {
     "type_name": "string",
     "value": "valid user",
     "type": "literal_expression",
@@ -978,19 +980,36 @@
       "file_name": "linq.ub",
       "start": {
         "line": 26,
-        "column": 52
+        "column": 58
       },
       "last": {
         "line": 26,
-        "column": 64
+        "column": 70
       }
     }
   },
-  {
+  "60": {
+    "left": 58,
+    "operator": "==",
+    "right": 59,
+    "type": "operator_expression",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 55
+      },
+      "last": {
+        "line": 26,
+        "column": 57
+      }
+    }
+  },
+  "61": {
     "parameters": [
-      55
+      56
     ],
-    "expression": 59,
+    "expression": 60,
     "type": "lambda_expression",
     "location": {
       "file_name": "linq.ub",
@@ -1004,11 +1023,11 @@
       }
     }
   },
-  {
+  "62": {
     "subject": 43,
     "parameters": [
       53,
-      60
+      61
     ],
     "type": "invokation_expression",
     "location": {
@@ -1023,8 +1042,8 @@
       }
     }
   },
-  {
-    "subject": 61,
+  "63": {
+    "subject": 62,
     "target": "select",
     "type": "access_expression",
     "location": {
@@ -1039,9 +1058,25 @@
       }
     }
   },
-  {
+  "64": {
+    "name": "User",
+    "references": 49,
+    "type": "reference_type",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 27,
+        "column": 33
+      },
+      "last": {
+        "line": 27,
+        "column": 37
+      }
+    }
+  },
+  "65": {
     "name": "user",
-    "type_name": null,
+    "type_name": 64,
     "type": "function_parameter",
     "location": {
       "file_name": "linq.ub",
@@ -1055,7 +1090,7 @@
       }
     }
   },
-  {
+  "66": {
     "type_name": "string",
     "value": "Do I really need to say this?",
     "type": "literal_expression",
@@ -1071,9 +1106,9 @@
       }
     }
   },
-  {
+  "67": {
     "name": "username",
-    "equals": 64,
+    "equals": 66,
     "type": "assign_statement",
     "location": {
       "file_name": "linq.ub",
@@ -1087,29 +1122,29 @@
       }
     }
   },
-  {
+  "68": {
     "struct": "User",
     "using": [
-      65
+      67
     ],
     "type": "make_expression",
     "location": {
       "file_name": "linq.ub",
       "start": {
         "line": 27,
-        "column": 36
+        "column": 42
       },
       "last": {
         "line": 27,
-        "column": 40
+        "column": 46
       }
     }
   },
-  {
+  "69": {
     "parameters": [
-      63
+      65
     ],
-    "expression": 66,
+    "expression": 68,
     "type": "lambda_expression",
     "location": {
       "file_name": "linq.ub",
@@ -1123,11 +1158,11 @@
       }
     }
   },
-  {
+  "70": {
     "subject": 19,
     "parameters": [
-      61,
-      67
+      62,
+      69
     ],
     "type": "invokation_expression",
     "location": {
@@ -1142,8 +1177,8 @@
       }
     }
   },
-  {
-    "value": 68,
+  "71": {
+    "value": 70,
     "type": "return_statement",
     "location": {
       "file_name": "linq.ub",
@@ -1157,13 +1192,13 @@
       }
     }
   },
-  {
-    "name": "c",
+  "72": {
+    "name": "j",
     "parameters": [
       52
     ],
     "content": [
-      69
+      71
     ],
     "exported": true,
     "type": "function_entity",
@@ -1179,13 +1214,13 @@
       }
     }
   },
-  {
+  "73": {
     "name": "LinqUser",
     "exported": false,
     "contents": [
       45,
       49,
-      70
+      72
     ],
     "type": "namespace",
     "location": {
@@ -1200,4 +1235,4 @@
       }
     }
   }
-]
+}

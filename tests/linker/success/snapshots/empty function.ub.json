@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "int",
     "type": "primitive_type",
     "location": {
@@ -14,8 +14,8 @@
       }
     }
   },
-  {
-    "name": "",
+  "1": {
+    "name": "c",
     "parameters": [],
     "content": [],
     "exported": false,
@@ -32,7 +32,7 @@
       }
     }
   },
-  {
+  "2": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -51,4 +51,4 @@
       }
     }
   }
-]
+}

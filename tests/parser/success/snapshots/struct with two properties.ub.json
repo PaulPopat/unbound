@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "char",
     "type": "reference_type",
     "location": {
@@ -14,7 +14,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "test",
     "type_name": 0,
     "type": "property",
@@ -30,7 +30,7 @@
       }
     }
   },
-  {
+  "2": {
     "name": "bool",
     "type": "reference_type",
     "location": {
@@ -45,7 +45,7 @@
       }
     }
   },
-  {
+  "3": {
     "name": "other",
     "type_name": 2,
     "type": "property",
@@ -61,7 +61,7 @@
       }
     }
   },
-  {
+  "4": {
     "name": "Test",
     "properties": [
       1,
@@ -81,7 +81,7 @@
       }
     }
   },
-  {
+  "5": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -100,4 +100,4 @@
       }
     }
   }
-]
+}

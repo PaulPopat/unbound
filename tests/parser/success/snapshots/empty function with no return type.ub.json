@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "Test",
     "parameters": [],
     "content": [],
@@ -17,7 +17,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -36,4 +36,4 @@
       }
     }
   }
-]
+}

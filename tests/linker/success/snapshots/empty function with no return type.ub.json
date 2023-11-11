@@ -1,6 +1,6 @@
-[
-  {
-    "name": "",
+{
+  "0": {
+    "name": "b",
     "parameters": [],
     "content": [],
     "exported": false,
@@ -17,7 +17,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -36,4 +36,4 @@
       }
     }
   }
-]
+}

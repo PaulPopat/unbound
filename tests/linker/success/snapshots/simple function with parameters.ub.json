@@ -1,5 +1,5 @@
-[
-  {
+{
+  "0": {
     "name": "int",
     "type": "primitive_type",
     "location": {
@@ -14,7 +14,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "input",
     "type_name": 0,
     "type": "function_parameter",
@@ -30,7 +30,7 @@
       }
     }
   },
-  {
+  "2": {
     "name": "bool",
     "type": "primitive_type",
     "location": {
@@ -45,7 +45,7 @@
       }
     }
   },
-  {
+  "3": {
     "name": "input",
     "references": 1,
     "type": "reference_expression",
@@ -61,7 +61,7 @@
       }
     }
   },
-  {
+  "4": {
     "type_name": "int",
     "value": "1i",
     "type": "literal_expression",
@@ -77,7 +77,7 @@
       }
     }
   },
-  {
+  "5": {
     "left": 3,
     "operator": "+",
     "right": 4,
@@ -94,9 +94,10 @@
       }
     }
   },
-  {
-    "name": "a",
+  "6": {
+    "name": "n",
     "equals": 5,
+    "store_type": 17,
     "type": "store_statement",
     "location": {
       "file_name": "simple function with parameters.ub",
@@ -110,8 +111,9 @@
       }
     }
   },
-  {
+  "7": {
     "name": "updated",
+    "references": 6,
     "type": "reference_expression",
     "location": {
       "file_name": "simple function with parameters.ub",
@@ -125,22 +127,7 @@
       }
     }
   },
-  {
-    "name": "==",
-    "type": "reference_expression",
-    "location": {
-      "file_name": "simple function with parameters.ub",
-      "start": {
-        "line": 4,
-        "column": 19
-      },
-      "last": {
-        "line": 4,
-        "column": 21
-      }
-    }
-  },
-  {
+  "8": {
     "type_name": "int",
     "value": "2i",
     "type": "literal_expression",
@@ -156,7 +143,24 @@
       }
     }
   },
-  {
+  "9": {
+    "left": 7,
+    "operator": "==",
+    "right": 8,
+    "type": "operator_expression",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 4,
+        "column": 19
+      },
+      "last": {
+        "line": 4,
+        "column": 21
+      }
+    }
+  },
+  "10": {
     "value": 9,
     "type": "return_statement",
     "location": {
@@ -171,8 +175,8 @@
       }
     }
   },
-  {
-    "name": "",
+  "11": {
+    "name": "m",
     "parameters": [
       1
     ],
@@ -195,7 +199,7 @@
       }
     }
   },
-  {
+  "12": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -213,5 +217,20 @@
         "column": 9
       }
     }
+  },
+  "17": {
+    "name": "int",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "simple function with parameters.ub",
+      "start": {
+        "line": 2,
+        "column": 28
+      },
+      "last": {
+        "line": 2,
+        "column": 30
+      }
+    }
   }
-]
+}

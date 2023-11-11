@@ -1,6 +1,6 @@
-[
-  {
-    "name": "",
+{
+  "0": {
+    "name": "e",
     "properties": [],
     "exported": false,
     "type": "struct_entity",
@@ -16,7 +16,7 @@
       }
     }
   },
-  {
+  "1": {
     "name": "Test",
     "exported": false,
     "contents": [
@@ -35,4 +35,4 @@
       }
     }
   }
-]
+}

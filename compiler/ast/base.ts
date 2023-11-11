@@ -1,20 +1,7 @@
 import { Location } from "#compiler/location";
 import { AsyncLocalStorage } from "node:async_hooks";
 
-const component_context = new AsyncLocalStorage<{ index: number }>();
-
 const visiting_context = new AsyncLocalStorage<Array<number>>();
-
-type TargetOs = "win" | "unix" | "darwin";
-
-const writer_context = new AsyncLocalStorage<{}>();
-
-export type WriterContext = {
-  target: TargetOs;
-  add: (text: string) => void;
-
-  data: any;
-};
 
 export abstract class Visitor {
   abstract get OperatesOn(): Array<new (...args: any[]) => Component>;
@@ -35,8 +22,7 @@ export function AstItem(
   const result = function (...args: any[]) {
     const instance = new target(...args);
 
-    const index =
-      component_context.getStore()?.index ?? ComponentStore.Register(instance);
+    const index = ComponentStore.Register(instance);
     instance[_index] = index;
     instance[_children] = (
       args.filter(
@@ -80,17 +66,18 @@ export abstract class Component {
       location: this.#location.json,
     };
   }
-
-  abstract toC(ctx: WriterContext): string;
 }
 
 export class ComponentStore {
-  static #data: Array<Component> = [];
+  static #data: Record<number, Component> = [];
+  static #index = 0;
 
   static Register(component: Component) {
-    this.#data = [...this.#data, component];
+    const i = this.#index;
+    this.#data = { ...this.#data, [this.#index]: component };
+    this.#index++;
 
-    return this.#data.length - 1;
+    return i;
   }
 
   static #Get(index: number) {
@@ -112,14 +99,13 @@ export class ComponentStore {
       const instance = this.#Get(item.Index);
 
       if (visitor.OperatesOn.find((o) => instance instanceof o)) {
-        const { result, cleanup } = component_context.run(
-          { index: instance.Index },
-          () => visitor.Visit(instance)
-        );
+        const { result, cleanup } = visitor.Visit(instance);
 
         if (result) {
           cleanup();
-          this.#data[result.Index] = result;
+          this.#data[item.Index] = result;
+          delete this.#data[result.Index];
+          result[_index] = item[_index];
         }
 
         for (const child of instance[_children]) {
@@ -138,11 +124,14 @@ export class ComponentStore {
   }
 
   static get Json() {
-    return this.#data.map((d) => d.json);
+    const result: Record<string, unknown> = {};
+    for (const key in this.#data) result[key.toString()] = this.#data[key].json;
+    return result;
   }
 
   static Clear() {
-    this.#data = [];
+    this.#data = {};
+    this.#index = 0;
   }
 }
 
@@ -183,10 +172,6 @@ export class ComponentGroup {
     for (const component of this.#components)
       yield ComponentStore.Get(component);
   }
-
-  toC(joiner: string, ctx: any) {
-    return [...this.iterator()].map((c) => c.toC(ctx)).join(joiner);
-  }
 }
 
 export class Ast {
@@ -211,20 +196,5 @@ export class Ast {
       result.push(ComponentStore.Visit(item, visitor));
 
     return new Ast(...result.map((c) => new ComponentGroup(c)));
-  }
-
-  toC(target: TargetOs) {
-    const additions: Array<string> = [];
-    const ctx = {
-      target,
-      add(text: string) {
-        if (additions.includes(text)) return;
-        additions.push(text);
-      },
-      data: {},
-    };
-    const result = this.#data.map((d) => d.toC(ctx)).join("\n");
-
-    return additions.join("\n") + "\n" + result;
   }
 }
