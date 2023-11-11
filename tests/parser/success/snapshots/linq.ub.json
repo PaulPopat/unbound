@@ -974,10 +974,27 @@
     }
   },
   "60": {
+    "value": 59,
+    "type": "return_statement",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 35
+      },
+      "last": {
+        "line": 26,
+        "column": 39
+      }
+    }
+  },
+  "61": {
     "parameters": [
       55
     ],
-    "expression": 59,
+    "body": [
+      60
+    ],
     "type": "lambda_expression",
     "location": {
       "file_name": "linq.ub",
@@ -991,10 +1008,10 @@
       }
     }
   },
-  "61": {
+  "62": {
     "subject": 54,
     "parameters": [
-      60
+      61
     ],
     "type": "invokation_expression",
     "location": {
@@ -1009,8 +1026,8 @@
       }
     }
   },
-  "62": {
-    "subject": 61,
+  "63": {
+    "subject": 62,
     "target": "select",
     "type": "access_expression",
     "location": {
@@ -1025,7 +1042,7 @@
       }
     }
   },
-  "63": {
+  "64": {
     "name": "user",
     "type_name": null,
     "type": "function_parameter",
@@ -1041,7 +1058,7 @@
       }
     }
   },
-  "64": {
+  "65": {
     "type_name": "string",
     "value": "Do I really need to say this?",
     "type": "literal_expression",
@@ -1057,9 +1074,9 @@
       }
     }
   },
-  "65": {
+  "66": {
     "name": "username",
-    "equals": 64,
+    "equals": 65,
     "type": "assign_statement",
     "location": {
       "file_name": "linq.ub",
@@ -1073,10 +1090,10 @@
       }
     }
   },
-  "66": {
+  "67": {
     "struct": "User",
     "using": [
-      65
+      66
     ],
     "type": "make_expression",
     "location": {
@@ -1091,11 +1108,28 @@
       }
     }
   },
-  "67": {
+  "68": {
+    "value": 67,
+    "type": "return_statement",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 27,
+        "column": 36
+      },
+      "last": {
+        "line": 27,
+        "column": 40
+      }
+    }
+  },
+  "69": {
     "parameters": [
-      63
+      64
     ],
-    "expression": 66,
+    "body": [
+      68
+    ],
     "type": "lambda_expression",
     "location": {
       "file_name": "linq.ub",
@@ -1109,10 +1143,10 @@
       }
     }
   },
-  "68": {
-    "subject": 62,
+  "70": {
+    "subject": 63,
     "parameters": [
-      67
+      69
     ],
     "type": "invokation_expression",
     "location": {
@@ -1127,8 +1161,8 @@
       }
     }
   },
-  "69": {
-    "value": 68,
+  "71": {
+    "value": 70,
     "type": "return_statement",
     "location": {
       "file_name": "linq.ub",
@@ -1142,13 +1176,13 @@
       }
     }
   },
-  "70": {
+  "72": {
     "name": "sort_users",
     "parameters": [
       52
     ],
     "content": [
-      69
+      71
     ],
     "exported": true,
     "type": "function_entity",
@@ -1164,13 +1198,13 @@
       }
     }
   },
-  "71": {
+  "73": {
     "name": "LinqUser",
     "exported": false,
     "contents": [
       45,
       49,
-      70
+      72
     ],
     "type": "namespace",
     "location": {

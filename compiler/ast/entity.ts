@@ -185,14 +185,6 @@ export class UsingEntity extends Entity {
   }
 }
 
-function NameFromPath(path: string) {
-  return path.replace(/\//gm, "_").replace(/\\/gm, "_").replace(/./gm, "__");
-}
-
-const external_function_context = new AsyncLocalStorage<
-  { type: "lib"; path: string } | { type: "system" }
->();
-
 @AstItem
 export class ExternalFunctionDeclaration extends Component {
   readonly #name: string;

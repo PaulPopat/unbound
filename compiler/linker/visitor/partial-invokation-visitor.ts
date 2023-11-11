@@ -6,11 +6,12 @@ import {
   InvokationExpression,
   LambdaExpression,
   ReferenceExpression,
+  ReturnStatement,
   Visitor,
 } from "#compiler/ast";
 import { PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
-import { ResolveExpression } from "./expression";
+import { ResolveExpression } from "./resolve";
 
 export class PartialInvokationVisitor extends Visitor {
   constructor() {
@@ -55,14 +56,23 @@ export class PartialInvokationVisitor extends Visitor {
         result: new LambdaExpression(
           invoke.Location,
           new ComponentGroup(...parameters),
-          new InvokationExpression(
-            invoke.Location,
-            new ReferenceExpression(invoke.Location, functione.Name, functione),
-            new ComponentGroup(
-              ...parameters.map(
-                (p) => new ReferenceExpression(invoke.Location, p.Name, p)
-              ),
-              ...invoke.Parameters.iterator()
+          new ComponentGroup(
+            new ReturnStatement(
+              invoke.Location,
+              new InvokationExpression(
+                invoke.Location,
+                new ReferenceExpression(
+                  invoke.Location,
+                  functione.Name,
+                  functione
+                ),
+                new ComponentGroup(
+                  ...parameters.map(
+                    (p) => new ReferenceExpression(invoke.Location, p.Name, p)
+                  ),
+                  ...invoke.Parameters.iterator()
+                )
+              )
             )
           )
         ),

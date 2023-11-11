@@ -378,24 +378,20 @@ export class BracketsExpression extends Expression {
 @AstItem
 export class LambdaExpression extends Expression {
   readonly #parameters: ComponentGroup;
-  readonly #expression: number;
+  readonly #body: ComponentGroup;
 
-  constructor(
-    ctx: Location,
-    parameters: ComponentGroup,
-    expression: Expression
-  ) {
+  constructor(ctx: Location, parameters: ComponentGroup, body: ComponentGroup) {
     super(ctx);
     this.#parameters = parameters;
-    this.#expression = expression.Index;
+    this.#body = body;
   }
 
   get Parameters() {
     return this.#parameters;
   }
 
-  get Expression() {
-    return ComponentStore.Get(this.#expression);
+  get Body() {
+    return this.#body;
   }
 
   get type_name() {
@@ -405,7 +401,7 @@ export class LambdaExpression extends Expression {
   get extra_json() {
     return {
       parameters: this.#parameters.json,
-      expression: this.#expression,
+      body: this.#body.json,
     };
   }
 }

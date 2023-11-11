@@ -18,7 +18,7 @@ import {
 } from "#compiler/ast";
 import { Location, Namer, PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
-import { ResolveExpression } from "./expression";
+import { ResolveExpression } from "./resolve";
 import { ReferenceNameIndexingVisitor } from "./reference-name-indexing-visitor";
 
 export class ContextBuildingVisitor extends ReferenceNameIndexingVisitor {

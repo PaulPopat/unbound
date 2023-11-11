@@ -4,13 +4,12 @@ import {
   ComponentStore,
   InvokationExpression,
   LambdaExpression,
-  ReturnStatement,
   StoreStatement,
   StructEntity,
 } from "#compiler/ast";
 import { PatternMatch } from "#compiler/location";
 import { ContextBuildingVisitor } from "./context-building-visitor";
-import { ResolveExpression } from "./expression";
+import { ResolveBlock, ResolveExpression } from "./resolve";
 
 export class LambdaVisitor extends ContextBuildingVisitor {
   get OperatesOn(): (new (...args: any[]) => Component)[] {
@@ -50,11 +49,10 @@ export class LambdaVisitor extends ContextBuildingVisitor {
         const input = this.BuildContext(
           lambda.Location,
           lambda.Parameters,
-          ResolveExpression(lambda.Expression),
+          ResolveBlock(lambda.Body),
           new ComponentGroup(
-            new ReturnStatement(
-              lambda.Location,
-              ComponentStore.Visit(lambda.Expression, this)
+            ...[...lambda.Body.iterator()].map((b) =>
+              ComponentStore.Visit(b, this)
             )
           )
         );

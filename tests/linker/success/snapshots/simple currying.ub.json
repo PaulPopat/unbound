@@ -292,7 +292,7 @@
     }
   },
   "18": {
-    "struct": "e",
+    "struct": "d",
     "using": [],
     "type": "make_expression",
     "location": {
@@ -586,7 +586,7 @@
       }
     }
   },
-  "54": {
+  "53": {
     "value": 52,
     "type": "return_statement",
     "location": {
@@ -603,29 +603,6 @@
   },
   "55": {
     "name": "d",
-    "parameters": [
-      1
-    ],
-    "returns": 4,
-    "content": [
-      54
-    ],
-    "exported": false,
-    "type": "function_entity",
-    "location": {
-      "file_name": "simple currying.ub",
-      "start": {
-        "line": 6,
-        "column": 20
-      },
-      "last": {
-        "line": 6,
-        "column": 21
-      }
-    }
-  },
-  "56": {
-    "name": "e",
     "properties": [],
     "exported": false,
     "type": "struct_entity",
@@ -641,16 +618,39 @@
       }
     }
   },
+  "56": {
+    "name": "e",
+    "parameters": [
+      1
+    ],
+    "returns": 4,
+    "content": [
+      53
+    ],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "simple currying.ub",
+      "start": {
+        "line": 6,
+        "column": 20
+      },
+      "last": {
+        "line": 6,
+        "column": 21
+      }
+    }
+  },
   "58": {
-    "name": "__CompiledLambdas",
+    "name": "__Compiled__Code__",
     "exported": false,
     "contents": [
-      56,
-      55
+      55,
+      56
     ],
     "type": "namespace",
     "location": {
-      "file_name": "lambdas",
+      "file_name": "generated",
       "start": {
         "line": -1,
         "column": -1

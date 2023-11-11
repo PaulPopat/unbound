@@ -101,12 +101,12 @@
     }
   },
   "8": {
-    "name": "__CompiledLambdas",
+    "name": "__Compiled__Code__",
     "exported": false,
     "contents": [],
     "type": "namespace",
     "location": {
-      "file_name": "lambdas",
+      "file_name": "generated",
       "start": {
         "line": -1,
         "column": -1

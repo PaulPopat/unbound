@@ -20,9 +20,18 @@ import {
   IterableType,
   PrimitiveType,
   FunctionType,
+  ComponentGroup,
 } from "#compiler/ast";
 import { PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
+
+export function ResolveBlock(block: ComponentGroup) {
+  for (const statement of block.iterator())
+    if (statement instanceof ReturnStatement)
+      return ResolveExpression(statement.Value);
+
+  throw new LinkerError(block.First.Location, "All blocks must return a value");
+}
 
 export function ResolveExpression(
   expression: Expression
@@ -119,22 +128,14 @@ export function ResolveExpression(
       return new FunctionType(
         lambda.Location,
         lambda.Parameters,
-        ResolveExpression(lambda.Expression)
+        ResolveBlock(lambda.Body)
       );
     },
     (invoke) => {
       const subject = ResolveExpression(invoke.Subject);
 
       if (subject instanceof FunctionEntity) {
-        const result = subject.Returns;
-
-        if (!result)
-          throw new LinkerError(
-            invoke.Location,
-            "Functions must currently return a type. Inference to come."
-          );
-
-        return result;
+        return subject.Returns ?? ResolveBlock(subject.Content);
       }
 
       if (subject instanceof FunctionType) {
@@ -142,7 +143,7 @@ export function ResolveExpression(
       }
 
       if (subject instanceof LambdaExpression) {
-        return ResolveExpression(subject.Expression);
+        return ResolveBlock(subject.Body);
       }
 
       throw new Error("Attempting to invoke a none function");

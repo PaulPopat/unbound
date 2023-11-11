@@ -16,6 +16,7 @@ import {
   OperatorExpression,
   Operators,
   ReferenceExpression,
+  ReturnStatement,
 } from "#compiler/ast";
 import { ParserError } from "../error";
 import { TokenGroup } from "../token";
@@ -65,7 +66,21 @@ function ExtractLambda(tokens: TokenGroup, look_for: Array<string>) {
 
   ExpectNext(tokens, "->");
 
-  return { parameters, expression: ExtractExpression(tokens, look_for) };
+  if (tokens.peek()?.Text === "{") {
+    const body = ExtractStatementBlock(tokens);
+
+    return { parameters, body };
+  }
+
+  return {
+    parameters,
+    body: new ComponentGroup(
+      new ReturnStatement(
+        tokens.peek()?.Location ?? parameters[0].Location,
+        ExtractExpression(tokens, look_for)
+      )
+    ),
+  };
 }
 
 export function ExtractExpression(
@@ -117,11 +132,11 @@ export function ExtractExpression(
       const right = ExtractType(tokens);
       result = new IsExpression(current.Location, result, right);
     } else if (text === "fn") {
-      const { parameters, expression } = ExtractLambda(tokens, look_for);
+      const { parameters, body } = ExtractLambda(tokens, look_for);
       result = new LambdaExpression(
         current.Location,
         new ComponentGroup(...parameters),
-        expression
+        body
       );
     } else if (text === "(") {
       if (!result)
