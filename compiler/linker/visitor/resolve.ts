@@ -21,21 +21,27 @@ import {
   PrimitiveType,
   FunctionType,
   ComponentGroup,
+  FunctionParameter,
+  SchemaType,
+  SchemaEntity,
 } from "#compiler/ast";
 import { PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
 
 export function ResolveBlock(block: ComponentGroup) {
   for (const statement of block.iterator())
-    if (statement instanceof ReturnStatement)
-      return ResolveExpression(statement.Value);
+    if (statement instanceof ReturnStatement && statement.Value) {
+      const proposed = ResolveExpression(statement.Value);
+      if (proposed instanceof NextExpression) continue;
+      return proposed;
+    }
 
   throw new LinkerError(block.First.Location, "All blocks must return a value");
 }
 
 export function ResolveExpression(
   expression: Expression
-): Type | StructEntity | FunctionEntity {
+): Type | StructEntity | FunctionEntity | NextExpression | SchemaType {
   return PatternMatch(
     LiteralExpression,
     NextExpression,
@@ -49,9 +55,12 @@ export function ResolveExpression(
     BracketsExpression,
     LambdaExpression,
     InvokationExpression,
-    AccessExpression
+    AccessExpression,
+    SchemaType
   )(
-    (literal): Type | StructEntity => {
+    (
+      literal
+    ): Type | StructEntity | FunctionEntity | NextExpression | SchemaType => {
       if (literal.Type === "string") {
         return new IterableType(
           literal.Location,
@@ -77,7 +86,7 @@ export function ResolveExpression(
       );
     },
     (next) => {
-      return new PrimitiveType(next.Location, "any");
+      return next;
     },
     (operator) => {
       return ResolveExpression(operator.Right);
@@ -146,12 +155,23 @@ export function ResolveExpression(
         return ResolveBlock(subject.Body);
       }
 
+      if (subject instanceof FunctionParameter) {
+        const type = subject.Type;
+        if (type instanceof FunctionType) {
+          return type.Returns;
+        }
+      }
+
       throw new Error("Attempting to invoke a none function");
     },
     (access) => {
       const references = ResolveExpression(access.Subject);
 
-      if (!(references instanceof StructEntity))
+      if (
+        !(references instanceof StructEntity) &&
+        !(references instanceof SchemaType) &&
+        !(references instanceof SchemaEntity)
+      )
         throw new LinkerError(
           access.Location,
           "Attempting to access a none struct"
@@ -162,6 +182,9 @@ export function ResolveExpression(
         throw new LinkerError(access.Location, "Target has no key");
 
       return property.Type;
+    },
+    (schema) => {
+      return schema;
     }
   )(expression);
 }

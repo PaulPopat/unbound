@@ -4,15 +4,13 @@ import {
   Component,
   ComponentGroup,
   ComponentStore,
-  CountExpression,
   FunctionParameter,
   FunctionType,
   InvokationExpression,
+  IterateExpression,
   LambdaExpression,
-  LiteralExpression,
   MakeExpression,
   Namespace,
-  OperatorExpression,
   PrimitiveType,
   Property,
   ReferenceExpression,
@@ -27,11 +25,11 @@ import { ResolveBlock, ResolveExpression } from "./resolve";
 
 const EmptyLocation = new Location("generated", -1, -1, -1, -1);
 
-class CountStoreVisitor extends Visitor {
-  readonly #loop: CountExpression;
+class IterateStoreVisitor extends Visitor {
+  readonly #loop: IterateExpression;
   readonly #target: FunctionParameter;
 
-  constructor(loop: CountExpression, target: FunctionParameter) {
+  constructor(loop: IterateExpression, target: FunctionParameter) {
     super();
     this.#loop = loop;
     this.#target = target;
@@ -63,7 +61,7 @@ class CountStoreVisitor extends Visitor {
   }
 }
 
-export class CountExpressionVisitor extends Visitor {
+export class IterateExpressionVisitor extends Visitor {
   #data: Array<StructEntity> = [];
 
   get Namespace() {
@@ -76,21 +74,34 @@ export class CountExpressionVisitor extends Visitor {
   }
 
   get OperatesOn(): (new (...args: any[]) => Component)[] {
-    return [CountExpression];
+    return [IterateExpression];
   }
 
   Visit(target: Component) {
-    if (target instanceof CountExpression) {
+    if (target instanceof IterateExpression) {
+      const store = ResolveExpression(target.Over);
+      if (
+        !(store instanceof StoreStatement) &&
+        !(store instanceof FunctionParameter)
+      )
+        return {
+          result: undefined,
+          cleanup: () => {},
+        };
+
+      const stored = store.Type;
+      if (!stored)
+        return {
+          result: undefined,
+          cleanup: () => {},
+        };
+
       const ctx = new StructEntity(
         target.Location,
         false,
         Namer.GetName(),
         new ComponentGroup(
-          new Property(
-            target.Location,
-            "ctx",
-            new PrimitiveType(target.Location, "int")
-          ),
+          new Property(target.Location, "ctx", stored),
           new Property(target.Location, "result", ResolveBlock(target.Body)),
           new Property(
             target.Location,
@@ -115,17 +126,13 @@ export class CountExpressionVisitor extends Visitor {
               new ComponentGroup(
                 new FunctionParameter(target.Location, "ctx", ctx)
               ),
-              ResolveBlock(target.Body)
+              ctx
             )
           ),
           new Property(
             target.Location,
             "init",
-            new FunctionType(
-              target.Location,
-              new ComponentGroup(),
-              ResolveBlock(target.Body)
-            )
+            new FunctionType(target.Location, new ComponentGroup(), ctx)
           )
         )
       );
@@ -141,26 +148,54 @@ export class CountExpressionVisitor extends Visitor {
       const main_parameter = new FunctionParameter(
         target.Location,
         target.As,
-        new PrimitiveType(target.Location, "int")
+        stored
       );
 
-      const parameter_visitor = new CountStoreVisitor(target, main_parameter);
+      const parameter_visitor = new IterateStoreVisitor(target, main_parameter);
 
-      const main_lambda = new LambdaExpression(
-        target.Location,
-        new ComponentGroup(main_parameter),
-        new ComponentGroup(
-          ...[...target.Body.iterator()].map((b) =>
-            ComponentStore.Visit(b, parameter_visitor)
-          )
+      const main_block = new ComponentGroup(
+        ...[...target.Body.iterator()].map((b) =>
+          ComponentStore.Visit(b, parameter_visitor)
         )
       );
 
       const main_store = new StoreStatement(
         target.Location,
         Namer.GetName(),
-        main_lambda,
-        ResolveExpression(main_lambda)
+        new LambdaExpression(
+          target.Location,
+          new ComponentGroup(main_parameter),
+          main_block
+        ),
+        ResolveBlock(main_block)
+      );
+
+      const next_invokation = new InvokationExpression(
+        target.Location,
+        new AccessExpression(target.Location, stored, "next"),
+        new ComponentGroup(
+          new AccessExpression(target.Location, ctx_parameter, "ctx")
+        )
+      );
+
+      const next_result = new StoreStatement(
+        target.Location,
+        Namer.GetName(),
+        next_invokation,
+        ResolveExpression(next_invokation)
+      );
+
+      const init_invokation = new InvokationExpression(
+        target.Location,
+        new AccessExpression(target.Location, stored, "init"),
+        new ComponentGroup()
+      );
+
+      const init_result = new StoreStatement(
+        target.Location,
+        Namer.GetName(),
+        init_invokation,
+        ResolveExpression(init_invokation)
       );
 
       return {
@@ -176,6 +211,7 @@ export class CountExpressionVisitor extends Visitor {
                 new ComponentGroup(ctx_parameter),
                 new ComponentGroup(
                   main_store,
+                  next_result,
                   new ReturnStatement(
                     target.Location,
                     new MakeExpression(
@@ -185,19 +221,14 @@ export class CountExpressionVisitor extends Visitor {
                         new AssignStatement(
                           target.Location,
                           "ctx",
-                          new OperatorExpression(
+                          new AccessExpression(
                             target.Location,
-                            new AccessExpression(
+                            new ReferenceExpression(
                               target.Location,
-                              new ReferenceExpression(
-                                target.Location,
-                                ctx_parameter.Name,
-                                ctx_parameter
-                              ),
-                              "ctx"
+                              next_result.Name,
+                              next_result
                             ),
-                            "+",
-                            new LiteralExpression(target.Location, "int", "1i")
+                            "ctx"
                           )
                         ),
                         new AssignStatement(
@@ -215,8 +246,8 @@ export class CountExpressionVisitor extends Visitor {
                                 target.Location,
                                 new ReferenceExpression(
                                   target.Location,
-                                  ctx_parameter.Name,
-                                  ctx_parameter
+                                  next_result.Name,
+                                  next_result
                                 ),
                                 "ctx"
                               )
@@ -226,23 +257,14 @@ export class CountExpressionVisitor extends Visitor {
                         new AssignStatement(
                           target.Location,
                           "continue",
-                          new OperatorExpression(
+                          new AccessExpression(
                             target.Location,
-                            new AccessExpression(
-                              target.Location,
-                              new ReferenceExpression(
-                                target.Location,
-                                ctx_parameter.Name,
-                                ctx_parameter
-                              ),
-                              "ctx"
-                            ),
-                            "<",
                             new ReferenceExpression(
                               target.Location,
-                              "target",
-                              target.To
-                            )
+                              next_result.Name,
+                              next_result
+                            ),
+                            "continue"
                           )
                         )
                       ),
@@ -260,6 +282,7 @@ export class CountExpressionVisitor extends Visitor {
                 new ComponentGroup(),
                 new ComponentGroup(
                   main_store,
+                  init_result,
                   new ReturnStatement(
                     target.Location,
                     new MakeExpression(
@@ -269,7 +292,15 @@ export class CountExpressionVisitor extends Visitor {
                         new AssignStatement(
                           target.Location,
                           "ctx",
-                          new LiteralExpression(target.Location, "int", "1i")
+                          new AccessExpression(
+                            target.Location,
+                            new ReferenceExpression(
+                              target.Location,
+                              init_result.Name,
+                              init_result
+                            ),
+                            "ctx"
+                          )
                         ),
                         new AssignStatement(
                           target.Location,
@@ -281,21 +312,30 @@ export class CountExpressionVisitor extends Visitor {
                               main_store.Name,
                               main_store
                             ),
-                            new ComponentGroup()
+                            new ComponentGroup(
+                              new AccessExpression(
+                                target.Location,
+                                new ReferenceExpression(
+                                  target.Location,
+                                  init_result.Name,
+                                  init_result
+                                ),
+                                "ctx"
+                              )
+                            )
                           )
                         ),
                         new AssignStatement(
                           target.Location,
                           "continue",
-                          new OperatorExpression(
+                          new AccessExpression(
                             target.Location,
-                            new LiteralExpression(target.Location, "int", "1i"),
-                            "<",
                             new ReferenceExpression(
                               target.Location,
-                              "target",
-                              target.To
-                            )
+                              init_result.Name,
+                              init_result
+                            ),
+                            "continue"
                           )
                         )
                       ),

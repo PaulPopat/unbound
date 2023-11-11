@@ -1,18 +1,32 @@
 import { Location } from "#compiler/location";
 import { AstItem, Component, ComponentGroup, ComponentStore } from "./base";
-import { StructEntity } from ".";
+import { StructEntity } from "./entity";
+import { Property } from "./property";
 
 export abstract class Type extends Component {}
 
 @AstItem
 export class SchemaType extends Type {
-  readonly #name: string;
   readonly #properties: ComponentGroup;
 
-  constructor(ctx: Location, name: string, properties: ComponentGroup) {
+  constructor(ctx: Location, properties: ComponentGroup) {
     super(ctx);
-    this.#name = name;
     this.#properties = properties;
+  }
+
+  HasKey(key: string) {
+    for (const property of this.#properties.iterator())
+      if (property instanceof Property) if (property.Name === key) return true;
+
+    return false;
+  }
+
+  GetKey(key: string) {
+    for (const property of this.#properties.iterator())
+      if (property instanceof Property)
+        if (property.Name === key) return property;
+
+    return undefined;
   }
 
   get type_name() {
@@ -21,7 +35,6 @@ export class SchemaType extends Type {
 
   get extra_json() {
     return {
-      name: this.#name,
       properties: this.#properties.json,
     };
   }

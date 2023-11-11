@@ -47,7 +47,6 @@ function ExtractFunction(tokens: TokenGroup) {
 }
 
 function ExtractSchema(tokens: TokenGroup) {
-  const name = NextBlock(tokens).Text;
   const properties = BuildWhile(tokens, "{", ";", "}", () =>
     ExtractProperty(tokens)
   );
@@ -100,7 +99,6 @@ export function ExtractType(tokens: TokenGroup): Type {
       const { properties, name } = ExtractSchema(tokens);
       return new SchemaType(
         current.Location,
-        name,
         new ComponentGroup(...properties)
       );
     }

@@ -72,7 +72,9 @@ export class ContextBuildingVisitor extends ReferenceNameIndexingVisitor {
     body: ComponentGroup
   ) {
     const ensure = (subject: Component | undefined) => {
-      if (!subject) throw new LinkerError(location, "Missing property");
+      if (!subject) {
+        throw new LinkerError(location, "Missing property");
+      }
 
       return subject;
     };
