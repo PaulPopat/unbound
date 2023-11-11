@@ -1,1 +1,19 @@
-{}
+{
+  "0": {
+    "name": "__CompiledLambdas",
+    "exported": false,
+    "contents": [],
+    "type": "namespace",
+    "location": {
+      "file_name": "lambdas",
+      "start": {
+        "line": -1,
+        "column": -1
+      },
+      "last": {
+        "line": -1,
+        "column": -1
+      }
+    }
+  }
+}

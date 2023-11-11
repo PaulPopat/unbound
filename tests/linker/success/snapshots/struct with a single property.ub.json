@@ -31,7 +31,7 @@
     }
   },
   "2": {
-    "name": "o",
+    "name": "",
     "properties": [
       1
     ],
@@ -65,6 +65,23 @@
       "last": {
         "line": 0,
         "column": 9
+      }
+    }
+  },
+  "6": {
+    "name": "__CompiledLambdas",
+    "exported": false,
+    "contents": [],
+    "type": "namespace",
+    "location": {
+      "file_name": "lambdas",
+      "start": {
+        "line": -1,
+        "column": -1
+      },
+      "last": {
+        "line": -1,
+        "column": -1
       }
     }
   }

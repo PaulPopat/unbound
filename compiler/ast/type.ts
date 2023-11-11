@@ -32,7 +32,7 @@ export class ReferenceType extends Type {
   readonly #name: string;
   readonly #references?: number;
 
-  constructor(ctx: Location, name: string, references?: Type) {
+  constructor(ctx: Location, name: string, references?: Component) {
     super(ctx);
     this.#name = name;
     this.#references = references?.Index;

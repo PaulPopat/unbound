@@ -69,4 +69,8 @@ export class Namer {
     this.#index += 1;
     return name;
   }
+
+  static Reset() {
+    this.#index = -1;
+  }
 }

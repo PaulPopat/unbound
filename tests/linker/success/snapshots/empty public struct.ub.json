@@ -1,6 +1,6 @@
 {
   "0": {
-    "name": "d",
+    "name": "",
     "properties": [],
     "exported": true,
     "type": "struct_entity",
@@ -32,6 +32,23 @@
       "last": {
         "line": 0,
         "column": 9
+      }
+    }
+  },
+  "3": {
+    "name": "__CompiledLambdas",
+    "exported": false,
+    "contents": [],
+    "type": "namespace",
+    "location": {
+      "file_name": "lambdas",
+      "start": {
+        "line": -1,
+        "column": -1
+      },
+      "last": {
+        "line": -1,
+        "column": -1
       }
     }
   }

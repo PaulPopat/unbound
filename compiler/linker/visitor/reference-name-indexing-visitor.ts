@@ -60,6 +60,15 @@ export class ReferenceNameIndexingVisitor extends Visitor {
     return undefined;
   }
 
+  protected get locals() {
+    const result: Array<[string, Local]> = [];
+
+    for (const layer of this.#locals)
+      for (const key in layer) result.push([key, layer[key]]);
+
+    return result;
+  }
+
   #add_local(name: string, statement: Local) {
     this.#locals[this.#locals.length - 1][name] = statement;
   }
@@ -98,7 +107,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
         cleanup: () => {
           this.#using = [];
           this.#parameters = {};
-          this.#locals = [];
+          this.#locals = [{}];
           this.#namespace = "";
         },
       };
@@ -128,7 +137,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
         result: undefined,
         cleanup: () => {
           this.#parameters = {};
-          this.#locals = [];
+          this.#locals = [{}];
         },
       };
     } else if (target instanceof StoreStatement) {

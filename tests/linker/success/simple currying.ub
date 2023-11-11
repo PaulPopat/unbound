@@ -1,0 +1,15 @@
+namespace Test {
+  fn TestFnOne(input: int, second: char): bool {
+    return input == second;
+  }
+
+  fn TestFnTwo(input: char): (input: int) -> bool {
+    return TestFnOne(input);
+  }
+
+  fn Final(): bool {
+    store partial = TestFnTwo('a');
+
+    return partial(123i);
+  }
+}

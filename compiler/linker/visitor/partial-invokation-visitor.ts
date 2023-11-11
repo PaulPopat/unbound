@@ -10,6 +10,7 @@ import {
 } from "#compiler/ast";
 import { LinkerError } from "../error";
 import { PatternMatch } from "../pattern-match";
+import { ResolveExpression } from "./expression";
 
 export class PartialInvokationVisitor extends Visitor {
   constructor() {
@@ -22,14 +23,7 @@ export class PartialInvokationVisitor extends Visitor {
 
   Visit(target: Component) {
     return PatternMatch(InvokationExpression)((invoke) => {
-      const subject = invoke.Subject;
-      if (!(subject instanceof ReferenceExpression))
-        return {
-          result: undefined,
-          cleanup: () => {},
-        };
-
-      const functione = subject.References;
+      const functione = ResolveExpression(invoke.Subject);
       if (!(functione instanceof FunctionEntity))
         return {
           result: undefined,

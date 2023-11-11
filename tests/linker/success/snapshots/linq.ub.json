@@ -242,7 +242,7 @@
     }
   },
   "15": {
-    "subject": 9,
+    "subject": 94,
     "parameters": [
       13
     ],
@@ -309,7 +309,7 @@
     }
   },
   "19": {
-    "name": "k",
+    "name": "d",
     "parameters": [
       3,
       9
@@ -557,7 +557,7 @@
     }
   },
   "34": {
-    "subject": 28,
+    "subject": 96,
     "parameters": [
       32
     ],
@@ -705,7 +705,7 @@
     }
   },
   "43": {
-    "name": "l",
+    "name": "e",
     "parameters": [
       23,
       28
@@ -811,7 +811,7 @@
     }
   },
   "49": {
-    "name": "i",
+    "name": "b",
     "properties": [
       48
     ],
@@ -1006,11 +1006,9 @@
     }
   },
   "61": {
-    "parameters": [
-      56
-    ],
-    "expression": 60,
-    "type": "lambda_expression",
+    "struct": "g",
+    "using": [],
+    "type": "make_expression",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -1024,7 +1022,7 @@
     }
   },
   "62": {
-    "subject": 43,
+    "subject": 100,
     "parameters": [
       53,
       61
@@ -1141,11 +1139,9 @@
     }
   },
   "69": {
-    "parameters": [
-      65
-    ],
-    "expression": 68,
-    "type": "lambda_expression",
+    "struct": "i",
+    "using": [],
+    "type": "make_expression",
     "location": {
       "file_name": "linq.ub",
       "start": {
@@ -1159,7 +1155,7 @@
     }
   },
   "70": {
-    "subject": 19,
+    "subject": 98,
     "parameters": [
       62,
       69
@@ -1193,7 +1189,7 @@
     }
   },
   "72": {
-    "name": "j",
+    "name": "c",
     "parameters": [
       52
     ],
@@ -1232,6 +1228,232 @@
       "last": {
         "line": 18,
         "column": 9
+      }
+    }
+  },
+  "94": {
+    "name": "",
+    "references": 9,
+    "type": "reference_expression",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 1,
+        "column": 40
+      },
+      "last": {
+        "line": 1,
+        "column": 48
+      }
+    }
+  },
+  "96": {
+    "name": "",
+    "references": 28,
+    "type": "reference_expression",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 7,
+        "column": 39
+      },
+      "last": {
+        "line": 7,
+        "column": 48
+      }
+    }
+  },
+  "98": {
+    "name": "",
+    "references": 19,
+    "type": "reference_expression",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 1,
+        "column": 9
+      },
+      "last": {
+        "line": 1,
+        "column": 11
+      }
+    }
+  },
+  "100": {
+    "name": "",
+    "references": 43,
+    "type": "reference_expression",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 7,
+        "column": 9
+      },
+      "last": {
+        "line": 7,
+        "column": 11
+      }
+    }
+  },
+  "108": {
+    "name": "char",
+    "type": "primitive_type",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 58
+      },
+      "last": {
+        "line": 26,
+        "column": 70
+      }
+    }
+  },
+  "109": {
+    "type_name": 108,
+    "type": "iterable_type",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 58
+      },
+      "last": {
+        "line": 26,
+        "column": 70
+      }
+    }
+  },
+  "110": {
+    "value": 60,
+    "type": "return_statement",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 22
+      },
+      "last": {
+        "line": 26,
+        "column": 24
+      }
+    }
+  },
+  "111": {
+    "name": "f",
+    "parameters": [
+      56
+    ],
+    "returns": 109,
+    "content": [
+      110
+    ],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 22
+      },
+      "last": {
+        "line": 26,
+        "column": 24
+      }
+    }
+  },
+  "112": {
+    "name": "g",
+    "properties": [],
+    "exported": false,
+    "type": "struct_entity",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 26,
+        "column": 22
+      },
+      "last": {
+        "line": 26,
+        "column": 24
+      }
+    }
+  },
+  "114": {
+    "value": 68,
+    "type": "return_statement",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 27,
+        "column": 23
+      },
+      "last": {
+        "line": 27,
+        "column": 25
+      }
+    }
+  },
+  "115": {
+    "name": "h",
+    "parameters": [
+      65
+    ],
+    "returns": 49,
+    "content": [
+      114
+    ],
+    "exported": false,
+    "type": "function_entity",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 27,
+        "column": 23
+      },
+      "last": {
+        "line": 27,
+        "column": 25
+      }
+    }
+  },
+  "116": {
+    "name": "i",
+    "properties": [],
+    "exported": false,
+    "type": "struct_entity",
+    "location": {
+      "file_name": "linq.ub",
+      "start": {
+        "line": 27,
+        "column": 23
+      },
+      "last": {
+        "line": 27,
+        "column": 25
+      }
+    }
+  },
+  "118": {
+    "name": "__CompiledLambdas",
+    "exported": false,
+    "contents": [
+      112,
+      111,
+      116,
+      115
+    ],
+    "type": "namespace",
+    "location": {
+      "file_name": "lambdas",
+      "start": {
+        "line": -1,
+        "column": -1
+      },
+      "last": {
+        "line": -1,
+        "column": -1
       }
     }
   }

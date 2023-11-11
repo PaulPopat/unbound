@@ -1,4 +1,4 @@
-import { Location } from "#compiler/location";
+import { Location, Namer } from "#compiler/location";
 import { AsyncLocalStorage } from "node:async_hooks";
 
 const visiting_context = new AsyncLocalStorage<Array<number>>();
@@ -132,6 +132,7 @@ export class ComponentStore {
   static Clear() {
     this.#data = {};
     this.#index = 0;
+    Namer.Reset();
   }
 }
 

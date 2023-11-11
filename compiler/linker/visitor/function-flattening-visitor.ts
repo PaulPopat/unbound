@@ -39,12 +39,17 @@ export class FunctionFlatteningVisitor extends ReferenceNameIndexingVisitor {
         return {
           result: new InvokationExpression(
             target.Location,
-            found,
+            new ReferenceExpression(found.Location, "", found),
             new ComponentGroup(accessing, ...target.Parameters.iterator())
           ),
           cleanup: () => {},
         };
       }
+
+      return {
+        result: undefined,
+        cleanup: () => {},
+      };
     }
 
     return super.Visit(target);

@@ -2,7 +2,7 @@ import { Component } from "#compiler/ast";
 import { LinkerError } from "./error";
 
 export function PatternMatch<
-  TOptions extends Array<new (...args: Array<any>) => Component>
+  TOptions extends Array<abstract new (...args: Array<any>) => Component>
 >(...options: TOptions) {
   return <TResult>(
     ...handlers: {
