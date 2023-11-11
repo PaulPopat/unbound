@@ -6,6 +6,7 @@ import { ReferenceTypeVisitor } from "./visitor/reference-type-visitor";
 import { FunctionFlatteningVisitor } from "./visitor/function-flattening-visitor";
 import { StoreTypeVisitor } from "./visitor/store-type-visitor";
 import { NameFlatteningVisitor } from "./visitor/name-flattening-visitor";
+import { PartialInvokationVisitor } from "./visitor/partial-invokation-visitor";
 
 export function LinkUnbound(ast: Ast) {
   const function_collector = new FunctionCollectingVisitor();
@@ -18,5 +19,6 @@ export function LinkUnbound(ast: Ast) {
     .visited(new ReferenceTypeVisitor(type_collector.Types))
     .visited(new FunctionFlatteningVisitor(function_collector.Functions))
     .visited(new StoreTypeVisitor(type_collector.Types))
-    .visited(new NameFlatteningVisitor());
+    .visited(new NameFlatteningVisitor())
+    .visited(new PartialInvokationVisitor());
 }

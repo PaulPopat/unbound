@@ -8,8 +8,6 @@ import {
 import { Namer } from "#compiler/location";
 import { PatternMatch } from "../pattern-match";
 
-const name_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 export class NameFlatteningVisitor extends Visitor {
   constructor() {
     super();
