@@ -8,8 +8,8 @@ import {
   ReferenceExpression,
   Visitor,
 } from "#compiler/ast";
+import { PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
-import { PatternMatch } from "../pattern-match";
 import { ResolveExpression } from "./expression";
 
 export class PartialInvokationVisitor extends Visitor {

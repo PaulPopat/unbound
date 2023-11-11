@@ -1,5 +1,5 @@
 import { Component } from "#compiler/ast";
-import { LinkerError } from "./error";
+import { LinkerError } from "../linker/error";
 
 export function PatternMatch<
   TOptions extends Array<abstract new (...args: Array<any>) => Component>

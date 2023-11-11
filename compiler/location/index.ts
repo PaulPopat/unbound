@@ -74,3 +74,5 @@ export class Namer {
     this.#index = -1;
   }
 }
+
+export { PatternMatch } from "./pattern-match";

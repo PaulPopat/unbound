@@ -1,4 +1,3 @@
-import { StructEntity, FunctionEntity } from "../../ast/entity";
 import {
   Expression,
   LiteralExpression,
@@ -14,16 +13,16 @@ import {
   LambdaExpression,
   InvokationExpression,
   AccessExpression,
-} from "../../ast/expression";
-import { ReturnStatement } from "../../ast/statement";
-import {
+  StructEntity,
+  FunctionEntity,
+  ReturnStatement,
   Type,
   IterableType,
   PrimitiveType,
   FunctionType,
-} from "../../ast/type";
+} from "#compiler/ast";
+import { PatternMatch } from "#compiler/location";
 import { LinkerError } from "../error";
-import { PatternMatch } from "../pattern-match";
 
 export function ResolveExpression(
   expression: Expression

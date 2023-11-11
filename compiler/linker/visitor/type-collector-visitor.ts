@@ -8,7 +8,7 @@ import {
   UsingEntity,
   Visitor,
 } from "#compiler/ast";
-import { PatternMatch } from "../pattern-match";
+import { PatternMatch } from "#compiler/location";
 
 export class TypeCollectorVisitor extends Visitor {
   readonly #types: Record<string, StructEntity | SchemaEntity>;
