@@ -1,0 +1,14 @@
+namespace Test {
+  fn Final(): bool {
+    store iterator1 = count (10 as index) {
+      return index;
+    };
+    store iterator2 = count (10 as index) {
+      return index;
+    };
+
+    return reduce (iterator1 ++ iterator2 as item with 0i as current) {
+      return current + item;
+    }
+  }
+}

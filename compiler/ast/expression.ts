@@ -70,6 +70,7 @@ export const Operators = [
   ">",
   "<=",
   ">=",
+  "++",
 ] as const;
 export type Operator = (typeof Operators)[number];
 
@@ -117,7 +118,7 @@ export class OperatorExpression extends Expression {
 }
 
 @AstItem
-export class IfExpression<TStatement extends Component> extends Expression {
+export class IfExpression extends Expression {
   readonly #check: number;
   readonly #if: ComponentGroup;
   readonly #else: ComponentGroup;
@@ -226,6 +227,63 @@ export class IterateExpression extends Expression {
 
   get As() {
     return this.#as;
+  }
+
+  get Body() {
+    return this.#using;
+  }
+
+  get type_name() {
+    return "iterate_expression";
+  }
+
+  get extra_json() {
+    return {
+      over: this.#over,
+      as: this.#as,
+      using: this.#using.json,
+    };
+  }
+}
+
+@AstItem
+export class ReduceExpression extends Expression {
+  readonly #over: number;
+  readonly #as: string;
+  readonly #init: number;
+  readonly #init_as: string;
+  readonly #using: ComponentGroup;
+
+  constructor(
+    ctx: Location,
+    over: Expression,
+    as: string,
+    init: Expression,
+    init_as: string,
+    using: ComponentGroup
+  ) {
+    super(ctx);
+    this.#over = over.Index;
+    this.#as = as;
+    this.#using = using;
+    this.#init = init.Index;
+    this.#init_as = init_as;
+  }
+
+  get Over() {
+    return ComponentStore.Get(this.#over);
+  }
+
+  get As() {
+    return this.#as;
+  }
+
+  get With() {
+    return ComponentStore.Get(this.#init);
+  }
+
+  get WithAs() {
+    return this.#init_as;
   }
 
   get Body() {

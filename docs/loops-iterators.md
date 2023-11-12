@@ -6,6 +6,10 @@ Iterators are sequences of data. Those sequences are retrieved upon request. In 
 
 Iterators of a type are declared by putting a pair of square brackets after the type name.
 
+## Contatination
+
+Iterators may be contatinated together with the `++` operator.
+
 ## Loops
 
 Like all over blocks in Unbound. Loops must return a value. That value will be an iterator. Each iteration of the loop will only be run when the next item of that loop is requested. As such, loops are not actually run when declared, but the scope of the function will be preserved until the iterator is finished.
@@ -41,6 +45,43 @@ fn test(): [int] {
   };
 
   return result;
+}
+```
+
+## Reducer Loops
+
+Reducer loops are designed to iterate over other iterators and produce an aggrigated result. A second expression is provided for the aggregator initialiser.
+
+```
+// Returns 55
+fn test(): int {
+  store iterator = count (10 as index) {
+    return index;
+  };
+
+  return reduce (iterator as item with 0i as current) {
+    return current + item;
+  }
+}
+```
+
+## Contatination
+
+Iterators may be contatinated together with the `++` operator.
+
+```
+// Returns 110
+fn test(): int {
+  store iterator1 = count (10 as index) {
+    return index;
+  };
+  store iterator2 = count (10 as index) {
+    return index;
+  };
+
+  return reduce (iterator1 ++ iterator2 as item with 0i as current) {
+    return current + item;
+  }
 }
 ```
 
