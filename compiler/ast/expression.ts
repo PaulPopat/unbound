@@ -163,31 +163,14 @@ export class IfExpression extends Expression {
 @AstItem
 export class CountExpression extends Expression {
   readonly #to: number;
-  readonly #as: string;
-  readonly #using: ComponentGroup;
 
-  constructor(
-    ctx: Location,
-    to: Expression,
-    as: string,
-    using: ComponentGroup
-  ) {
+  constructor(ctx: Location, to: Expression) {
     super(ctx);
     this.#to = to.Index;
-    this.#as = as;
-    this.#using = using;
   }
 
   get To() {
     return ComponentStore.Get(this.#to);
-  }
-
-  get As() {
-    return this.#as;
-  }
-
-  get Body() {
-    return this.#using;
   }
 
   get type_name() {
@@ -197,8 +180,30 @@ export class CountExpression extends Expression {
   get extra_json() {
     return {
       to: this.#to,
-      as: this.#as,
-      using: this.#using.json,
+    };
+  }
+}
+
+@AstItem
+export class EmptyExpression extends Expression {
+  readonly #of: number;
+
+  constructor(ctx: Location, of: Type) {
+    super(ctx);
+    this.#of = of.Index;
+  }
+
+  get To() {
+    return ComponentStore.Get(this.#of);
+  }
+
+  get type_name() {
+    return "empty_expression";
+  }
+
+  get extra_json() {
+    return {
+      of: this.#of,
     };
   }
 }

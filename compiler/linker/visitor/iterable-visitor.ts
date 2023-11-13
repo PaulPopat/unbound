@@ -4,16 +4,30 @@ import {
   FunctionParameter,
   FunctionType,
   IterableType,
+  Namespace,
   PrimitiveType,
   Property,
+  SchemaEntity,
   SchemaType,
   UseType,
   Visitor,
 } from "#compiler/ast";
-import { Namer } from "#compiler/location";
+import { Namer, Location } from "#compiler/location";
 import { LinkerError } from "../error";
 
+const EmptyLocation = new Location("generated", -1, -1, -1, -1);
+
 export class IterableVisitor extends Visitor {
+  #data: Array<SchemaEntity> = [];
+
+  get Namespace() {
+    return new Namespace(
+      EmptyLocation,
+      false,
+      "__Compiled__Code__",
+      new ComponentGroup(...this.#data)
+    );
+  }
   get OperatesOn() {
     return [IterableType];
   }

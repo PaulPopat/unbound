@@ -3,6 +3,7 @@ import {
   BracketsExpression,
   ComponentGroup,
   CountExpression,
+  EmptyExpression,
   Expression,
   IfExpression,
   InvokationExpression,
@@ -40,7 +41,23 @@ function ExtractIf(tokens: TokenGroup) {
   return { check, if_block, else_block };
 }
 
-function ExtractCountOrIterate(tokens: TokenGroup) {
+function ExtractCount(tokens: TokenGroup) {
+  ExpectNext(tokens, "(");
+  const to = ExtractExpression(tokens, [")"]);
+  ExpectNext(tokens, ")");
+
+  return { to };
+}
+
+function ExtractEmpty(tokens: TokenGroup) {
+  ExpectNext(tokens, "(");
+  const of = ExtractType(tokens);
+  ExpectNext(tokens, ")");
+
+  return { of };
+}
+
+function ExtractIterate(tokens: TokenGroup) {
   ExpectNext(tokens, "(");
   const to = ExtractExpression(tokens, ["as"]);
   ExpectNext(tokens, "as");
@@ -131,10 +148,13 @@ export function ExtractExpression(
       const { check, if_block, else_block } = ExtractIf(tokens);
       result = new IfExpression(current.Location, check, if_block, else_block);
     } else if (text === "count") {
-      const { to, as, block } = ExtractCountOrIterate(tokens);
-      result = new CountExpression(current.Location, to, as, block);
+      const { to } = ExtractCount(tokens);
+      result = new CountExpression(current.Location, to);
+    } else if (text === "empty") {
+      const { of } = ExtractEmpty(tokens);
+      result = new EmptyExpression(current.Location, of);
     } else if (text === "iterate") {
-      const { to, as, block } = ExtractCountOrIterate(tokens);
+      const { to, as, block } = ExtractIterate(tokens);
       result = new IterateExpression(current.Location, to, as, block);
     } else if (text === "reduce") {
       const { to, as, block, init, init_as } = ExtractReduce(tokens);

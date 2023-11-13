@@ -6,11 +6,11 @@ namespace Linq {
   }
 
   export fn where(self: [use any = T], predicate: (item: T) -> bool): [T] {
-    return iterate (self as item) {
+    return reduce (self as item with empty(T) as result) {
       return if (item.predicate()) {
-        return item;
+        return result ++ item;
       } else {
-        return next;
+        return result;
       };
     };
   }

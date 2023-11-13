@@ -91,6 +91,12 @@ export class ComponentStore {
     return this.#Get(index);
   }
 
+  static Replace(subject: Component, updated: Component) {
+    this.#data[subject.Index] = updated;
+    delete this.#data[updated.Index];
+    updated[_index] = subject[_index];
+  }
+
   static Visit(item: Component, visitor: Visitor) {
     return visiting_context.run(visiting_context.getStore() ?? [], () => {
       if (visiting_context.getStore()?.includes(item.Index)) return item;
@@ -103,9 +109,7 @@ export class ComponentStore {
 
         if (result) {
           cleanup();
-          this.#data[item.Index] = result;
-          delete this.#data[result.Index];
-          result[_index] = item[_index];
+          this.Replace(item, result);
         }
 
         for (const child of instance[_children]) {

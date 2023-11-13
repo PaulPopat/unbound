@@ -1,20 +1,17 @@
 import {
-  AccessExpression,
   AssignStatement,
   Component,
   ComponentGroup,
   ComponentStore,
   CountExpression,
   FunctionParameter,
-  FunctionType,
-  InvokationExpression,
   LambdaExpression,
   LiteralExpression,
   MakeExpression,
   Namespace,
+  NextExpression,
   OperatorExpression,
   PrimitiveType,
-  Property,
   ReferenceExpression,
   ReturnStatement,
   StoreStatement,
@@ -23,7 +20,7 @@ import {
 } from "#compiler/ast";
 import { Location, Namer } from "#compiler/location";
 import { LinkerError } from "../error";
-import { ResolveBlock, ResolveExpression } from "./resolve";
+import { IteratorStruct } from "./utils";
 
 const EmptyLocation = new Location("generated", -1, -1, -1, -1);
 
@@ -38,7 +35,7 @@ class CountStoreVisitor extends Visitor {
   }
 
   get OperatesOn() {
-    return [ReferenceExpression];
+    return [ReferenceExpression, NextExpression];
   }
 
   Visit(target: Component) {
@@ -81,232 +78,138 @@ export class CountExpressionVisitor extends Visitor {
 
   Visit(target: Component) {
     if (target instanceof CountExpression) {
-      const ctx = new StructEntity(
-        target.Location,
-        false,
-        Namer.GetName(),
-        new ComponentGroup(
-          new Property(
-            target.Location,
-            "ctx",
-            new PrimitiveType(target.Location, "int")
-          ),
-          new Property(target.Location, "result", ResolveBlock(target.Body)),
-          new Property(
-            target.Location,
-            "continue",
-            new PrimitiveType(target.Location, "bool")
-          )
-        )
-      );
-
-      this.#data.push(ctx);
-
-      const main = new StructEntity(
-        target.Location,
-        false,
-        Namer.GetName(),
-        new ComponentGroup(
-          new Property(
-            target.Location,
-            "next",
-            new FunctionType(
-              target.Location,
-              new ComponentGroup(
-                new FunctionParameter(target.Location, "ctx", ctx)
-              ),
-              ResolveBlock(target.Body)
-            )
-          ),
-          new Property(
-            target.Location,
-            "init",
-            new FunctionType(
-              target.Location,
-              new ComponentGroup(),
-              ResolveBlock(target.Body)
-            )
-          )
-        )
-      );
+      const returns = new PrimitiveType(target.Location, "int");
+      const { main, after_init, main_function_type, init_function_type } =
+        IteratorStruct(returns);
 
       this.#data.push(main);
+      this.#data.push(after_init);
 
-      const ctx_parameter = new FunctionParameter(
+      const main_store_name = Namer.GetName();
+
+      const target_store = new StoreStatement(
         target.Location,
         Namer.GetName(),
-        ctx
+        target.To
       );
 
-      const main_parameter = new FunctionParameter(
+      const main_store_reference = new ReferenceExpression(
         target.Location,
-        target.As,
-        new PrimitiveType(target.Location, "int")
+        main_store_name
       );
 
-      const parameter_visitor = new CountStoreVisitor(target, main_parameter);
-
-      const main_lambda = new LambdaExpression(
-        target.Location,
-        new ComponentGroup(main_parameter),
-        new ComponentGroup(
-          ...[...target.Body.iterator()].map((b) =>
-            ComponentStore.Visit(b, parameter_visitor)
-          )
-        )
+      const main_store_parameter = new FunctionParameter(
+        returns.Location,
+        "ctx",
+        returns
       );
 
       const main_store = new StoreStatement(
         target.Location,
-        Namer.GetName(),
-        main_lambda,
-        ResolveExpression(main_lambda)
+        main_store_name,
+        new LambdaExpression(
+          target.Location,
+          new ComponentGroup(main_store_parameter),
+          new ComponentGroup(
+            new ReturnStatement(
+              target.Location,
+              new MakeExpression(
+                target.Location,
+                main.Name,
+                new ComponentGroup(
+                  new AssignStatement(
+                    target.Location,
+                    "done",
+                    new OperatorExpression(
+                      target.Location,
+                      new OperatorExpression(
+                        target.Location,
+                        new ReferenceExpression(
+                          target.Location,
+                          target_store.Name,
+                          target_store
+                        ),
+                        "+",
+                        new LiteralExpression(target.Location, "int", "1i")
+                      ),
+                      "==",
+                      new ReferenceExpression(
+                        target.Location,
+                        main_store_parameter.Name,
+                        main_store_parameter
+                      )
+                    )
+                  ),
+                  new AssignStatement(
+                    target.Location,
+                    "next",
+                    main_store_reference
+                  ),
+                  new AssignStatement(
+                    target.Location,
+                    "result",
+                    new OperatorExpression(
+                      target.Location,
+                      new ReferenceExpression(
+                        target.Location,
+                        target_store.Name,
+                        target_store
+                      ),
+                      "+",
+                      new LiteralExpression(target.Location, "int", "1i")
+                    )
+                  )
+                ),
+                main
+              )
+            )
+          )
+        ),
+        main_function_type
+      );
+
+      ComponentStore.Replace(
+        main_store_reference,
+        new ReferenceExpression(target.Location, main_store_name, main_store)
       );
 
       return {
-        result: new MakeExpression(
+        result: new LambdaExpression(
           target.Location,
-          main.Name,
+          new ComponentGroup(),
           new ComponentGroup(
-            new AssignStatement(
+            target_store,
+            main_store,
+            new ReturnStatement(
               target.Location,
-              "next",
-              new LambdaExpression(
+              new MakeExpression(
                 target.Location,
-                new ComponentGroup(ctx_parameter),
+                after_init.Name,
                 new ComponentGroup(
-                  main_store,
-                  new ReturnStatement(
+                  new AssignStatement(
                     target.Location,
-                    new MakeExpression(
+                    "done",
+                    new OperatorExpression(
+                      target_store.Location,
+                      target_store,
+                      "==",
+                      new LiteralExpression(target.Location, "int", "0i")
+                    )
+                  ),
+                  new AssignStatement(
+                    target.Location,
+                    "next",
+                    new ReferenceExpression(
                       target.Location,
-                      ctx.Name,
-                      new ComponentGroup(
-                        new AssignStatement(
-                          target.Location,
-                          "ctx",
-                          new OperatorExpression(
-                            target.Location,
-                            new AccessExpression(
-                              target.Location,
-                              new ReferenceExpression(
-                                target.Location,
-                                ctx_parameter.Name,
-                                ctx_parameter
-                              ),
-                              "ctx"
-                            ),
-                            "+",
-                            new LiteralExpression(target.Location, "int", "1i")
-                          )
-                        ),
-                        new AssignStatement(
-                          target.Location,
-                          "result",
-                          new InvokationExpression(
-                            target.Location,
-                            new ReferenceExpression(
-                              target.Location,
-                              main_store.Name,
-                              main_store
-                            ),
-                            new ComponentGroup(
-                              new AccessExpression(
-                                target.Location,
-                                new ReferenceExpression(
-                                  target.Location,
-                                  ctx_parameter.Name,
-                                  ctx_parameter
-                                ),
-                                "ctx"
-                              )
-                            )
-                          )
-                        ),
-                        new AssignStatement(
-                          target.Location,
-                          "continue",
-                          new OperatorExpression(
-                            target.Location,
-                            new AccessExpression(
-                              target.Location,
-                              new ReferenceExpression(
-                                target.Location,
-                                ctx_parameter.Name,
-                                ctx_parameter
-                              ),
-                              "ctx"
-                            ),
-                            "<",
-                            new ReferenceExpression(
-                              target.Location,
-                              "target",
-                              target.To
-                            )
-                          )
-                        )
-                      ),
-                      ctx
+                      main_store.Name,
+                      main_store
                     )
                   )
-                )
-              )
-            ),
-            new AssignStatement(
-              target.Location,
-              "init",
-              new LambdaExpression(
-                target.Location,
-                new ComponentGroup(),
-                new ComponentGroup(
-                  main_store,
-                  new ReturnStatement(
-                    target.Location,
-                    new MakeExpression(
-                      target.Location,
-                      ctx.Name,
-                      new ComponentGroup(
-                        new AssignStatement(
-                          target.Location,
-                          "ctx",
-                          new LiteralExpression(target.Location, "int", "1i")
-                        ),
-                        new AssignStatement(
-                          target.Location,
-                          "result",
-                          new InvokationExpression(
-                            target.Location,
-                            new ReferenceExpression(
-                              target.Location,
-                              main_store.Name,
-                              main_store
-                            ),
-                            new ComponentGroup()
-                          )
-                        ),
-                        new AssignStatement(
-                          target.Location,
-                          "continue",
-                          new OperatorExpression(
-                            target.Location,
-                            new LiteralExpression(target.Location, "int", "1i"),
-                            "<",
-                            new ReferenceExpression(
-                              target.Location,
-                              "target",
-                              target.To
-                            )
-                          )
-                        )
-                      ),
-                      ctx
-                    )
-                  )
-                )
+                ),
+                after_init
               )
             )
-          ),
-          main
+          )
         ),
         cleanup: () => {},
       };
