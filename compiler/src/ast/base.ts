@@ -202,4 +202,8 @@ export class Ast {
 
     return new Ast(...result.map((c) => new ComponentGroup(c)));
   }
+
+  with(file: Array<ComponentGroup>) {
+    return new Ast(new ComponentGroup(...this.#data), ...file);
+  }
 }
