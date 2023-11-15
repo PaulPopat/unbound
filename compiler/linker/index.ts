@@ -8,42 +8,46 @@ import { StoreTypeVisitor } from "./visitor/store-type-visitor";
 import { NameFlatteningVisitor } from "./visitor/name-flattening-visitor";
 import { PartialInvokationVisitor } from "./visitor/partial-invokation-visitor";
 import { LambdaVisitor } from "./visitor/lambda-visitor";
-import { CountExpressionVisitor } from "./visitor/count-expression-visitor";
 import { IterateExpressionVisitor } from "./visitor/iterate-expression-visitor";
 import { IterableVisitor } from "./visitor/iterable-visitor";
+import { ReduceVisitor } from "./visitor/reduce-visitor";
+import { EmptyVisitor } from "./visitor/empty-visitor";
+import { ConcatVisitor } from "./visitor/concat-visitor";
 
-export function LinkUnbound(ast: Ast) {
+export function LinkCinderblock(ast: Ast) {
   const function_collector = new FunctionCollectingVisitor();
   const type_collector = new TypeNameIndexingVisitor();
 
+  const iterate_visitor = new IterateExpressionVisitor();
+  const lambda_visitor = new LambdaVisitor(function_collector.Functions);
+  const iterable_visitor = new IterableVisitor();
+  const empty_visitor = new EmptyVisitor();
+  const concat_visitor = new ConcatVisitor();
+
   ast = ast
+    .visited(new ReduceVisitor())
     .visited(function_collector)
     .visited(type_collector)
-    .visited(new IterableVisitor())
+    .visited(iterable_visitor)
     .visited(new ReferenceExpressionVisitor(function_collector.Functions))
     .visited(new ReferenceTypeVisitor(type_collector.Types))
     .visited(new FunctionFlatteningVisitor(function_collector.Functions))
     .visited(new StoreTypeVisitor(type_collector.Types))
     .visited(new NameFlatteningVisitor())
-    .visited(new PartialInvokationVisitor());
-
-  const count_visitor = new CountExpressionVisitor();
-
-  ast = ast.visited(count_visitor);
-
-  const iterate_visitor = new IterateExpressionVisitor();
-
-  ast = ast.visited(iterate_visitor);
-
-  const lambda_visitor = new LambdaVisitor(function_collector.Functions);
-
-  ast = ast.visited(lambda_visitor);
+    .visited(new PartialInvokationVisitor())
+    .visited(iterate_visitor)
+    .visited(lambda_visitor)
+    .visited(empty_visitor)
+    .visited(concat_visitor);
 
   return new Ast(
     new ComponentGroup(
       ...ast.iterator(),
       lambda_visitor.Namespace,
-      count_visitor.Namespace
+      iterate_visitor.Namespace,
+      iterable_visitor.Namespace,
+      empty_visitor.Namespace,
+      concat_visitor.Namespace
     )
   );
 }

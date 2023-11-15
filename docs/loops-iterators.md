@@ -12,7 +12,7 @@ Iterators may be contatinated together with the `++` operator.
 
 ## Loops
 
-Like all over blocks in Unbound. Loops must return a value. That value will be an iterator. Each iteration of the loop will only be run when the next item of that loop is requested. As such, loops are not actually run when declared, but the scope of the function will be preserved until the iterator is finished.
+Like all over blocks in Cinderblock. Loops must return a value. That value will be an iterator. Each iteration of the loop will only be run when the next item of that loop is requested. As such, loops are not actually run when declared, but the scope of the function will be preserved until the iterator is finished.
 
 ## Count Loops
 

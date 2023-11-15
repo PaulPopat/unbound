@@ -7,6 +7,7 @@ import {
   Namespace,
   PrimitiveType,
   Property,
+  ReferenceType,
   SchemaEntity,
   SchemaType,
   UseType,
@@ -37,52 +38,38 @@ export class IterableVisitor extends Visitor {
     cleanup: () => void;
   } {
     if (target instanceof IterableType) {
-      const context_schema = new SchemaType(
+      const context_schema = new SchemaEntity(
         target.Location,
+        false,
+        Namer.GetName(),
         new ComponentGroup(
           new Property(
             target.Location,
-            "ctx",
-            new UseType(
+            "next",
+            new FunctionType(
               target.Location,
-              Namer.GetName(),
-              new ComponentGroup(new PrimitiveType(target.Location, "any"))
-            )
+              new ComponentGroup(),
+              target.Type
+            ),
+            false
           ),
-          new Property(target.Location, "result", target.Type),
           new Property(
             target.Location,
-            "continue",
-            new PrimitiveType(target.Location, "bool")
-          )
+            "done",
+            new PrimitiveType(target.Location, "bool"),
+            false
+          ),
+          new Property(target.Location, "result", target.Type, true)
         )
       );
 
+      this.#data.push(context_schema);
+
       return {
-        result: new SchemaType(
+        result: new ReferenceType(
           target.Location,
-          new ComponentGroup(
-            new Property(
-              target.Location,
-              "next",
-              new FunctionType(
-                target.Location,
-                new ComponentGroup(
-                  new FunctionParameter(target.Location, "ctx", context_schema)
-                ),
-                context_schema
-              )
-            ),
-            new Property(
-              target.Location,
-              "init",
-              new FunctionType(
-                target.Location,
-                new ComponentGroup(),
-                context_schema
-              )
-            )
-          )
+          context_schema.Name,
+          context_schema
         ),
         cleanup: () => {},
       };

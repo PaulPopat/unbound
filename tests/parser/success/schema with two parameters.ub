@@ -1,6 +1,0 @@
-namespace Test {
-  schema Test {
-    test: char;
-    other: bool;
-  }
-}

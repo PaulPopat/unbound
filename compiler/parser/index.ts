@@ -37,7 +37,7 @@ function ExtractNamespace(tokens: TokenGroup, exported = false): Namespace {
   );
 }
 
-export function ParseUnbound(input: string, file_name: string): ComponentGroup {
+export function ParseCinderblock(input: string, file_name: string): ComponentGroup {
   const tokens = SplitTokens(input, file_name);
   const group = new TokenGroup(tokens);
 

@@ -3,14 +3,12 @@ import {
   AssignStatement,
   Component,
   ComponentGroup,
-  CountExpression,
   FunctionEntity,
   FunctionParameter,
   InvokationExpression,
   IterateExpression,
   MakeExpression,
   Namespace,
-  PrimitiveType,
   Property,
   ReferenceExpression,
   StoreStatement,
@@ -85,27 +83,23 @@ export class ContextBuildingVisitor extends ReferenceNameIndexingVisitor {
       Namer.GetName(),
       new ComponentGroup(
         ...this.locals.map(([n, v]) =>
-          PatternMatch(
-            StoreStatement,
-            CountExpression,
-            IterateExpression,
-            FunctionParameter
-          )(
-            (store) => new Property(store.Location, n, ensure(store.Type)),
-            (count) =>
-              new Property(
-                count.Location,
-                n,
-                new PrimitiveType(count.Location, "int")
-              ),
+          PatternMatch(StoreStatement, IterateExpression, FunctionParameter)(
+            (store) =>
+              new Property(store.Location, n, ensure(store.Type), false),
             (iterate) =>
               new Property(
                 iterate.Location,
                 n,
-                ResolveExpression(iterate.Over)
+                ResolveExpression(iterate.Over),
+                false
               ),
             (parameter) =>
-              new Property(parameter.Location, n, ensure(parameter.Type))
+              new Property(
+                parameter.Location,
+                n,
+                ensure(parameter.Type),
+                parameter.Optional
+              )
           )(v)
         )
       )
@@ -118,31 +112,27 @@ export class ContextBuildingVisitor extends ReferenceNameIndexingVisitor {
         Namer.GetName(),
         new ComponentGroup(
           ...this.locals.map(([n, v]) =>
-            PatternMatch(
-              StoreStatement,
-              CountExpression,
-              IterateExpression,
-              FunctionParameter
-            )(
+            PatternMatch(StoreStatement, IterateExpression, FunctionParameter)(
               (store) =>
-                new FunctionParameter(store.Location, n, ensure(store.Type)),
-              (count) =>
                 new FunctionParameter(
-                  count.Location,
+                  store.Location,
                   n,
-                  new PrimitiveType(count.Location, "int")
+                  ensure(store.Type),
+                  false
                 ),
               (iterate) =>
                 new FunctionParameter(
                   iterate.Location,
                   n,
-                  ResolveExpression(iterate.Over)
+                  ResolveExpression(iterate.Over),
+                  false
                 ),
               (parameter) =>
                 new FunctionParameter(
                   parameter.Location,
                   n,
-                  ensure(parameter.Type)
+                  ensure(parameter.Type),
+                  parameter.Optional
                 )
             )(v)
           ),

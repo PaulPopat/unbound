@@ -16,21 +16,34 @@ export function ExtractFunctionParameter(
   tokens: TokenGroup
 ): FunctionParameter {
   const name = NextBlock(tokens);
+  if (tokens.peek()?.Text === "?") {
+    ExpectNext(tokens, "?");
+    ExpectNext(tokens, ":");
+    const type = ExtractType(tokens);
+    return new FunctionParameter(name.Location, name.Text, type, true);
+  }
+
   if (tokens.peek()?.Text !== ":") {
-    return new FunctionParameter(name.Location, name.Text, undefined);
+    return new FunctionParameter(name.Location, name.Text, undefined, false);
   }
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 
-  return new FunctionParameter(name.Location, name.Text, type);
+  return new FunctionParameter(name.Location, name.Text, type, false);
 }
 
 export function ExtractProperty(tokens: TokenGroup): Property {
   const name = NextBlock(tokens);
+  let optional = false;
+  if (tokens.peek()?.Text === "?") {
+    optional = true;
+    ExpectNext(tokens, "?");
+  }
+
   ExpectNext(tokens, ":");
   const type = ExtractType(tokens);
 
-  return new Property(name.Location, name.Text, type);
+  return new Property(name.Location, name.Text, type, optional);
 }
 
 function ExtractFunction(tokens: TokenGroup) {

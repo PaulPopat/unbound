@@ -43,7 +43,7 @@ store desired_test = Namespace.test();
 123.desired_test(false);
 ```
 
-Like all blocks in Unbound, a function must return a value.
+Like all blocks in Cinderblock, a function must return a value.
 
 ## Lambdas
 

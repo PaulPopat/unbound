@@ -1,10 +1,8 @@
 import {
   Expression,
   LiteralExpression,
-  NextExpression,
   OperatorExpression,
   IfExpression,
-  CountExpression,
   IterateExpression,
   MakeExpression,
   IsExpression,
@@ -31,9 +29,7 @@ import { LinkerError } from "../error";
 export function ResolveBlock(block: ComponentGroup) {
   for (const statement of block.iterator())
     if (statement instanceof ReturnStatement && statement.Value) {
-      const proposed = ResolveExpression(statement.Value);
-      if (proposed instanceof NextExpression) continue;
-      return proposed;
+      return ResolveExpression(statement.Value);
     }
 
   throw new LinkerError(block.First.Location, "All blocks must return a value");
@@ -41,13 +37,11 @@ export function ResolveBlock(block: ComponentGroup) {
 
 export function ResolveExpression(
   expression: Expression
-): Type | StructEntity | FunctionEntity | NextExpression | SchemaType {
+): Type | StructEntity | FunctionEntity | SchemaType {
   return PatternMatch(
     LiteralExpression,
-    NextExpression,
     OperatorExpression,
     IfExpression,
-    CountExpression,
     IterateExpression,
     MakeExpression,
     IsExpression,
@@ -58,9 +52,7 @@ export function ResolveExpression(
     AccessExpression,
     SchemaType
   )(
-    (
-      literal
-    ): Type | StructEntity | FunctionEntity | NextExpression | SchemaType => {
+    (literal): Type | StructEntity | FunctionEntity | SchemaType => {
       if (literal.Type === "string") {
         return new IterableType(
           literal.Location,
@@ -85,9 +77,6 @@ export function ResolveExpression(
           : "any"
       );
     },
-    (next) => {
-      return next;
-    },
     (operator) => {
       return ResolveExpression(operator.Right);
     },
@@ -100,13 +89,6 @@ export function ResolveExpression(
         if_.Location,
         "If statements must have a return value"
       );
-    },
-    (count) => {
-      for (const statement of count.Body.iterator())
-        if (statement instanceof ReturnStatement)
-          return ResolveExpression(statement.Value);
-
-      throw new LinkerError(count.Location, "Loops must have a return value");
     },
     (iterate) => {
       for (const statement of iterate.Body.iterator())

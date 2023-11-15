@@ -2,7 +2,6 @@ import {
   AccessExpression,
   BracketsExpression,
   ComponentGroup,
-  CountExpression,
   EmptyExpression,
   Expression,
   IfExpression,
@@ -12,7 +11,6 @@ import {
   LambdaExpression,
   LiteralExpression,
   MakeExpression,
-  NextExpression,
   Operator,
   OperatorExpression,
   Operators,
@@ -39,14 +37,6 @@ function ExtractIf(tokens: TokenGroup) {
   const else_block = ExtractStatementBlock(tokens);
 
   return { check, if_block, else_block };
-}
-
-function ExtractCount(tokens: TokenGroup) {
-  ExpectNext(tokens, "(");
-  const to = ExtractExpression(tokens, [")"]);
-  ExpectNext(tokens, ")");
-
-  return { to };
 }
 
 function ExtractEmpty(tokens: TokenGroup) {
@@ -142,14 +132,9 @@ export function ExtractExpression(
         text,
         ExtractExpression(tokens, look_for)
       );
-    } else if (text === "next") {
-      result = new NextExpression(current.Location);
     } else if (text === "if") {
       const { check, if_block, else_block } = ExtractIf(tokens);
       result = new IfExpression(current.Location, check, if_block, else_block);
-    } else if (text === "count") {
-      const { to } = ExtractCount(tokens);
-      result = new CountExpression(current.Location, to);
     } else if (text === "empty") {
       const { of } = ExtractEmpty(tokens);
       result = new EmptyExpression(current.Location, of);

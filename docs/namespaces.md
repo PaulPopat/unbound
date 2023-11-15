@@ -1,6 +1,6 @@
 # Namespaces
 
-All code in an unbound project must be within a namespace. They are declared like so.
+All code in an Cinderblock project must be within a namespace. They are declared like so.
 
 ```
 namespace TestNamespace {

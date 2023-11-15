@@ -44,21 +44,6 @@ export class LiteralExpression extends Expression {
   }
 }
 
-@AstItem
-export class NextExpression extends Expression {
-  constructor(ctx: Location) {
-    super(ctx);
-  }
-
-  get type_name() {
-    return "next_expression";
-  }
-
-  get extra_json() {
-    return {};
-  }
-}
-
 export const Operators = [
   "+",
   "-",
@@ -71,6 +56,8 @@ export const Operators = [
   "<=",
   ">=",
   "++",
+  "&&",
+  "||"
 ] as const;
 export type Operator = (typeof Operators)[number];
 
@@ -156,30 +143,6 @@ export class IfExpression extends Expression {
       check: this.#check,
       if: this.#if.json,
       else: this.#else.json,
-    };
-  }
-}
-
-@AstItem
-export class CountExpression extends Expression {
-  readonly #to: number;
-
-  constructor(ctx: Location, to: Expression) {
-    super(ctx);
-    this.#to = to.Index;
-  }
-
-  get To() {
-    return ComponentStore.Get(this.#to);
-  }
-
-  get type_name() {
-    return "count_expression";
-  }
-
-  get extra_json() {
-    return {
-      to: this.#to,
     };
   }
 }

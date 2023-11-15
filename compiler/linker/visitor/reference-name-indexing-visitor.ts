@@ -1,6 +1,5 @@
 import {
   Component,
-  CountExpression,
   ExternalFunctionDeclaration,
   FunctionEntity,
   FunctionParameter,
@@ -15,11 +14,7 @@ import {
 } from "#compiler/ast";
 import { LinkerError } from "../error";
 
-type Local =
-  | StoreStatement
-  | CountExpression
-  | IterateExpression
-  | FunctionParameter;
+type Local = StoreStatement | IterateExpression | FunctionParameter;
 
 export class ReferenceNameIndexingVisitor extends Visitor {
   readonly #functions: Record<
@@ -89,7 +84,6 @@ export class ReferenceNameIndexingVisitor extends Visitor {
       StoreStatement,
       MakeExpression,
       IfExpression,
-      CountExpression,
       IterateExpression,
       LambdaExpression,
     ];
@@ -146,10 +140,7 @@ export class ReferenceNameIndexingVisitor extends Visitor {
         result: undefined,
         cleanup: () => {},
       };
-    } else if (
-      target instanceof CountExpression ||
-      target instanceof IterateExpression
-    ) {
+    } else if (target instanceof IterateExpression) {
       this.#raise();
       this.#add_local(target.As, target);
       return {

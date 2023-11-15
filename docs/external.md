@@ -1,6 +1,6 @@
 # External
 
-Unbound may expose functions to external code when writing a library and may also call external code for when linking external libraries. Note that all external dependencies and exports must operate on C compatible types.
+Cinderblock may expose functions to external code when writing a library and may also call external code for when linking external libraries. Note that all external dependencies and exports must operate on C compatible types.
 
 ```
 namespace Test {
@@ -22,7 +22,7 @@ namespace Test {
 
 This will attempt to link a system function, i.e. a operating system function. Anything declared in the system block will be placed in the Test namespace.
 
-By default, none of these resources will be exported from the namespace. It is encouraged to wrap these functions in a more Unbound idiomatic wrapper before exporting but they may also be exported with the `export` keyword.
+By default, none of these resources will be exported from the namespace. It is encouraged to wrap these functions in a more Cinderblock idiomatic wrapper before exporting but they may also be exported with the `export` keyword.
 
 ```
 namespace Test {

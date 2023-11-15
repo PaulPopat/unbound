@@ -1,12 +1,13 @@
 # Structs
 
-Structs are the only way to declare data types in Unbound. They are declared as so:
+Structs are the only way to declare data types in Cinderblock. They are declared as so:
 
 ```
 struct User {
   username: [char];
   password: [char];
   logged_in: bool;
+  active?: bool;
 }
 ```
 

@@ -6,11 +6,13 @@ import { Type } from "./type";
 export class Property extends Component {
   readonly #name: string;
   readonly #type: number;
+  readonly #optional: boolean;
 
-  constructor(ctx: Location, name: string, type: Type) {
+  constructor(ctx: Location, name: string, type: Type, optional: boolean) {
     super(ctx);
     this.#name = name;
     this.#type = type.Index;
+    this.#optional = optional;
   }
 
   get Name() {
@@ -19,6 +21,10 @@ export class Property extends Component {
 
   get Type() {
     return ComponentStore.Get(this.#type);
+  }
+
+  get Optional() {
+    return this.#optional;
   }
 
   get type_name() {
@@ -37,11 +43,18 @@ export class Property extends Component {
 export class FunctionParameter extends Component {
   readonly #name: string;
   readonly #type?: number;
+  readonly #optional: boolean;
 
-  constructor(ctx: Location, name: string, type: Type | undefined) {
+  constructor(
+    ctx: Location,
+    name: string,
+    type: Type | undefined,
+    optional: boolean
+  ) {
     super(ctx);
     this.#name = name;
     this.#type = type?.Index;
+    this.#optional = optional;
   }
 
   get Name() {
@@ -50,6 +63,10 @@ export class FunctionParameter extends Component {
 
   get Type() {
     return this.#type != null ? ComponentStore.Get(this.#type) : undefined;
+  }
+
+  get Optional() {
+    return this.#optional;
   }
 
   get type_name() {
