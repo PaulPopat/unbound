@@ -1,0 +1,1 @@
+{"version":3,"file":"statement.js","sourceRoot":"","sources":["../../../../compiler/writer/model/statement.ts"],"names":[],"mappings":";;;AACA,oCAAuC;AAEvC,SAAgB,UAAU,CAAC,KAAqB;IAC9C,MAAM,IAAI,GAAG,KAAK,CAAC,IAAI,CAAC;IACxB,IAAI,CAAC,IAAI;QAAE,MAAM,IAAI,mBAAW,CAAC,KAAK,CAAC,QAAQ,EAAE,2BAA2B,CAAC,CAAC;AAChF,CAAC;AAHD,gCAGC"}

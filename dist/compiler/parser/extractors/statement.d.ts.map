@@ -1,0 +1,1 @@
+{"version":3,"file":"statement.d.ts","sourceRoot":"","sources":["../../../../compiler/parser/extractors/statement.ts"],"names":[],"mappings":"AAAA,OAAO,EAEL,cAAc,EAGd,SAAS,EAEV,MAAM,eAAe,CAAC;AAEvB,OAAO,EAAE,UAAU,EAAE,MAAM,UAAU,CAAC;AA0BtC,wBAAgB,gBAAgB,CAAC,MAAM,EAAE,UAAU,GAAG,SAAS,CA4B9D;AAED,wBAAgB,qBAAqB,CAAC,MAAM,EAAE,UAAU,GAAG,cAAc,CAIxE"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"entity.d.ts","sourceRoot":"","sources":["../../../../compiler/parser/extractors/entity.ts"],"names":[],"mappings":"AAAA,OAAO,EAEL,MAAM,EAQP,MAAM,eAAe,CAAC;AACvB,OAAO,EAAE,UAAU,EAAE,MAAM,UAAU,CAAC;AA2EtC,wBAAgB,aAAa,CAAC,MAAM,EAAE,UAAU,EAAE,QAAQ,CAAC,EAAE,OAAO,GAAG,MAAM,CAoE5E"}
